@@ -8,7 +8,7 @@
 #   本 fork 构建：<owner>/sub2api        版本 0.2.7-1a2b3c4d  标签 v0.2.7-1a2b3c4d
 #                                        镜像 ghcr.io/<owner>/sub2api
 #
-#   * 版本号 = <上游基线版本>-<短SHA>：基线取 backend/cmd/server/VERSION（跟随上游，只读不改），
+#   * 版本号 = <上游基线版本>-g<短SHA>：基线取 backend/cmd/server/VERSION（跟随上游，只读不改），
 #     SHA 取当前提交 => 每个 commit 一个不可变版本号。
 #   * 仓库里的 VERSION 文件永远等于上游基线版本；fork 构建只把完整版本号写进构建产物。
 #
@@ -76,7 +76,7 @@ fi
 printf '%s' "$SHA" | grep -Eq '^[0-9a-f]{4,40}$' \
   || die "提交 SHA 非法：'$SHA'（应为十六进制短 SHA）"
 
-VERSION="$BASE-$SHA"
+VERSION="$BASE-g$SHA"
 TAG="v$VERSION"
 
 # ------------------------------------------------------------------ 镜像归属

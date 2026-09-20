@@ -5,7 +5,7 @@ name: Fork Release
 # -----------------------------------------------------------------------------
 # 触发：推送到 main（以及手动 workflow_dispatch）
 #
-# 版本号：<上游基线版本>-<短SHA>，例如 0.2.7-1a9d49e1
+# 版本号：<上游基线版本>-g<短SHA>，例如 0.2.7-g1a9d49e1
 #   * 上游基线 = backend/cmd/server/VERSION（跟随上游 Wei-Shaw/sub2api，本流程只读不改）
 #   * 短SHA    = 本次提交 => 每个 commit 一个不可变版本号
 #   详见 docs/FORK_RELEASE.md
@@ -14,7 +14,7 @@ name: Fork Release
 #       并创建对应的 annotated tag 与 GitHub Release。
 #
 # 注意：上游官方正式版（vX.Y.Z）由 release.yml 负责，本流程只处理 fork 构建标签
-#       （v<基线>-<短SHA>），两者互不干扰。
+#       （v<基线>-g<短SHA>），两者互不干扰。
 # =============================================================================
 
 on:
@@ -53,6 +53,8 @@ env:
   # fork 部署时把「更新来源仓库 / 镜像名」指向自己的仓库，避免应用内更新拉回上游正式版
   VITE_UPDATE_REPO: ${{ vars.UPDATE_REPO || 'Wei-Shaw/sub2api' }}
   VITE_DOCKER_IMAGE: ${{ vars.DOCKER_IMAGE || 'weishaw/sub2api' }}
+  # Docker Hub 是可选发布目标：只有配置了 secret 才执行登录/推送
+  HAS_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME != '' }}
 
 jobs:
   # ---------------------------------------------------------------- 版本 + 标签
@@ -239,10 +241,9 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
-        if: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        # 注意：step 级 if 不能直接使用 secrets 上下文，先经 env 转换再判断
+        if: ${{ env.HAS_DOCKERHUB == 'true' }}
         uses: docker/login-action@v3
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
