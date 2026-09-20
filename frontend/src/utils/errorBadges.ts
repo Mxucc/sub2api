@@ -15,7 +15,7 @@ export function statusCodeBadgeClass(code: number): string {
   return 'bg-gray-100 text-gray-800 dark:bg-dark-700 dark:text-gray-200'
 }
 
-/** 请求类型徽章配色(cyber 红、live/ws/stream 品牌青蓝、sync 灰、未知琥珀) */
+/** 请求类型徽章配色(cyber 红、live/ws/stream 品牌蓝、sync 灰、未知琥珀) */
 export function requestTypeBadgeClass(kind: UsageRequestKind): string {
   if (kind === 'cyber') return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
   if (kind === 'live') return 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200'

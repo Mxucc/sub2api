@@ -940,9 +940,9 @@ onBeforeUnmount(() => {
   border-radius: 0;
 }
 /* Multi-stop primary-700 → primary-500 → primary-400 score bands */
-.health-score10 { background: #064462; }
-.health-score9  { background: #08699a; }
-.health-score8  { background: #0a80bb; }
+.health-score10 { background: #00359a; }
+.health-score9  { background: #0052d9; }
+.health-score8  { background: #366ef4; }
 .health-score7  { background: #22d3ee; }
 .health-score6  { background: #facc15; }
 .health-score5  { background: #fbbf24; }
@@ -951,7 +951,7 @@ onBeforeUnmount(() => {
 .health-score2  { background: #fb7185; }
 .health-score1  { background: #f87171; }
 .health-score0  { background: rgb(239, 67, 67); }
-.health-healthy  { background: #08699a; }
+.health-healthy  { background: #0052d9; }
 .health-warning  { background: #f59e0b; }
 .health-critical { background: #ef4444; }
 .health-unknown  { background: #9ca3af; }

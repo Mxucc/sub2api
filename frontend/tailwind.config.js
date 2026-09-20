@@ -2,7 +2,7 @@
  * 设计令牌：企业级控制台（TDesign / 腾讯云风格）
  *
  * 视觉基调：
- *  - 品牌色：青蓝 #08699A（hue 200°，白字对比度 6.0；比浓蓝 #0052D9 清爽，不是浅天蓝）
+ *  - 品牌色：TDesign 蓝 #0052D9（企业控制台标准色）；700 档已提亮为 #00359A（原 #002A8A 作正文强调过深）
  *  - 中性色：TDesign 灰阶（#f7f8fa / #f2f3f5 / #e7e7e7 …），冷而不蓝
  *  - 深色：TDesign 深色层次（页面 #181818 → 容器 #1f1f1f → 浮层 #262626）
  *  - 形状：全站直角（borderRadius 全部 0）
@@ -34,19 +34,19 @@ export default {
     },
     extend: {
       colors: {
-        // 品牌色：青蓝（500 = #08699a 主色 / 400 = hover / 600 = active；明度阶统一）
+        // 品牌色：TDesign 蓝（500 = #0052d9 主色 / 400 = hover / 600 = active；700 = 强调文字，已提亮）
         primary: {
-          50: '#f4fafd',
-          100: '#e5f4fc',
-          200: '#c2e8fb',
-          300: '#5bc1f5',
-          400: '#0a80bb',
-          500: '#08699a',
-          600: '#07567d',
-          700: '#064462',
-          800: '#06364e',
-          900: '#052b3e',
-          950: '#05212f'
+          50: '#f2f3ff',
+          100: '#d9e1ff',
+          200: '#b5c7ff',
+          300: '#8aa4ff',
+          400: '#366ef4',
+          500: '#0052d9',
+          600: '#003cab',
+          700: '#00359a',
+          800: '#00206b',
+          900: '#001a4d',
+          950: '#001230'
         },
         // 中性色：TDesign 灰阶（50/100 用于页面与表头底色，500 起为文字）
         gray: {
@@ -92,21 +92,21 @@ export default {
         },
         // 语义化品牌别名
         brand: {
-          DEFAULT: '#08699a',
-          hover: '#0a80bb',
-          active: '#07567d',
-          soft: '#f4fafd',
-          deep: '#064462',
-          'dark-mode': '#0a80bb',
-          text: '#08699a',
-          'text-dark': '#5bc1f5'
+          DEFAULT: '#0052d9',
+          hover: '#366ef4',
+          active: '#003cab',
+          soft: '#f2f3ff',
+          deep: '#00359a',
+          'dark-mode': '#366ef4',
+          text: '#0052d9',
+          'text-dark': '#8aa4ff'
         },
         // TDesign 语义文本色（企业控制台常见分层）
         'text-1': '#1f1f1f',
         'text-2': '#5e5e5e',
         'text-3': '#8b8b8b',
         'text-4': '#c5c5c5',
-        link: '#08699a'
+        link: '#0052d9'
       },
       fontFamily: {
         sans: [
@@ -129,8 +129,8 @@ export default {
         xs: '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
         glass: '0 2px 8px rgba(0, 0, 0, 0.06)',
         'glass-sm': '0 1px 4px rgba(0, 0, 0, 0.05)',
-        glow: '0 0 0 3px rgba(8, 105, 154, 0.12)',
-        'glow-lg': '0 0 0 5px rgba(8, 105, 154, 0.16)',
+        glow: '0 0 0 3px rgba(0, 82, 217, 0.12)',
+        'glow-lg': '0 0 0 5px rgba(0, 82, 217, 0.16)',
         card: '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
         'card-hover': '0 2px 8px -2px rgba(0, 0, 0, 0.10)',
         popover: '0 4px 12px -2px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06)',
@@ -139,12 +139,12 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-primary': 'linear-gradient(135deg, #08699a 0%, #07567d 100%)',
+        'gradient-primary': 'linear-gradient(135deg, #0052d9 0%, #003cab 100%)',
         'gradient-dark': 'linear-gradient(135deg, #1f1f1f 0%, #181818 100%)',
         'gradient-glass':
           'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
         'mesh-gradient':
-          'radial-gradient(at 40% 20%, rgba(8, 105, 154, 0.06) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(10, 128, 187, 0.05) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(91, 193, 245, 0.04) 0px, transparent 50%)'
+          'radial-gradient(at 40% 20%, rgba(0, 82, 217, 0.06) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(54, 110, 244, 0.05) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(138, 164, 255, 0.04) 0px, transparent 50%)'
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out',
@@ -182,8 +182,8 @@ export default {
           '100%': { backgroundPosition: '200% 0' }
         },
         glow: {
-          '0%': { boxShadow: '0 0 0 3px rgba(8, 105, 154, 0.10)' },
-          '100%': { boxShadow: '0 0 0 4px rgba(8, 105, 154, 0.18)' }
+          '0%': { boxShadow: '0 0 0 3px rgba(0, 82, 217, 0.10)' },
+          '100%': { boxShadow: '0 0 0 4px rgba(0, 82, 217, 0.18)' }
         }
       },
       backdropBlur: {

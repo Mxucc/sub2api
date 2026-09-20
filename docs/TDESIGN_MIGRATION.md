@@ -66,7 +66,7 @@ CSS 变量与内部 DOM 结构决定样式 —— 两者不是「替换标签」
 
 ### 4.1 样式体系冲突（最高风险，⭐️⭐️⭐️⭐️⭐️）
 - **两套样式语言**：Tailwind 原子类（`bg-primary-500`）与 TDesign CSS 变量（`--td-brand-color`）并存时段，
-  任何一处覆盖不当都会出现「一半直角、一半圆角」「一半品牌青蓝、一半 TDesign 蓝」。
+  任何一处覆盖不当都会出现「一半直角、一半圆角」「一半品牌蓝、一半 TDesign 蓝」。
 - **preflight 冲突**：Tailwind 的 `@tailwind base` 与 TDesign 的基础样式对 `button/input` 的默认重置不同步，
   已发现过的同类问题：类名优先级、`:hover` 覆盖、`box-sizing`。
 - **我们的设计系统是「面直角 + 线圆润」**，TDesign 默认圆角 3–6px，需要全局覆盖
@@ -145,14 +145,14 @@ TDesign：`<t-config-provider theme-mode="dark">`。
 2. 视觉回归：`design-preview.html` + 关键页面截图对比（明/暗两套）。
 3. 体积：主包增量 < 30KB（Phase 0），后续每阶段 < 60KB。
 4. 行为：Select 键盘导航、Dialog 滚动锁与堆叠、Table 列宽拖拽/粘性列、Pagination 跳页 —— 逐项手测通过。
-5. 无「两套风格混用」的页面：同屏内 TDesign 组件与 Tailwind 类必须共用同一套令牌（品牌青蓝 + 直角）。
+5. 无「两套风格混用」的页面：同屏内 TDesign 组件与 Tailwind 类必须共用同一套令牌（品牌蓝 + 直角）。
 
 ---
 
 ## 7. 我的建议（如果你只想要「更方正、更耐看」）
 
 TDesign 的价值在**组件实现规范**（表单校验、虚拟滚动、无障碍、文档），而不是视觉；
-它的默认视觉语言与我们已经定好的「DeepSeek 品牌青蓝 + 全站直角 + Lucide 线性图标」并不相同，
+它的默认视觉语言与我们已经定好的「DeepSeek 品牌蓝 + 全站直角 + Lucide 线性图标」并不相同，
 迁移时必须再重做一遍主题覆盖，否则会退回「默认 TDesign 脸」。
 
 因此：

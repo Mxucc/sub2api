@@ -617,7 +617,7 @@ onMounted(() => {
   background: #eab308;
 }
 .btn-maximize {
-  background: #08699a;
+  background: #0052d9;
 }
 
 .terminal-title {
@@ -671,7 +671,7 @@ onMounted(() => {
 }
 
 .code-prompt {
-  color: #08699a;
+  color: #0052d9;
   font-weight: bold;
 }
 .code-cmd {
@@ -681,15 +681,15 @@ onMounted(() => {
   color: #b7c8fe;
 }
 .code-url {
-  color: #0a80bb;
+  color: #366ef4;
 }
 .code-comment {
   color: #64748b;
   font-style: italic;
 }
 .code-success {
-  color: #08699a;
-  background: rgba(8, 105, 154, 0.15);
+  color: #0052d9;
+  background: rgba(0, 82, 217, 0.15);
   padding: 2px 8px;
   border-radius: 0;
   font-weight: 600;
@@ -703,7 +703,7 @@ onMounted(() => {
   display: inline-block;
   width: 8px;
   height: 16px;
-  background: #08699a;
+  background: #0052d9;
   animation: blink 1s step-end infinite;
 }
 

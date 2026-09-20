@@ -11,7 +11,7 @@
 | 定位 | **企业级控制台**（腾讯云 / TDesign 控制台），信息密度高、层级克制、可长时间阅读 |
 | 形状 | **全站直角**：所有容器/控件圆角 = 0（`theme.borderRadius` 统一归零） |
 | 层次 | 靠 **1px 描边** + 极淡中性投影（`shadow-xs` / `shadow-card` / `shadow-popover` / `shadow-dialog`），不用重阴影、不用彩色光晕 |
-| 主色 | **品牌青蓝 #08699A**（hue 200°）；hover `#0A80BB`、active `#07567D`、浅底 `#F4FAFD` |
+| 主色 | **品牌蓝 #0052D9**（hue 221°）；hover `#366EF4`、active `#003CAB`、浅底 `#F2F3FF` |
 | 彩色使用 | 只有「品牌交互」和「状态语义」用彩色；其余一律中性灰 |
 | 图标 | Lucide 线性图标，1.5px 描边，圆头端点（线圆润、面直角）；尺寸 12/16/20/24/32 |
 | 动效 | 120–150ms，明确属性（`transition-colors` 等），位移 ≤ 4px |
@@ -24,14 +24,14 @@
 
 | Token | 值 | 用途 |
 | --- | --- | --- |
-| `primary-50` | #F4FAFD | 选中行/品牌浅底 |
-| `primary-100` | #E5F4FC | 焦点环、描边 |
-| `primary-200` | #C2E8FB | 品牌描边（hover） |
-| `primary-300` | #5BC1F5 | 深色模式品牌文字 |
-| `primary-400` | #0A80BB | hover |
-| `primary-500` | #08699A | **主色**：主按钮、链接、选中 |
-| `primary-600` | #07567D | active/pressed |
-| `primary-700` | #064462 | 深色强调 |
+| `primary-50` | #F2F3FF | 选中行/品牌浅底 |
+| `primary-100` | #D9E1FF | 焦点环、描边 |
+| `primary-200` | #B5C7FF | 品牌描边（hover） |
+| `primary-300` | #8AA4FF | 深色模式品牌文字 |
+| `primary-400` | #366EF4 | hover |
+| `primary-500` | #0052D9 | **主色**：主按钮、链接、选中 |
+| `primary-600` | #003CAB | active/pressed |
+| `primary-700` | #00359A | 深色强调（已从 #002A8A 提亮，避免浅底上接近黑蓝） |
 
 ### 2.2 中性色（gray）
 
@@ -62,7 +62,7 @@
 
 ### 2.4 语义色（状态色）
 
-全站只用三种状态色 + 一种品牌色；**不使用绿色**（历史遗留的 emerald/green 已全部替换为品牌青蓝 primary）。
+全站只用三种状态色 + 一种品牌色；**不使用绿色**（历史遗留的 emerald/green 已全部替换为品牌蓝 primary）。
 
 | 语义 | 文字 | 浅底 | 描边 / 实底 | 用途 |
 | --- | --- | --- | --- | --- |
@@ -71,8 +71,8 @@
 | 危险 / 失败 | `red-700`（深色 `red-400`） | `red-50` / `dark:red-500/10` | `red-200` / 实底 `red-500` | 失败、错误、删除 |
 | 品牌 / 交互 | `primary-600`（深色 `primary-300`） | `primary-50` / `dark:primary-500/10` | `primary-200` / 实底 `primary-500` | 链接、按钮、选中态、信息提示 |
 
-品牌青蓝色阶（primary）：`50 #F4FAFD` / `100 #E5F4FC` / `200 #C2E8FB` / `300 #5BC1F5` / `400 #0A80BB` /
-`500 #08699A` / `600 #07567D` / `700 #064462`。
+品牌蓝色阶（primary）：`50 #F2F3FF` / `100 #D9E1FF` / `200 #B5C7FF` / `300 #8AA4FF` / `400 #366EF4` /
+`500 #0052D9` / `600 #003CAB` / `700 #00359A`。
 
 > 数据可视化里的分类色板同样不含绿色：原本的 green/emerald/teal/lime 系列位已改为
 > `primary` 与 `cyan` 的蓝色调（保持同一张图表内颜色不重复）。
@@ -99,7 +99,7 @@
 
 ### 按钮（`.btn`）
 - 高度 32px，`px-3.5`，13px `font-medium`，直角。
-- 变体：`.btn-primary`（实色品牌青蓝）、`.btn-secondary`（白底 1px 描边）、`.btn-ghost`（无底）、`.btn-soft`（品牌浅底）、`.btn-danger`、`.btn-danger-soft`、`.btn-success`、`.btn-warning`。
+- 变体：`.btn-primary`（实色品牌蓝）、`.btn-secondary`（白底 1px 描边）、`.btn-ghost`（无底）、`.btn-soft`（品牌浅底）、`.btn-danger`、`.btn-danger-soft`、`.btn-success`、`.btn-warning`。
 - 禁用态 `opacity-45` + `cursor-not-allowed`；焦点环 `ring-2 ring-primary-500/40`。
 - **禁止**渐变填充、彩色阴影、>1px 的描边。
 
@@ -196,9 +196,9 @@
 5. 不要出现 12px 以下的正文；不要出现两层以上嵌套卡片。
 6. 不要新增未在本文登记的间距/字号/色值——需要时先补规范。
 7. **不要使用绿色系**（`emerald` / `green` / `lime` / `teal` 及其 hex/rgb 写法）：
-   状态「正常/成功/健康」统一用品牌青蓝 `primary` 系；图表分类色板同样不含绿色。
+   状态「正常/成功/健康」统一用品牌蓝 `primary` 系；图表分类色板同样不含绿色。
 8. 不要使用蓝色族以外的强调色（`blue` / `indigo` / `violet` / `purple` / `fuchsia` 的类名或 hex）：
-   品牌与交互一律 `primary`（#08699A）；紫色/靛蓝只允许作为平台身份色与图表数据系列出现。
+   品牌与交互一律 `primary`（#0052D9）；紫色/靛蓝只允许作为平台身份色与图表数据系列出现。
 
 ---
 

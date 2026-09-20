@@ -657,27 +657,27 @@ body {
 /* 选中文本样式 */
 
 ::-moz-selection {
-  background-color: rgb(8 105 154 / 0.2);
+  background-color: rgb(0 82 217 / 0.2);
   --tw-text-opacity: 1;
-  color: rgb(5 43 62 / var(--tw-text-opacity, 1));
+  color: rgb(0 26 77 / var(--tw-text-opacity, 1));
 }
 
 ::selection {
-  background-color: rgb(8 105 154 / 0.2);
+  background-color: rgb(0 82 217 / 0.2);
   --tw-text-opacity: 1;
-  color: rgb(5 43 62 / var(--tw-text-opacity, 1));
+  color: rgb(0 26 77 / var(--tw-text-opacity, 1));
 }
 
 :is(.dark *)::-moz-selection {
-  background-color: rgb(8 105 154 / 0.3);
+  background-color: rgb(0 82 217 / 0.3);
   --tw-text-opacity: 1;
-  color: rgb(229 244 252 / var(--tw-text-opacity, 1));
+  color: rgb(217 225 255 / var(--tw-text-opacity, 1));
 }
 
 :is(.dark *)::selection {
-  background-color: rgb(8 105 154 / 0.3);
+  background-color: rgb(0 82 217 / 0.3);
   --tw-text-opacity: 1;
-  color: rgb(229 244 252 / var(--tw-text-opacity, 1));
+  color: rgb(217 225 255 / var(--tw-text-opacity, 1));
 }
 
 /* 控制台标题字重收敛：中文界面标题用 500（medium），不用 600/700 */
@@ -727,7 +727,7 @@ h1,
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
   --tw-ring-offset-width: 2px;
   --tw-ring-offset-color: #fff;
 }
@@ -752,34 +752,34 @@ h1,
 
 .btn-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .btn-primary:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(10 128 187 / var(--tw-bg-opacity, 1));
+  background-color: rgb(54 110 244 / var(--tw-bg-opacity, 1));
 }
 
 .btn-primary:active {
   --tw-bg-opacity: 1;
-  background-color: rgb(7 86 125 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 60 171 / var(--tw-bg-opacity, 1));
 }
 
 .btn-primary:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .btn-primary:hover:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(10 128 187 / var(--tw-bg-opacity, 1));
+  background-color: rgb(54 110 244 / var(--tw-bg-opacity, 1));
 }
 
 .btn-primary:active:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(7 86 125 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 60 171 / var(--tw-bg-opacity, 1));
 }
 
 /* 次级按钮：白底描边 */
@@ -923,29 +923,29 @@ h1,
 .btn-soft {
   border-width: 1px;
   --tw-border-opacity: 1;
-  border-color: rgb(229 244 252 / var(--tw-border-opacity, 1));
+  border-color: rgb(217 225 255 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
 }
 
 .btn-soft:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(194 232 251 / var(--tw-border-opacity, 1));
+  border-color: rgb(181 199 255 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
-  background-color: rgb(229 244 252 / var(--tw-bg-opacity, 1));
+  background-color: rgb(217 225 255 / var(--tw-bg-opacity, 1));
 }
 
 .btn-soft:is(.dark *) {
-  border-color: rgb(8 105 154 / 0.2);
-  background-color: rgb(8 105 154 / 0.1);
+  border-color: rgb(0 82 217 / 0.2);
+  background-color: rgb(0 82 217 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .btn-soft:hover:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.2);
+  background-color: rgb(0 82 217 / 0.2);
 }
 
 /* 第三方品牌按钮（品牌色为支付渠道要求，保持实色、去掉彩色投影） */
@@ -1006,7 +1006,7 @@ h1,
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
 }
 
 .icon-btn:is(.dark *) {
@@ -1069,13 +1069,13 @@ h1,
 
 .input:focus {
   --tw-border-opacity: 1;
-  border-color: rgb(8 105 154 / var(--tw-border-opacity, 1));
+  border-color: rgb(0 82 217 / var(--tw-border-opacity, 1));
   outline: 2px solid transparent;
   outline-offset: 2px;
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-color: rgb(8 105 154 / 0.2);
+  --tw-ring-color: rgb(0 82 217 / 0.2);
 }
 
 .input:disabled {
@@ -1112,8 +1112,8 @@ h1,
 
 .input:focus:is(.dark *) {
   --tw-border-opacity: 1;
-  border-color: rgb(8 105 154 / var(--tw-border-opacity, 1));
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  border-color: rgb(0 82 217 / var(--tw-border-opacity, 1));
+  --tw-ring-color: rgb(0 82 217 / 0.3);
 }
 
 .input:disabled:is(.dark *) {
@@ -1225,7 +1225,7 @@ input[type='number'] {
   border-radius: 0px;
   --tw-border-opacity: 1;
   border-color: rgb(220 220 220 / var(--tw-border-opacity, 1));
-  accent-color: #08699a;
+  accent-color: #0052d9;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
@@ -1236,7 +1236,7 @@ input[type='number'] {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
   --tw-ring-offset-width: 0px;
 }
 
@@ -1403,28 +1403,28 @@ input[type='number'] {
 
 .stat-icon-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
 }
 
 .stat-icon-primary:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.1);
+  background-color: rgb(0 82 217 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .stat-icon-success {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(6 68 98 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
 }
 
 .stat-icon-success:is(.dark *) {
-  background-color: rgb(10 128 187 / 0.1);
+  background-color: rgb(54 110 244 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(10 128 187 / var(--tw-text-opacity, 1));
+  color: rgb(54 110 244 / var(--tw-text-opacity, 1));
 }
 
 .stat-icon-warning {
@@ -1495,12 +1495,12 @@ input[type='number'] {
 
 .stat-trend-up {
   --tw-text-opacity: 1;
-  color: rgb(6 68 98 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
 }
 
 .stat-trend-up:is(.dark *) {
   --tw-text-opacity: 1;
-  color: rgb(10 128 187 / var(--tw-text-opacity, 1));
+  color: rgb(54 110 244 / var(--tw-text-opacity, 1));
 }
 
 .stat-trend-down {
@@ -1612,11 +1612,11 @@ input[type='number'] {
 
 .table tbody tr.row-selected {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
 }
 
 .table tbody tr.row-selected:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.1);
+  background-color: rgb(0 82 217 / 0.1);
 }
 
 /* ============ 徽章样式 ============ */
@@ -1638,28 +1638,28 @@ input[type='number'] {
 
 .badge-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
 }
 
 .badge-primary:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.1);
+  background-color: rgb(0 82 217 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .badge-success {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(6 68 98 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
 }
 
 .badge-success:is(.dark *) {
-  background-color: rgb(10 128 187 / 0.1);
+  background-color: rgb(54 110 244 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(10 128 187 / var(--tw-text-opacity, 1));
+  color: rgb(54 110 244 / var(--tw-text-opacity, 1));
 }
 
 .badge-warning {
@@ -1741,22 +1741,22 @@ input[type='number'] {
 
 .status-dot-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .status-dot-primary:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(10 128 187 / var(--tw-bg-opacity, 1));
+  background-color: rgb(54 110 244 / var(--tw-bg-opacity, 1));
 }
 
 .status-dot-success {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .status-dot-success:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(10 128 187 / var(--tw-bg-opacity, 1));
+  background-color: rgb(54 110 244 / var(--tw-bg-opacity, 1));
 }
 
 .status-dot-warning {
@@ -1808,34 +1808,34 @@ input[type='number'] {
 
 .tag-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(194 232 251 / var(--tw-border-opacity, 1));
+  border-color: rgb(181 199 255 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
 }
 
 .tag-primary:is(.dark *) {
-  border-color: rgb(8 105 154 / 0.3);
-  background-color: rgb(8 105 154 / 0.1);
+  border-color: rgb(0 82 217 / 0.3);
+  background-color: rgb(0 82 217 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .tag-success {
   --tw-border-opacity: 1;
-  border-color: rgb(194 232 251 / var(--tw-border-opacity, 1));
+  border-color: rgb(181 199 255 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(6 68 98 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
 }
 
 .tag-success:is(.dark *) {
-  border-color: rgb(10 128 187 / 0.3);
-  background-color: rgb(10 128 187 / 0.1);
+  border-color: rgb(54 110 244 / 0.3);
+  background-color: rgb(54 110 244 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(10 128 187 / var(--tw-text-opacity, 1));
+  color: rgb(54 110 244 / var(--tw-text-opacity, 1));
 }
 
 .tag-warning {
@@ -1975,20 +1975,20 @@ input[type='number'] {
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
   --tw-ring-inset: inset;
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
 }
 
 .dropdown-item-active {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
 }
 
 .dropdown-item-active:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.1);
+  background-color: rgb(0 82 217 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 /* ============ 模态框 ============ */
@@ -2170,7 +2170,7 @@ input[type='number'] {
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
   --tw-ring-inset: inset;
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
 }
 
 /* 左侧 2px 品牌条用伪元素实现，避免与 focus-visible ring 的 box-shadow 互相覆盖 */
@@ -2187,38 +2187,38 @@ input[type='number'] {
 
 .sidebar-link-active {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
 }
 
 .sidebar-link-active:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
 }
 
 .sidebar-link-active:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.1);
+  background-color: rgb(0 82 217 / 0.1);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .sidebar-link-active:hover:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.15);
+  background-color: rgb(0 82 217 / 0.15);
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .sidebar-link-active::before {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .sidebar-link-active:is(.dark *)::before {
   --tw-bg-opacity: 1;
-  background-color: rgb(10 128 187 / var(--tw-bg-opacity, 1));
+  background-color: rgb(54 110 244 / var(--tw-bg-opacity, 1));
 }
 
 .sidebar-section {
@@ -2336,7 +2336,7 @@ input[type='number'] {
 
 .breadcrumb-link:hover {
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
 }
 
 .breadcrumb-link:is(.dark *) {
@@ -2346,7 +2346,7 @@ input[type='number'] {
 
 .breadcrumb-link:hover:is(.dark *) {
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .breadcrumb-current {
@@ -2693,7 +2693,7 @@ input[type='number'] {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
 }
 
 .tab-active {
@@ -2701,7 +2701,7 @@ input[type='number'] {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   font-weight: 500;
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
   --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -2711,7 +2711,7 @@ input[type='number'] {
   --tw-bg-opacity: 1;
   background-color: rgb(46 46 46 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 /* 下划线式标签页 */
@@ -2735,12 +2735,12 @@ input[type='number'] {
   height: 100%;
   border-radius: 0px;
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .progress-bar:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .progress-bar {
@@ -2778,7 +2778,7 @@ input[type='number'] {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-color: rgb(8 105 154 / 0.3);
+  --tw-ring-color: rgb(0 82 217 / 0.3);
   --tw-ring-offset-width: 2px;
   --tw-ring-offset-color: #fff;
 }
@@ -2789,12 +2789,12 @@ input[type='number'] {
 
 .switch-active {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .switch-active:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .switch-thumb {
@@ -2832,14 +2832,14 @@ input[type='number'] {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
 }
 
 .code:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(38 38 38 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 /* ============ 快捷键提示 ============ */
@@ -2877,7 +2877,7 @@ input[type='number'] {
 
 .link {
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
   text-underline-offset: 2px;
 }
 
@@ -2887,7 +2887,7 @@ input[type='number'] {
 
 .link:is(.dark *) {
   --tw-text-opacity: 1;
-  color: rgb(10 128 187 / var(--tw-text-opacity, 1));
+  color: rgb(54 110 244 / var(--tw-text-opacity, 1));
 }
 
 /* ============ 列表行 ============ */
@@ -2941,24 +2941,12 @@ input[type='number'] {
   margin-top: 0.25rem;
 }
 
-.mt-2 {
-  margin-top: 0.5rem;
-}
-
 .mt-3 {
   margin-top: 0.75rem;
 }
 
 .mt-4 {
   margin-top: 1rem;
-}
-
-.block {
-  display: block;
-}
-
-.inline-block {
-  display: inline-block;
 }
 
 .flex {
@@ -2991,10 +2979,6 @@ input[type='number'] {
 
 .h-14 {
   height: 3.5rem;
-}
-
-.h-2 {
-  height: 0.5rem;
 }
 
 .h-3\.5 {
@@ -3035,10 +3019,6 @@ input[type='number'] {
 
 .w-16 {
   width: 4rem;
-}
-
-.w-2 {
-  width: 0.5rem;
 }
 
 .w-24 {
@@ -3093,10 +3073,6 @@ input[type='number'] {
   min-width: 2rem;
 }
 
-.min-w-\[900px\] {
-  min-width: 900px;
-}
-
 .max-w-6xl {
   max-width: 72rem;
 }
@@ -3107,10 +3083,6 @@ input[type='number'] {
 
 .shrink-0 {
   flex-shrink: 0;
-}
-
-.border-collapse {
-  border-collapse: collapse;
 }
 
 .cursor-pointer {
@@ -3141,10 +3113,6 @@ input[type='number'] {
   justify-content: space-between;
 }
 
-.gap-1 {
-  gap: 0.25rem;
-}
-
 .gap-1\.5 {
   gap: 0.375rem;
 }
@@ -3169,12 +3137,6 @@ input[type='number'] {
   gap: 1.5rem;
 }
 
-.space-y-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
-}
-
 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
@@ -3195,10 +3157,6 @@ input[type='number'] {
 
 .overflow-hidden {
   overflow: hidden;
-}
-
-.overflow-x-auto {
-  overflow-x: auto;
 }
 
 .overflow-y-auto {
@@ -3302,47 +3260,47 @@ input[type='number'] {
 
 .bg-primary-100 {
   --tw-bg-opacity: 1;
-  background-color: rgb(229 244 252 / var(--tw-bg-opacity, 1));
+  background-color: rgb(217 225 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-200 {
   --tw-bg-opacity: 1;
-  background-color: rgb(194 232 251 / var(--tw-bg-opacity, 1));
+  background-color: rgb(181 199 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(91 193 245 / var(--tw-bg-opacity, 1));
+  background-color: rgb(138 164 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-400 {
   --tw-bg-opacity: 1;
-  background-color: rgb(10 128 187 / var(--tw-bg-opacity, 1));
+  background-color: rgb(54 110 244 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-50 {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 250 253 / var(--tw-bg-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-500 {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 105 154 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 82 217 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-600 {
   --tw-bg-opacity: 1;
-  background-color: rgb(7 86 125 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 60 171 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-700 {
   --tw-bg-opacity: 1;
-  background-color: rgb(6 68 98 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 53 154 / var(--tw-bg-opacity, 1));
 }
 
 .bg-primary-900 {
   --tw-bg-opacity: 1;
-  background-color: rgb(5 43 62 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 26 77 / var(--tw-bg-opacity, 1));
 }
 
 .bg-red-100 {
@@ -3358,10 +3316,6 @@ input[type='number'] {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.p-3 {
-  padding: 0.75rem;
 }
 
 .p-4 {
@@ -3445,10 +3399,6 @@ input[type='number'] {
   padding-bottom: 1rem;
 }
 
-.pr-3 {
-  padding-right: 0.75rem;
-}
-
 .text-left {
   text-align: left;
 }
@@ -3461,28 +3411,12 @@ input[type='number'] {
   text-align: right;
 }
 
-.align-top {
-  vertical-align: top;
-}
-
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 .text-\[10px\] {
   font-size: 10px;
-}
-
-.text-\[11px\] {
-  font-size: 11px;
-}
-
-.text-\[12px\] {
-  font-size: 12px;
-}
-
-.text-\[13px\] {
-  font-size: 13px;
 }
 
 .text-\[15px\] {
@@ -3515,10 +3449,6 @@ input[type='number'] {
 
 .font-medium {
   font-weight: 500;
-}
-
-.font-normal {
-  font-weight: 400;
 }
 
 .font-semibold {
@@ -3571,17 +3501,17 @@ input[type='number'] {
 
 .text-primary-500 {
   --tw-text-opacity: 1;
-  color: rgb(8 105 154 / var(--tw-text-opacity, 1));
+  color: rgb(0 82 217 / var(--tw-text-opacity, 1));
 }
 
 .text-primary-600 {
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
 }
 
 .text-primary-700 {
   --tw-text-opacity: 1;
-  color: rgb(6 68 98 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
 }
 
 .text-red-700 {
@@ -3607,10 +3537,10 @@ input[type='number'] {
 
 .ring-primary-200 {
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(194 232 251 / var(--tw-ring-opacity, 1));
+  --tw-ring-color: rgb(181 199 255 / var(--tw-ring-opacity, 1));
 }
 
-/* 文字渐变（品牌青蓝单色系，保持克制） */
+/* 文字渐变（品牌蓝单色系，保持克制） */
 
 /* 统一焦点环 */
 
@@ -3624,16 +3554,16 @@ input[type='number'] {
  * 设计原则：
  *  1. 密度优先：控件高 32px、正文/表格 13px、说明文字 12px，一屏承载更多信息
  *  2. 结构优先：1px 描边 + 平面底色分层；投影只用于浮层（xs / card / popover / dialog）
- *  3. 冷中性灰阶 + 单一品牌青蓝（#08699A），彩色仅用于状态语义
+ *  3. 冷中性灰阶 + 单一品牌蓝（#0052D9），彩色仅用于状态语义
  *  4. 全站直角（tailwind.config.js 中 borderRadius 全部为 0）；唯一例外是加载指示器 .spinner
- *  5. 焦点可见：统一品牌青蓝 focus ring
+ *  5. 焦点可见：统一品牌蓝 focus ring
  *  6. 动效克制：150-200ms，位移 ≤ 4px
  *  7. 中文界面：不使用大写化 / 字距（no uppercase / no letter-spacing）
  */
 
 .hover\:text-primary-600:hover {
   --tw-text-opacity: 1;
-  color: rgb(7 86 125 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
 }
 
 .dark\:border-dark-600:is(.dark *) {
@@ -3676,15 +3606,15 @@ input[type='number'] {
 }
 
 .dark\:bg-primary-500\/10:is(.dark *) {
-  background-color: rgb(8 105 154 / 0.1);
+  background-color: rgb(0 82 217 / 0.1);
 }
 
 .dark\:bg-primary-900\/25:is(.dark *) {
-  background-color: rgb(5 43 62 / 0.25);
+  background-color: rgb(0 26 77 / 0.25);
 }
 
 .dark\:bg-primary-900\/30:is(.dark *) {
-  background-color: rgb(5 43 62 / 0.3);
+  background-color: rgb(0 26 77 / 0.3);
 }
 
 .dark\:text-amber-400:is(.dark *) {
@@ -3724,12 +3654,12 @@ input[type='number'] {
 
 .dark\:text-primary-300:is(.dark *) {
   --tw-text-opacity: 1;
-  color: rgb(91 193 245 / var(--tw-text-opacity, 1));
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-primary-400:is(.dark *) {
   --tw-text-opacity: 1;
-  color: rgb(10 128 187 / var(--tw-text-opacity, 1));
+  color: rgb(54 110 244 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-red-400:is(.dark *) {
@@ -3744,7 +3674,7 @@ input[type='number'] {
 
 .dark\:ring-primary-800:is(.dark *) {
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(6 54 78 / var(--tw-ring-opacity, 1));
+  --tw-ring-color: rgb(0 32 107 / var(--tw-ring-opacity, 1));
 }
 
 @media (min-width: 640px) {
