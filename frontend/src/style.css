@@ -791,7 +791,7 @@
 
   /* 紧凑面包屑条（页面头部下方的细条） */
   .crumb-strip {
-    @apply flex h-9 items-center gap-2 border-b border-gray-200 px-4 dark:border-dark-700;
+    @apply flex h-9 items-center gap-2 border-b border-gray-200 bg-white px-5 dark:border-dark-700 dark:bg-dark-900 lg:px-6;
   }
 
   .breadcrumb {

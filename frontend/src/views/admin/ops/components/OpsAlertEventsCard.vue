@@ -333,7 +333,7 @@ function severityBadgeClass(severity: string | undefined): string {
   const s = String(severity || '').trim().toLowerCase()
   if (s === 'p0' || s === 'critical') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
   if (s === 'p1' || s === 'warning') return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
-  if (s === 'p2' || s === 'info') return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+  if (s === 'p2' || s === 'info') return 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
   if (s === 'p3') return 'bg-gray-100 text-gray-700 dark:bg-dark-700 dark:text-gray-300'
   return 'bg-gray-100 text-gray-700 dark:bg-dark-700 dark:text-gray-300'
 }

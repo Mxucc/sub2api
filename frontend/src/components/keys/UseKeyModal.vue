@@ -232,9 +232,9 @@
         </section>
 
         <!-- Usage Note -->
-        <div v-if="showPlatformNote" class="flex items-start gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-          <Icon name="infoCircle" size="md" class="text-blue-500 flex-shrink-0 mt-0.5" />
-          <p class="text-sm text-blue-700 dark:text-blue-300">
+        <div v-if="showPlatformNote" class="flex items-start gap-3 p-3 rounded-lg bg-primary-50 dark:bg-primary-500/15 border border-primary-100 dark:border-primary-500/25">
+          <Icon name="infoCircle" size="md" class="text-primary-500 flex-shrink-0 mt-0.5" />
+          <p class="text-sm text-primary-700 dark:text-primary-300">
             {{ platformNote }}
           </p>
         </div>
@@ -687,7 +687,7 @@ const wrapToken = (className: string, value: string) =>
   `<span class="${className}">${escapeHtml(value)}</span>`
 
 const keyword = (value: string) => wrapToken('text-emerald-300', value)
-const variable = (value: string) => wrapToken('text-sky-200', value)
+const variable = (value: string) => wrapToken('text-primary-200', value)
 const operator = (value: string) => wrapToken('text-slate-400', value)
 const string = (value: string) => wrapToken('text-amber-200', value)
 const comment = (value: string) => wrapToken('text-slate-500', value)

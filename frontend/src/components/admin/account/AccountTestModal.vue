@@ -830,7 +830,7 @@ const startTest = async () => {
 
   resetState()
   status.value = 'connecting'
-  addLine(t('admin.accounts.startingTestForAccount', { name: props.account.name }), 'text-blue-400')
+  addLine(t('admin.accounts.startingTestForAccount', { name: props.account.name }), 'text-primary-400')
   addLine(t('admin.accounts.testAccountTypeLabel', { type: props.account.type }), 'text-gray-400')
   if (isGrokAccount.value) {
     const modeLabel =
@@ -992,7 +992,7 @@ const handleEvent = (event: {
           url: event.image_url,
           mimeType: event.mime_type
         })
-        addLine(t('admin.accounts.imageReceived', { count: generatedImages.value.length }), 'text-purple-300')
+        addLine(t('admin.accounts.imageReceived', { count: generatedImages.value.length }), 'text-primary-300')
       }
       break
 
@@ -1002,7 +1002,7 @@ const handleEvent = (event: {
           url: event.audio_url,
           mimeType: event.mime_type
         })
-        addLine(t('admin.accounts.audioReceived', { count: generatedAudios.value.length }), 'text-purple-300')
+        addLine(t('admin.accounts.audioReceived', { count: generatedAudios.value.length }), 'text-primary-300')
       }
       break
 
@@ -1012,7 +1012,7 @@ const handleEvent = (event: {
           url: event.video_url,
           mimeType: event.mime_type
         })
-        addLine(t('admin.accounts.videoReceived', { count: generatedVideos.value.length }), 'text-purple-300')
+        addLine(t('admin.accounts.videoReceived', { count: generatedVideos.value.length }), 'text-primary-300')
       }
       break
 

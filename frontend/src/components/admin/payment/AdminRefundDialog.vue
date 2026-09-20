@@ -9,21 +9,21 @@
       <!-- Refund Request Info -->
       <div
         v-if="order?.refund_requested_at || order?.refund_request_reason"
-        class="rounded-lg border border-violet-200 bg-violet-50 p-3 dark:border-violet-800 dark:bg-violet-900/20"
+        class="rounded-lg border border-primary-200 bg-primary-50 p-3 dark:border-primary-500/25 dark:bg-primary-500/15"
       >
-        <div class="flex items-center gap-2 text-sm font-medium text-violet-700 dark:text-violet-300">
+        <div class="flex items-center gap-2 text-sm font-medium text-primary-700 dark:text-primary-300">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           {{ t('payment.admin.refundRequestInfo') }}
         </div>
         <div v-if="order?.refund_requested_at" class="mt-2 flex justify-between text-sm">
-          <span class="text-violet-600 dark:text-violet-400">{{ t('payment.admin.refundRequestedAt') }}</span>
-          <span class="text-violet-800 dark:text-violet-200">{{ formatDateTime(order.refund_requested_at) }}</span>
+          <span class="text-primary-600 dark:text-primary-300">{{ t('payment.admin.refundRequestedAt') }}</span>
+          <span class="text-primary-800 dark:text-primary-200">{{ formatDateTime(order.refund_requested_at) }}</span>
         </div>
         <div v-if="order?.refund_request_reason" class="mt-1 text-sm">
-          <span class="text-violet-600 dark:text-violet-400">{{ t('payment.admin.refundRequestReason') }}:</span>
-          <span class="ml-1 text-violet-800 dark:text-violet-200">{{ order.refund_request_reason }}</span>
+          <span class="text-primary-600 dark:text-primary-300">{{ t('payment.admin.refundRequestReason') }}:</span>
+          <span class="ml-1 text-primary-800 dark:text-primary-200">{{ order.refund_request_reason }}</span>
         </div>
       </div>
 
@@ -85,7 +85,7 @@
         <!-- No deduction info -->
         <div
           v-if="!form.deduct_balance"
-          class="mt-2 rounded-lg bg-blue-50 p-3 text-sm text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
+          class="mt-2 rounded-lg bg-primary-50 p-3 text-sm text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
         >
           {{ t('payment.admin.noDeduction') }}
         </div>

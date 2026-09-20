@@ -16,7 +16,7 @@
 
       <button
         type="button"
-        class="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-medium text-blue-600 transition-colors hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-blue-400 dark:hover:bg-blue-900/30"
+        class="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-medium text-primary-600 transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-primary-300 dark:hover:bg-primary-500/15"
         :disabled="loading || resetting"
         :title="countButtonTitle"
         @click="handleQuery()"
@@ -221,7 +221,7 @@ const autoResetStateLabel = computed(() => {
 const autoResetStateClass = computed(() => {
   switch (autoResetState.value?.status) {
     case 'available':
-      return 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+      return 'bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
     case 'success':
       return 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
     case 'no_credit':

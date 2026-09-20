@@ -4,25 +4,25 @@
     <template v-if="isAdmin">
       <button
         @click="toggleDropdown"
-        class="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs transition-colors"
+        class="flex h-8 items-center gap-1.5 border px-2 text-caption transition-colors"
         :class="[
           hasUpdate
-            ? 'bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:hover:bg-amber-900/50'
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-dark-800 dark:text-dark-400 dark:hover:bg-dark-700'
+            ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-300 dark:hover:bg-amber-500/15'
+            : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:border-dark-600 dark:bg-dark-800 dark:text-dark-400 dark:hover:bg-dark-700 dark:hover:text-white'
         ]"
         :title="hasUpdate ? t('version.updateAvailable') : t('version.upToDate')"
       >
         <span v-if="currentVersion" class="font-medium">v{{ currentVersion }}</span>
         <span
           v-else
-          class="h-3 w-12 animate-pulse rounded bg-gray-200 font-medium dark:bg-dark-600"
+          class="h-3 w-12 animate-pulse bg-gray-200 font-medium dark:bg-dark-600"
         ></span>
         <!-- Update indicator -->
         <span v-if="hasUpdate" class="relative flex h-2 w-2">
           <span
-            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"
+            class="absolute inline-flex h-full w-full animate-ping bg-amber-400 opacity-75"
           ></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
+          <span class="relative inline-flex h-2 w-2 bg-amber-500"></span>
         </span>
       </button>
 
@@ -31,7 +31,7 @@
         <div
           v-if="dropdownOpen"
           ref="dropdownRef"
-          class="absolute left-0 z-50 mt-2 overflow-hidden whitespace-normal rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-200 dark:border-dark-700 dark:bg-dark-800"
+          class="absolute right-0 z-50 mt-2 overflow-hidden whitespace-normal border border-gray-200 bg-white shadow-popover transition-all duration-150 dark:border-dark-600 dark:bg-dark-800"
           :class="rollbackPanelOpen && isReleaseBuild ? 'w-80' : 'w-64'"
         >
           <!-- Header with refresh button -->
@@ -270,10 +270,10 @@
                 </a>
                 <!-- Source build hint -->
                 <div
-                  class="flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 p-2 dark:border-blue-800/50 dark:bg-blue-900/20"
+                  class="flex items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-2 dark:border-primary-500/25 dark:bg-primary-500/15"
                 >
                   <svg
-                    class="h-3.5 w-3.5 flex-shrink-0 text-blue-500 dark:text-blue-400"
+                    class="h-3.5 w-3.5 flex-shrink-0 text-primary-500 dark:text-primary-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -285,7 +285,7 @@
                       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <p class="text-xs text-blue-600 dark:text-blue-400">
+                  <p class="text-xs text-primary-600 dark:text-primary-300">
                     {{ t('version.sourceModeHint') }}
                   </p>
                 </div>
@@ -408,10 +408,10 @@
                       <!-- Source build: online rollback unavailable, use git instead -->
                       <div
                         v-if="!isReleaseBuild"
-                        class="flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 p-2 dark:border-blue-800/50 dark:bg-blue-900/20"
+                        class="flex items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-2 dark:border-primary-500/25 dark:bg-primary-500/15"
                       >
                         <svg
-                          class="h-3.5 w-3.5 flex-shrink-0 text-blue-500 dark:text-blue-400"
+                          class="h-3.5 w-3.5 flex-shrink-0 text-primary-500 dark:text-primary-300"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -423,7 +423,7 @@
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <p class="min-w-0 flex-1 text-xs leading-4 text-blue-600 dark:text-blue-400">
+                        <p class="min-w-0 flex-1 text-xs leading-4 text-primary-600 dark:text-primary-300">
                           {{ t('version.rollbackSourceHint') }}
                         </p>
                       </div>

@@ -93,9 +93,9 @@ const stats = ref<DashboardStats | null>(null)
 
 function methodColor(type: string): string {
   const c: Record<string, string> = {
-    alipay: 'bg-blue-500', wxpay: 'bg-green-500',
-    alipay_direct: 'bg-blue-400', wxpay_direct: 'bg-green-400',
-    stripe: 'bg-purple-500',
+    alipay: 'bg-primary-500', wxpay: 'bg-green-500',
+    alipay_direct: 'bg-primary-400', wxpay_direct: 'bg-green-400',
+    stripe: 'bg-primary-500',
   }
   return c[type] || 'bg-gray-400'
 }

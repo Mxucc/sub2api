@@ -21,8 +21,8 @@
     <!-- Total Revenue -->
     <div class="card p-4">
       <div class="flex items-center gap-3">
-        <div class="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30">
-          <Icon name="creditCard" size="md" class="text-blue-600 dark:text-blue-400" :stroke-width="2" />
+        <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-500/15">
+          <Icon name="creditCard" size="md" class="text-primary-600 dark:text-primary-300" :stroke-width="2" />
         </div>
         <div>
           <p class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('payment.admin.totalRevenue') }}</p>
@@ -39,8 +39,8 @@
     <!-- Today Orders -->
     <div class="card p-4">
       <div class="flex items-center gap-3">
-        <div class="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/30">
-          <Icon name="chart" size="md" class="text-purple-600 dark:text-purple-400" :stroke-width="2" />
+        <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-500/15">
+          <Icon name="chart" size="md" class="text-primary-600 dark:text-primary-300" :stroke-width="2" />
         </div>
         <div>
           <p class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('payment.admin.todayOrders') }}</p>

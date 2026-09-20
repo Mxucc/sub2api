@@ -17,9 +17,9 @@
               isOpenAILike
                 ? 'from-green-500 to-green-600'
                 : isGemini
-                  ? 'from-blue-500 to-blue-600'
+                  ? 'from-primary-500 to-primary-600'
                   : isAntigravity
-                    ? 'from-purple-500 to-purple-600'
+                    ? 'from-primary-500 to-primary-600'
                     : isGrok
                       ? 'from-zinc-700 to-zinc-900'
                       : 'from-orange-500 to-orange-600'
@@ -87,9 +87,9 @@
             :class="[
               'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
               geminiOAuthType === 'google_one'
-                ? 'bg-purple-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : geminiOAuthType === 'code_assist'
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-amber-500 text-white'
             ]"
           >

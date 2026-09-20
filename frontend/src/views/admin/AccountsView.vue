@@ -92,7 +92,7 @@
                         </div>
                       </div>
                       <button class="account-tools-menu-item" @click="openSyncFromCrs">
-                        <span class="account-tools-menu-icon bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                        <span class="account-tools-menu-icon bg-primary-50 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300">
                           <Icon name="sync" size="sm" />
                         </span>
                         <span class="flex-1 text-left">{{ t('admin.accounts.syncFromCrs') }}</span>
@@ -104,7 +104,7 @@
                         <span class="flex-1 text-left">{{ t('admin.accounts.dataImport') }}</span>
                       </button>
                       <button class="account-tools-menu-item" @click="openExportDataDialogFromMenu">
-                        <span class="account-tools-menu-icon bg-violet-50 text-violet-600 dark:bg-violet-900/30 dark:text-violet-300">
+                        <span class="account-tools-menu-icon bg-primary-50 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300">
                           <Icon name="download" size="sm" />
                         </span>
                         <span class="flex-1 text-left">
@@ -1776,8 +1776,8 @@ function getAntigravityTierClass(row: any): string {
   const tier = getAntigravityTierFromRow(row)
   switch (tier) {
     case 'free-tier': return 'bg-gray-100 text-gray-600 dark:bg-dark-700 dark:text-gray-300'
-    case 'g1-pro-tier': return 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300'
-    case 'g1-ultra-tier': return 'bg-purple-100 text-purple-600 dark:bg-purple-900/40 dark:text-purple-300'
+    case 'g1-pro-tier': return 'bg-primary-100 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300'
+    case 'g1-ultra-tier': return 'bg-primary-100 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300'
     default: return ''
   }
 }

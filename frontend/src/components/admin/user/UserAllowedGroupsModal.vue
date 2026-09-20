@@ -24,7 +24,7 @@
         <!-- 专属分组区域 -->
         <div v-if="exclusiveGroups.length > 0">
           <div class="mb-3 flex items-center gap-2">
-            <div class="h-1.5 w-1.5 rounded-full bg-purple-500"></div>
+            <div class="h-1.5 w-1.5 rounded-full bg-primary-500"></div>
             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ t('admin.users.exclusiveGroups') }}</h4>
             <span class="text-xs text-gray-400">({{ exclusiveGroupConfigs.filter(c => c.isSelected).length }}/{{ exclusiveGroupConfigs.length }})</span>
           </div>
@@ -59,7 +59,7 @@
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-2">
                     <span class="text-base font-semibold text-gray-900 dark:text-white">{{ config.groupName }}</span>
-                    <span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                    <span class="inline-flex items-center rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-500/15 dark:text-primary-300">
                       {{ t('admin.groups.exclusive') }}
                     </span>
                   </div>

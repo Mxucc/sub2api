@@ -203,7 +203,7 @@
               <div class="flex items-center gap-1" @click.stop>
                 <button
                   @click="startEdit(plan)"
-                  class="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-500 dark:hover:bg-blue-900/20"
+                  class="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-primary-50 hover:text-primary-500 dark:hover:bg-primary-500/15"
                   :title="t('admin.scheduledTests.editPlan')"
                 >
                   <Icon name="edit" size="sm" :stroke-width="2" />
@@ -232,7 +232,7 @@
           <!-- Edit Form -->
           <div
             v-if="editingPlanId === plan.id"
-            class="border-t border-blue-100 bg-blue-50/50 px-4 py-3 dark:border-blue-900 dark:bg-blue-900/10"
+            class="border-t border-primary-100 bg-primary-50/50 px-4 py-3 dark:border-primary-500/25 dark:bg-primary-500/10"
             @click.stop
           >
             <div class="mb-2 text-xs font-medium text-gray-600 dark:text-gray-400">
@@ -375,7 +375,7 @@
                         result.status === 'success'
                           ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400'
                           : result.status === 'running'
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400'
+                            ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                             : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'
                       ]"
                     >

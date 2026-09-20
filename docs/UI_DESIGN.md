@@ -83,7 +83,7 @@
 | 间距 | 页面内容 `gap-4`；卡片内 `p-4`；工具条 `py-3 px-4`；表单纵向 `gap-4`，label 与控件 `gap-1.5` |
 | 页面留白 | 内容区 `px-4 py-4`（`lg:px-6 lg:py-5`），卡片之间 `gap-4` |
 
-**顶栏 48px / 侧边栏 232px / 侧边栏项 36px** —— 控制台标准节奏。
+**顶栏 56px（h-14）/ 侧边栏 240px（折叠 64px）/ 侧边栏项 36px / 面包屑条 36px（h-9）** —— 控制台标准节奏。
 
 ---
 
@@ -148,23 +148,34 @@
 
 ---
 
-## 5. 页面结构的标准骨架
+## 5. 页面结构的标准骨架（应用外壳）
+
+外壳由 `AppLayout` 提供，是**通栏顶栏 + 其下模块侧栏 + 内容区**的双区结构：
 
 ```text
-┌──────────────────────────────────────────────────────────┐
-│ AppHeader 48px：菜单 + 产品名 …… 公告/语言/余额/用户     │
-├──────────┬───────────────────────────────────────────────┤
-│ Sidebar  │ .crumb-strip（面包屑，可选）                  │
-│ 232px    ├───────────────────────────────────────────────┤
-│ 分组导航 │ .page-header-bar  标题 + 操作按钮             │
-│ 选中态： │ ───────────────────────────────────────────── │
-│ 品牌浅底 │ .data-card → .filter-bar（筛选）              │
-│ +2px 竖条│             → 表格 / 列表                     │
-│          │             → .card-footer（分页）             │
-└──────────┴───────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────┐
+│ AppHeader  fixed inset-x-0 top-0 h-14 z-40  白底 / dark-900 + 底部 1px 描边 │
+│ [☰移动端] [32px logo][产品名 15px][版本 tag] │ [当前页面 14px]* …… 右侧操作区 │
+├──────────┬─────────────────────────────────────────────────────────────────┤
+│ Sidebar  │ .crumb-strip  h-9（面包屑，仅当 route.meta.breadcrumbs 存在）    │
+│ fixed    ├─────────────────────────────────────────────────────────────────┤
+│ top-14   │ px-5 py-4 lg:px-6 lg:py-5                                       │
+│ bottom-0 │   .page-header-bar   标题 + 描述 + 右侧操作（PageHeader）         │
+│ 240px    │   .data-card → .filter-bar（筛选）→ 表格 → .card-footer（分页）   │
+│ ⇄ 64px   │   或 .card / .surface 组成的任意内容                             │
+└──────────┴─────────────────────────────────────────────────────────────────┘
+* 顶栏的「当前页面」标题只在没有面包屑的路由上显示，避免与内容区页头重复。
 ```
 
-列表页统一用 `TablePageLayout`：`filters` 槽（筛选 + 操作）→ `table` 槽 → `pagination` 槽。
+要点：
+- 顶栏通栏固定（`z-40`），侧栏与内容区都在其下（顶栏 56px）：侧栏 `fixed left-0 top-14 bottom-0`，
+  内容区 `pt-14` + `lg:pl-60`（折叠 `lg:pl-16`）。
+- 品牌（logo + 产品名 + 版本）只在顶栏出现一次；侧栏模块条只显示当前模块名（h-12）。
+- 页面标题的归属：**有 `meta.breadcrumbs` 的页面**用 `.crumb-strip` + `PageHeader`；
+  其余页面由顶栏显示标题。同一页面不会出现两处标题。
+- 页面内若有自绘的吸顶工具栏，必须用 `sticky top-14`（顶栏高度），否则会滑到顶栏下面。
+- 列表页统一用 `TablePageLayout`：`header`（PageHeader）→ `filters`（筛选 + 操作）→ `table` → `pagination`。
+
 
 ---
 
@@ -185,7 +196,10 @@
 | --- | --- |
 | `frontend/tailwind.config.js` | 令牌唯一来源（色阶、阴影、控件高度、字号、圆角归零） |
 | `frontend/src/style.css` | 组件层（`.btn` / `.input` / `.table` / `.card` / `.data-card` / `.page-header-bar` / `.breadcrumb` / `.tag` …） |
-| `frontend/src/components/layout/PageHeader.vue` | 标准页面头部（面包屑 + 标题 + 操作槽） |
+| `frontend/src/components/layout/AppHeader.vue` | 通栏顶栏（56px）：品牌 + 当前页面标题 + 全局操作 + 版本/更新入口 |
+| `frontend/src/components/layout/AppSidebar.vue` | 模块导航侧栏（240px ⇄ 64px），选中态品牌浅底 + 2px 左侧竖条 |
+| `frontend/src/components/layout/AppLayout.vue` | 外壳：顶栏 + 侧栏 + 面包屑条 + 内容区 |
+| `frontend/src/components/layout/PageHeader.vue` | 标准页面头部（标题 + 描述 + 操作槽；面包屑由外壳统一提供） |
 | `frontend/src/components/icons/Icon.vue` + `iconMap.ts` | 图标（Lucide 映射，`name` 类型即契约） |
 | `design-preview.html` | 静态设计预览（不参与构建），改令牌后重新生成 `design-preview.css` |
 | `docs/TDESIGN_MIGRATION.md` | 若要真正替换组件框架（TDesign）的迁移方案与影响评估 |

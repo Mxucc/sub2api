@@ -148,20 +148,20 @@
                   : value === 'openai'
                     ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
                     : value === 'antigravity'
-                      ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                      ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                       : value === 'grok'
                         ? 'bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-100'
                         : value === 'kimi'
                           ? 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400'
                           : value === 'zhipu'
-                            ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                            ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                             : value === 'deepseek'
                               ? 'bg-primary-50 text-primary-700 dark:bg-primary-500/10 dark:text-primary-300'
                               : value === 'minimax'
                                 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
                               : value === 'opencode_go'
                                 ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+                                : 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300',
               ]"
             >
               <PlatformIcon :platform="value" size="xs" />
@@ -176,7 +176,7 @@
                 :class="[
                   'inline-block rounded-full px-2 py-0.5 text-xs font-medium',
                   row.subscription_type === 'subscription'
-                    ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400'
+                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                     : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
                 ]"
               >
@@ -427,7 +427,7 @@
                 v-if="!authStore.isSimpleMode"
                 data-testid="group-rate-multipliers"
                 @click="handleRateMultipliers(row)"
-                class="flex flex-col items-center gap-0.5 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-purple-600 dark:hover:bg-dark-700 dark:hover:text-purple-400"
+                class="flex flex-col items-center gap-0.5 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-primary-600 dark:hover:bg-dark-700 dark:hover:text-primary-300"
               >
                 <Icon name="dollar" size="sm" />
                 <span class="text-xs">{{
@@ -3825,20 +3825,20 @@
                       : group.platform === 'openai'
                         ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
                         : group.platform === 'antigravity'
-                          ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                          ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                           : group.platform === 'grok'
                             ? 'bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-100'
                             : group.platform === 'kimi'
                               ? 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400'
                               : group.platform === 'zhipu'
-                                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                                ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                                 : group.platform === 'deepseek'
                                   ? 'bg-primary-50 text-primary-700 dark:bg-primary-500/10 dark:text-primary-300'
                                   : group.platform === 'minimax'
                                     ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
                                   : group.platform === 'opencode_go'
                                     ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                                    : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+                                    : 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300',
                   ]"
                 >
                   {{ t("admin.groups.platforms." + group.platform) }}

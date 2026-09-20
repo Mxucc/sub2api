@@ -409,7 +409,7 @@ const startTest = async () => {
 
   resetState()
   status.value = 'connecting'
-  addLine(t('admin.accounts.startingTestForAccount', { name: props.account.name }), 'text-blue-400')
+  addLine(t('admin.accounts.startingTestForAccount', { name: props.account.name }), 'text-primary-400')
   addLine(t('admin.accounts.testAccountTypeLabel', { type: props.account.type }), 'text-gray-400')
   addLine('', 'text-gray-300')
 
@@ -526,7 +526,7 @@ const handleEvent = (event: {
           url: event.image_url,
           mimeType: event.mime_type
         })
-        addLine(t('admin.accounts.imageReceived', { count: generatedImages.value.length }), 'text-purple-300')
+        addLine(t('admin.accounts.imageReceived', { count: generatedImages.value.length }), 'text-primary-300')
       }
       break
 

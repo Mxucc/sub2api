@@ -19,7 +19,7 @@
           {{ error }}
         </div>
         <button
-          class="w-full text-sm underline dark:text-blue-400 dark:hover:text-blue-300"
+          class="w-full text-sm underline dark:text-primary-300 dark:hover:text-primary-300"
           :style="{ color: methodColor }"
           @click="closeWindow"
         >
@@ -32,7 +32,7 @@
         <div class="text-5xl text-green-600 dark:text-green-400">✓</div>
         <p class="text-sm text-gray-500 dark:text-slate-400">{{ t('payment.result.success') }}</p>
         <button
-          class="text-sm underline dark:text-blue-400 dark:hover:text-blue-300"
+          class="text-sm underline dark:text-primary-300 dark:hover:text-primary-300"
           :style="{ color: methodColor }"
           @click="closeWindow"
         >

@@ -84,7 +84,7 @@
                 class="flex flex-wrap items-center gap-1.5"
               >
                 <span
-                  class="inline-flex items-center gap-0.5 text-[10px] font-medium uppercase text-purple-600 dark:text-purple-400"
+                  class="inline-flex items-center gap-0.5 text-[10px] font-medium uppercase text-primary-600 dark:text-primary-300"
                   :title="t('availableChannels.exclusiveTooltip')"
                 >
                   <Icon name="shield" size="xs" class="h-3 w-3" />
@@ -222,7 +222,7 @@
                     class="flex min-w-0 flex-wrap items-center gap-1.5"
                   >
                     <span
-                      class="inline-flex items-center gap-0.5 text-[10px] font-medium uppercase text-purple-600 dark:text-purple-400"
+                      class="inline-flex items-center gap-0.5 text-[10px] font-medium uppercase text-primary-600 dark:text-primary-300"
                       :title="t('availableChannels.exclusiveTooltip')"
                     >
                       <Icon name="shield" size="xs" class="h-3 w-3" />

@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     <div class="card p-4 flex items-center gap-3">
-      <div class="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30 text-blue-600">
+      <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-500/15 text-primary-600">
         <Icon name="document" size="md" />
       </div>
       <div>
@@ -80,7 +80,7 @@
       </div>
     </div>
     <div class="card p-4 flex items-center gap-3">
-      <div class="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/30 text-purple-600">
+      <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-500/15 text-primary-600">
         <Icon name="clock" size="md" />
       </div>
       <div><p class="text-xs font-medium text-gray-500">{{ t('usage.avgDuration') }}</p><p class="text-xl font-bold">{{ formatDuration(stats?.average_duration_ms || 0) }}</p></div>

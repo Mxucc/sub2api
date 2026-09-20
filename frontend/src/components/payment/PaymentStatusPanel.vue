@@ -80,7 +80,7 @@
             ></div>
             <div
               v-else
-              class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/30"
+              class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 dark:bg-primary-500/15"
             >
               <Icon name="checkCircle" size="lg" class="text-[#00AEEF]" />
             </div>
@@ -297,7 +297,7 @@ const isMobileAlipayDeepLink = computed(() => props.mobileAlipayDeepLink === tru
 const showQRCode = computed(() => !!qrUrl.value && (!isMobileAlipayDeepLink.value || deepLinkFallbackVisible.value))
 
 const qrBorderClass = computed(() => {
-  if (isAlipay.value) return 'border-[#00AEEF] bg-blue-50 dark:border-[#00AEEF]/70 dark:bg-blue-950/20'
+  if (isAlipay.value) return 'border-[#00AEEF] bg-primary-50 dark:border-[#00AEEF]/70 dark:bg-primary-500/15'
   if (isWxpay.value) return 'border-[#2BB741] bg-green-50 dark:border-[#2BB741]/70 dark:bg-green-950/20'
   return 'border-gray-200 bg-white dark:border-dark-600 dark:bg-dark-800'
 })

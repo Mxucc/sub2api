@@ -87,7 +87,7 @@
             class="flex items-center gap-2 py-0.5"
           >
             <span
-              class="inline-block rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+              class="inline-block rounded bg-primary-100 px-1.5 py-0.5 text-[10px] font-medium text-primary-700 dark:bg-primary-500/15 dark:text-primary-300"
             >{{ acc.platform }} / {{ acc.type }}</span>
             <span class="truncate">{{ acc.name }}</span>
           </div>
@@ -104,7 +104,7 @@
           <div class="flex gap-2">
             <button
               type="button"
-              class="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400"
+              class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-300"
               @click="selectAll"
             >{{ t('admin.accounts.crsSelectAll') }}</button>
             <button

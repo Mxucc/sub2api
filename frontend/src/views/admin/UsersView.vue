@@ -353,8 +353,8 @@
                 class="group/ex relative inline-flex cursor-pointer items-center gap-1 whitespace-nowrap text-xs"
                 @click.stop="toggleExpandedGroup(row.id)"
               >
-                <Icon name="shield" size="xs" class="h-3.5 w-3.5 text-purple-500 dark:text-purple-400" />
-                <span class="font-medium text-purple-600 dark:text-purple-400">{{ getUserGroups(row).exclusive.length }}</span>
+                <Icon name="shield" size="xs" class="h-3.5 w-3.5 text-primary-500 dark:text-primary-300" />
+                <span class="font-medium text-primary-600 dark:text-primary-300">{{ getUserGroups(row).exclusive.length }}</span>
                 <span class="text-gray-500 dark:text-dark-400">{{ t('admin.users.exclusiveLabel') }}</span>
                 <!-- Hover tooltip（操作菜单未打开时显示） -->
                 <div

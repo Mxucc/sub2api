@@ -104,7 +104,7 @@
 
         <div
           v-if="hasThresholdEvidence"
-          class="rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300"
+          class="rounded-lg border border-primary-200 bg-primary-50 p-3 text-sm text-primary-800 dark:border-primary-500/25 dark:bg-primary-500/10 dark:text-primary-300"
           data-testid="temp-unsched-trigger-evidence"
         >
           {{ triggerEvidenceText }}

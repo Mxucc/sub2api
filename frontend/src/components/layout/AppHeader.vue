@@ -1,8 +1,8 @@
 <template>
-  <header class="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-dark-700 dark:bg-dark-950/95">
-    <div class="flex h-12 items-center justify-between gap-2 px-3 sm:px-4">
-      <!-- Left: Mobile Menu Toggle + Page Title -->
-      <div class="flex shrink-0 items-center gap-2 sm:gap-4">
+  <header class="fixed inset-x-0 top-0 z-40 h-14 border-b border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-900">
+    <div class="flex h-full items-center justify-between gap-3 px-3 lg:px-4">
+      <!-- 左侧：移动端菜单按钮 + 品牌区（32px logo / 产品名 / 12px 版本 tag） -->
+      <div class="flex min-w-0 shrink-0 items-center gap-2 lg:gap-3">
         <button
           @click="toggleMobileSidebar"
           class="icon-btn lg:hidden"
@@ -11,13 +11,47 @@
           <Icon name="menu" size="md" />
         </button>
 
-        <h1 class="hidden truncate text-sm font-medium text-gray-900 dark:text-gray-100 lg:block" :title="pageDescription || undefined">
-          {{ pageTitle }}
-        </h1>
+        <router-link :to="homePath" class="flex min-w-0 items-center gap-2" :title="siteName">
+          <span
+            class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden"
+            :class="{ 'border border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-800': siteLogo }"
+          >
+            <img
+              v-if="settingsLoaded"
+              :src="siteLogo || '/logo.svg'"
+              alt="Logo"
+              class="h-full w-full object-contain"
+            >
+          </span>
+          <span class="truncate text-[15px] font-medium text-gray-900 dark:text-gray-100">
+            {{ siteName }}
+          </span>
+          <!-- 版本 tag：12px，无值时整块不渲染 -->
+          <span
+            v-if="version"
+            class="hidden shrink-0 border border-gray-200 px-1.5 py-0.5 text-caption leading-none text-gray-500 sm:inline-block dark:border-dark-600 dark:text-dark-400"
+          >
+            v{{ version }}
+          </span>
+        </router-link>
+
+        <!-- 当前页面标题：仅在没有面包屑的页面显示（有面包屑的页面在内容区已有 crumb-strip + 页头） -->
+        <template v-if="pageTitle">
+          <span class="hidden h-5 w-px shrink-0 bg-gray-200 lg:block dark:bg-dark-700" aria-hidden="true"></span>
+          <h1
+            class="hidden max-w-[18rem] truncate text-sm font-medium text-gray-700 lg:block dark:text-dark-300"
+            :title="pageDescription || undefined"
+          >
+            {{ pageTitle }}
+          </h1>
+        </template>
       </div>
 
       <!-- Right: Announcements + Docs + Language + Subscriptions + Balance + User Dropdown -->
-      <div class="flex min-w-0 items-center gap-1 sm:gap-3">
+      <div class="flex min-w-0 items-center gap-1 sm:gap-2">
+        <!-- 版本 / 更新检查（管理员）：折叠面板内含检查更新与回滚，非管理员只显示版本号 -->
+        <VersionBadge v-if="user" />
+
         <!-- Announcement Bell -->
         <AnnouncementBell v-if="user" />
 
@@ -27,7 +61,7 @@
           :href="docUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="hidden items-center gap-1.5 rounded-none px-2 py-1.5 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white sm:flex"
+          class="hidden h-8 items-center gap-1.5 rounded-none px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white sm:flex"
         >
           <Icon name="book" size="sm" />
           <span class="hidden sm:inline">{{ t('nav.docs') }}</span>
@@ -39,7 +73,7 @@
           :to="{ path: '/model-plaza', query: { embedded: '1' } }"
           :title="t('nav.modelPlaza')"
           :aria-label="t('nav.modelPlaza')"
-          class="flex items-center gap-1.5 rounded-none px-2 py-1.5 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
+          class="flex h-8 items-center gap-1.5 rounded-none px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
         >
           <Icon name="grid" size="sm" />
           <span class="hidden sm:inline">{{ t('nav.modelPlaza') }}</span>
@@ -54,7 +88,7 @@
         <!-- Balance Display -->
         <div
           v-if="user"
-          class="group relative hidden items-center gap-2 border border-gray-200 bg-gray-50 px-2.5 py-1 dark:border-dark-700 dark:bg-dark-800 sm:flex"
+          class="group relative hidden h-8 items-center gap-2 border border-gray-200 bg-gray-50 px-2.5 text-xs dark:border-dark-700 dark:bg-dark-800 sm:flex"
         >
           <svg
             class="h-3.5 w-3.5 text-gray-500 dark:text-dark-400"
@@ -102,27 +136,17 @@
         <div v-if="user" class="relative" ref="dropdownRef">
           <button
             @click="toggleDropdown"
-            class="flex items-center gap-2 rounded-none p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-dark-800"
+            class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-none bg-primary-500 text-[13px] font-medium text-white transition-colors hover:bg-primary-400 dark:hover:bg-primary-400"
             :aria-label="t('common.userMenu')"
+            :title="displayName"
           >
-            <div class="flex h-8 w-8 items-center justify-center overflow-hidden bg-primary-500 text-[13px] font-medium text-white">
-              <img
-                v-if="avatarUrl"
-                :src="avatarUrl"
-                :alt="displayName"
-                class="h-full w-full object-cover"
-              >
-              <span v-else>{{ userInitials }}</span>
-            </div>
-            <div class="hidden text-left md:block">
-              <div class="text-[13px] font-medium text-gray-900 dark:text-gray-100">
-                {{ displayName }}
-              </div>
-              <div class="text-xs text-gray-500 dark:text-dark-400">
-                {{ t('admin.users.roles.' + user.role) }}
-              </div>
-            </div>
-            <Icon name="chevronDown" size="sm" class="hidden text-gray-500 md:block dark:text-dark-400" />
+            <img
+              v-if="avatarUrl"
+              :src="avatarUrl"
+              :alt="displayName"
+              class="h-full w-full object-cover"
+            >
+            <span v-else>{{ userInitials }}</span>
           </button>
 
           <!-- Dropdown Menu -->
@@ -248,25 +272,25 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore, useAuthStore, useOnboardingStore } from '@/stores'
-import { useAdminSettingsStore } from '@/stores/adminSettings'
 import LocaleSwitcher from '@/components/common/LocaleSwitcher.vue'
 import SubscriptionProgressMini from '@/components/common/SubscriptionProgressMini.vue'
 import AnnouncementBell from '@/components/common/AnnouncementBell.vue'
+import VersionBadge from '@/components/common/VersionBadge.vue'
 import Icon from '@/components/icons/Icon.vue'
 import { sanitizeUrl } from '@/utils/url'
 import { FeatureFlags, isFeatureFlagEnabled } from '@/utils/featureFlags'
 import { resolveRouteMetaKeys } from '@/router/title'
+import { useAdminSettingsStore } from '@/stores/adminSettings'
 import { resolveSiteBillingMode } from '@/utils/siteBillingMode'
 
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n()
 const appStore = useAppStore()
 const authStore = useAuthStore()
-const adminSettingsStore = useAdminSettingsStore()
 const onboardingStore = useOnboardingStore()
 
 const user = computed(() => authStore.user)
@@ -276,6 +300,13 @@ const contactInfo = computed(() => appStore.contactInfo)
 const docUrl = computed(() => sanitizeUrl(appStore.docUrl))
 const modelPlazaEnabled = computed(() => isFeatureFlagEnabled(FeatureFlags.modelPlaza))
 const avatarUrl = computed(() => user.value?.avatar_url?.trim() || '')
+const siteName = computed(() => appStore.siteName)
+// 顶栏品牌 logo 与侧栏共用同一净化规则（允许相对路径与 data URL）
+const siteLogo = computed(() => sanitizeUrl(appStore.siteLogo || '', { allowRelative: true, allowDataUrl: true }))
+const settingsLoaded = computed(() => appStore.publicSettingsLoaded)
+// 版本 tag：管理员取运行时版本，其他角色回退到公共配置里的站点版本；都没有时整块隐藏
+const version = computed(() => appStore.currentVersion || appStore.siteVersion)
+const homePath = computed(() => (authStore.isAdmin ? '/admin/dashboard' : '/dashboard'))
 const availableBalance = computed(() => Number(user.value?.balance || 0))
 const frozenBalance = computed(() => Number(user.value?.frozen_balance || 0))
 const totalBalance = computed(() => availableBalance.value + frozenBalance.value)
@@ -284,11 +315,51 @@ const balanceFrozenText = computed(() => t('common.frozenBalance') === 'common.f
 const balanceTotalText = computed(() => t('common.totalBalance') === 'common.totalBalance' ? '总余额' : t('common.totalBalance'))
 const balanceFrozenLabel = computed(() => `${balanceFrozenText.value} ${formatHeaderMoney(frozenBalance.value)}`)
 
+/*
+ * 顶栏的「当前页面」上下文。
+ * 只有在该路由没有声明 meta.breadcrumbs 时才显示标题：
+ * 声明了面包屑的页面已经在内容区顶部用 crumb-strip（+ PageHeader）表达层级与标题，
+ * 顶栏再显示一次会重复。
+ */
+const routeMetaKeys = computed(() =>
+  resolveRouteMetaKeys(route, {
+    billingMode: resolveSiteBillingMode(appStore.cachedPublicSettings)
+  })
+)
+
+const pageTitle = computed(() => {
+  const crumbs = route.meta?.breadcrumbs
+  if (Array.isArray(crumbs) && crumbs.length) return ''
+
+  // 自定义页面用菜单项的标签，而不是「自定义页面」这种通用名
+  if (route.name === 'CustomPage') {
+    const id = route.params.id as string
+    const publicItems = appStore.cachedPublicSettings?.custom_menu_items ?? []
+    const menuItem =
+      publicItems.find((item) => item.id === id) ??
+      (authStore.isAdmin
+        ? adminSettingsStore.customMenuItems.find((item) => item.id === id)
+        : undefined)
+    if (menuItem?.label) return menuItem.label
+  }
+
+  const titleKey = routeMetaKeys.value.titleKey
+  if (titleKey) return t(titleKey)
+  return (route.meta.title as string) || ''
+})
+
+const pageDescription = computed(() => {
+  const descKey = routeMetaKeys.value.descriptionKey
+  if (descKey) return t(descKey)
+  return (route.meta.description as string) || ''
+})
+
 // 只在标准模式的管理员下显示新手引导按钮
 const showOnboardingButton = computed(() => {
   return !authStore.isSimpleMode && user.value?.role === 'admin'
 })
 
+const adminSettingsStore = useAdminSettingsStore()
 const userInitials = computed(() => {
   if (!user.value) return ''
   // Prefer username, fallback to email
@@ -310,35 +381,6 @@ const displayName = computed(() => {
 
 // 订阅功能关闭时不挂载顶栏订阅徽章（组件 onMounted 会拉取订阅接口）。
 const subscriptionFeatureEnabled = computed(() => isFeatureFlagEnabled(FeatureFlags.subscription))
-
-// /purchase 的标题/描述随站点计费模式切换，与 document.title 共用同一解析。
-const routeMetaKeys = computed(() => resolveRouteMetaKeys(route, {
-  billingMode: resolveSiteBillingMode(appStore.cachedPublicSettings),
-}))
-
-const pageTitle = computed(() => {
-  // For custom pages, use the menu item's label instead of generic "自定义页面"
-  if (route.name === 'CustomPage') {
-    const id = route.params.id as string
-    const publicItems = appStore.cachedPublicSettings?.custom_menu_items ?? []
-    const menuItem = publicItems.find((item) => item.id === id)
-      ?? (authStore.isAdmin ? adminSettingsStore.customMenuItems.find((item) => item.id === id) : undefined)
-    if (menuItem?.label) return menuItem.label
-  }
-  const titleKey = routeMetaKeys.value.titleKey
-  if (titleKey) {
-    return t(titleKey)
-  }
-  return (route.meta.title as string) || ''
-})
-
-const pageDescription = computed(() => {
-  const descKey = routeMetaKeys.value.descriptionKey
-  if (descKey) {
-    return t(descKey)
-  }
-  return (route.meta.description as string) || ''
-})
 
 function toggleMobileSidebar() {
   appStore.toggleMobileSidebar()
@@ -369,7 +411,6 @@ function handleReplayGuide() {
 }
 
 function formatHeaderMoney(value: number) {
-  if (!Number.isFinite(value)) return '$0.00'
   return `$${value.toFixed(2)}`
 }
 
@@ -380,6 +421,10 @@ function handleClickOutside(event: MouseEvent) {
 }
 
 onMounted(() => {
+  // 版本 tag 依赖运行时版本信息：沿用旧的 VersionBadge 拉取时机（侧栏品牌区已移除）
+  if (authStore.isAdmin) {
+    void appStore.fetchVersion(false)
+  }
   document.addEventListener('click', handleClickOutside)
 })
 

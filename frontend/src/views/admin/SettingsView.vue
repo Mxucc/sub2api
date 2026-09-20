@@ -1875,15 +1875,15 @@
               <template v-else>
                 <!-- 计数维度说明：按账号计数，反代部署无误伤 -->
                 <div
-                  class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-800 dark:bg-sky-900/20"
+                  class="rounded-lg border border-primary-200 bg-primary-50 p-4 dark:border-primary-500/25 dark:bg-primary-500/15"
                 >
                   <div class="flex items-start">
                     <Icon
                       name="infoCircle"
                       size="md"
-                      class="mt-0.5 flex-shrink-0 text-sky-500"
+                      class="mt-0.5 flex-shrink-0 text-primary-500"
                     />
-                    <p class="ml-3 text-sm text-sky-700 dark:text-sky-300">
+                    <p class="ml-3 text-sm text-primary-700 dark:text-primary-300">
                       {{ t("admin.settings.panelRateLimit.proxySafeNote") }}
                     </p>
                   </div>
@@ -6196,7 +6196,7 @@
                   <a
                     :href="r.url"
                     target="_blank"
-                    class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                    class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-300"
                     >{{ r.title }}</a
                   >
                   <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">

@@ -70,7 +70,7 @@
     </span>
     <button
       type="button"
-      class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded text-blue-600 transition-colors hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-blue-400 dark:hover:bg-blue-900/30"
+      class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded text-primary-600 transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-primary-300 dark:hover:bg-primary-500/15"
       :disabled="probing"
       :aria-label="t('admin.accounts.upstreamBilling.manualProbe')"
       :title="t('admin.accounts.upstreamBilling.manualProbe')"

@@ -447,50 +447,155 @@
         </div>
       </section>
 
-      <!-- 侧边栏 + 下拉 -->
+      <!-- 应用外壳（新框架：通栏顶栏 + 其下的模块侧栏 + 内容区） -->
       <section class="data-card">
-        <div class="flex">
-          <aside class="w-[232px] border-r border-gray-200 p-3 dark:border-dark-700">
-            <div class="sidebar-section-title">控制台</div>
-            <a class="sidebar-link sidebar-link-active" href="#">
-              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path d="M3 10.5 12 3l9 7.5M5 10v10h14V10" />
-              </svg>
-              仪表盘
-            </a>
-            <a class="sidebar-link" href="#">
-              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path d="M4 7h16v12H4zM4 7l8 6 8-6" />
-              </svg>
-              账号管理
-            </a>
-            <div class="sidebar-section mt-3">
-              <div class="sidebar-section-title">用户</div>
-              <a class="sidebar-link" href="#">
+        <div class="card-header">
+          <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">应用外壳 · 新框架</h2>
+          <p class="section-description">
+            通栏顶栏 56px（品牌 + 全局操作）→ 其下模块侧栏 240px（可折叠 64px）→ 内容区（面包屑 + 页头 + 卡片）
+          </p>
+        </div>
+        <div class="relative bg-gray-50 dark:bg-dark-950">
+          <!-- 通栏顶栏 -->
+          <div class="flex h-14 items-center justify-between border-b border-gray-200 bg-white px-4 dark:border-dark-700 dark:bg-dark-900">
+            <div class="flex items-center gap-3">
+              <button class="icon-btn lg:hidden" aria-label="菜单">
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path d="M15 7a6 6 0 1 1-12 0 6 6 0 0 1 12 0ZM3 20a6 6 0 0 1 12 0" />
+                  <path d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                我的密钥
-              </a>
+              </button>
+              <div class="flex h-8 w-8 items-center justify-center bg-primary-500 text-sm font-medium text-white">S2</div>
+              <span class="text-[15px] font-medium text-gray-900 dark:text-gray-100">Sub2API</span>
+              <span class="tag">v0.2.7-g6680d583</span>
             </div>
-          </aside>
-          <div class="flex-1 p-4">
-            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">下拉菜单</h3>
-            <p class="text-caption text-gray-500 dark:text-dark-400">
-              选中项使用品牌浅底 + 品牌文字，未选中项 hover 使用中性灰
-            </p>
-            <div class="dropdown relative mt-4 w-64">
-              <div class="dropdown-item dropdown-item-active">
-                <span>默认分组</span>
-                <svg class="ml-auto h-4 w-4 text-primary-500 dark:text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path d="m5 13 4 4L19 7" />
+            <div class="flex items-center gap-1.5">
+              <button class="icon-btn" aria-label="公告">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-4-5.7V5a2 2 0 1 0-4 0v.3A6 6 0 0 0 6 11v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 1 1-6 0v-1" />
                 </svg>
+              </button>
+              <button class="icon-btn" aria-label="语言">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0c2.5 0 4.5-4 4.5-9S14.5 3 12 3m0 18c-2.5 0-4.5-4-4.5-9S9.5 3 12 3" />
+                </svg>
+              </button>
+              <span class="flex items-center gap-1.5 border border-gray-200 bg-gray-50 px-2.5 py-1 text-caption text-gray-900 dark:border-dark-700 dark:bg-dark-800 dark:text-gray-100">
+                <span class="text-gray-500 dark:text-dark-400">余额</span>$128.40
+              </span>
+              <button class="flex h-8 w-8 items-center justify-center bg-primary-500 text-control font-medium text-white">
+                M
+              </button>
+            </div>
+          </div>
+
+          <div class="flex">
+            <!-- 模块侧栏 -->
+            <aside class="flex w-60 flex-col border-r border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-900">
+              <div class="flex h-12 items-center justify-between border-b border-gray-200 px-3 dark:border-dark-700">
+                <span class="text-caption font-medium text-gray-500 dark:text-dark-400">管理控制台</span>
+                <button class="icon-btn-sm" aria-label="折叠侧栏">
+                  <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path d="M15 6l-6 6 6 6" />
+                  </svg>
+                </button>
               </div>
-              <div class="dropdown-item">高倍率分组</div>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item">
-                <span>内部测试</span>
-                <span class="ml-auto text-2xs text-gray-500 dark:text-dark-400">仅管理员</span>
+              <nav class="flex-1 space-y-3 overflow-y-auto px-2 py-3">
+                <div>
+                  <div class="sidebar-section-title">概览</div>
+                  <a class="sidebar-link sidebar-link-active" href="#">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M3 10.5 12 3l9 7.5M5 10v10h14V10" />
+                    </svg>
+                    仪表盘
+                  </a>
+                  <a class="sidebar-link" href="#">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M4 19V5m16 14V9M9 19v-7m4 7V8m4 11v-4" />
+                    </svg>
+                    用量统计
+                  </a>
+                </div>
+                <div class="sidebar-section">
+                  <div class="sidebar-section-title">资源</div>
+                  <a class="sidebar-link" href="#">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M4 7h16v12H4zM4 7l8 6 8-6" />
+                    </svg>
+                    账号管理
+                    <span class="ml-auto tag">128</span>
+                  </a>
+                  <a class="sidebar-link" href="#">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M15 7a6 6 0 1 1-12 0 6 6 0 0 1 12 0ZM3 20a6 6 0 0 1 12 0" />
+                    </svg>
+                    分组管理
+                  </a>
+                  <a class="sidebar-link" href="#">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 3v18M3 12h18" />
+                    </svg>
+                    渠道
+                  </a>
+                </div>
+              </nav>
+              <div class="border-t border-gray-200 px-3 py-3 dark:border-dark-700">
+                <label class="flex items-center justify-between text-caption text-gray-600 dark:text-dark-400">
+                  深色模式
+                  <span class="switch switch-active"><span class="switch-thumb"></span></span>
+                </label>
+              </div>
+            </aside>
+
+            <!-- 内容区 -->
+            <div class="min-w-0 flex-1">
+              <div class="crumb-strip">
+                <nav class="breadcrumb">
+                  <a class="breadcrumb-link" href="#">控制台</a>
+                  <span class="breadcrumb-separator">/</span>
+                  <span class="breadcrumb-current">仪表盘</span>
+                </nav>
+              </div>
+              <div class="space-y-4 px-5 py-4">
+                <div class="page-header-bar">
+                  <div class="page-header-main">
+                    <div class="page-header-row">
+                      <div class="min-w-0">
+                        <h3 class="page-title">仪表盘</h3>
+                        <p class="page-description">请求、用量与账号健康的总览</p>
+                      </div>
+                      <div class="page-header-actions">
+                        <button class="btn btn-secondary btn-sm">刷新</button>
+                        <button class="btn btn-primary btn-sm">新建账号</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-3">
+                  <div class="surface-flat p-4">
+                    <div class="metric-label">今日请求</div>
+                    <div class="metric-value mt-1">48,213</div>
+                  </div>
+                  <div class="surface-flat p-4">
+                    <div class="metric-label">成功率</div>
+                    <div class="metric-value mt-1">99.98%</div>
+                  </div>
+                  <div class="surface-flat p-4">
+                    <div class="metric-label">平均延迟</div>
+                    <div class="metric-value mt-1">412 ms</div>
+                  </div>
+                </div>
+                <div class="surface-flat p-4">
+                  <div class="metric-label">下拉菜单（选中项使用品牌浅底 + 品牌文字）</div>
+                  <div class="dropdown relative mt-3 w-64">
+                    <div class="dropdown-item dropdown-item-active">
+                      <span>默认分组</span>
+                      <svg class="ml-auto h-4 w-4 text-primary-500 dark:text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path d="m5 13 4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div class="dropdown-item">高倍率分组</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

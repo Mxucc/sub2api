@@ -1,33 +1,46 @@
 <template>
   <aside
-    class="sidebar border-r border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-900"
+    class="fixed bottom-0 left-0 top-14 z-40 flex flex-col border-r border-gray-200 bg-white transition-[width,transform] duration-200 dark:border-dark-700 dark:bg-dark-900"
     :class="[
-      sidebarCollapsed ? 'w-[72px]' : 'w-[232px]',
+      sidebarCollapsed ? 'w-16' : 'w-60',
       { '-translate-x-full lg:translate-x-0': !mobileOpen }
     ]"
   >
-    <!-- Logo/Brand -->
-    <div class="sidebar-header h-14 border-b border-gray-200 dark:border-dark-700" :class="{ 'sidebar-header-collapsed': sidebarCollapsed }">
-      <!-- Custom Logo or Default Logo -->
+    <!-- 模块条：当前模块名 + 折叠按钮（h-12，底部 1px 分隔） -->
+    <div
+      class="flex h-12 shrink-0 items-center justify-between border-b border-gray-200 dark:border-dark-700"
+      :class="sidebarCollapsed ? 'px-2' : 'gap-2 px-3'"
+    >
+      <!-- 折叠态：16px 站点 logo（点击回到控制台首页）；展开态：当前模块名 -->
       <router-link
+        v-if="sidebarCollapsed"
         :to="homePath"
-        class="sidebar-logo flex h-8 w-8 items-center justify-center overflow-hidden transition-opacity duration-150 hover:opacity-80"
-        :class="{ 'border border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-800': siteLogo }"
+        class="flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden"
         @click="handleMenuItemClick(homePath)"
       >
-        <img v-if="settingsLoaded" :src="siteLogo || '/logo.svg'" alt="Logo" class="h-full w-full object-contain" />
+        <img
+          v-if="settingsLoaded"
+          :src="siteLogo || '/logo.svg'"
+          alt="Logo"
+          class="h-full w-full object-contain"
+        />
       </router-link>
-      <div class="sidebar-brand" :class="{ 'sidebar-brand-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">
-        <router-link
-          :to="homePath"
-          class="sidebar-brand-title text-sm font-medium text-gray-900 transition-colors hover:text-primary-500 dark:text-white dark:hover:text-primary-400"
-          @click="handleMenuItemClick(homePath)"
-        >
-          {{ siteName }}
-        </router-link>
-        <!-- Version Badge -->
-        <VersionBadge :version="siteVersion" />
-      </div>
+      <span
+        v-else
+        class="sidebar-brand truncate text-caption font-medium text-gray-500 dark:text-dark-500"
+      >
+        {{ consoleLabel }}
+      </span>
+      <button
+        type="button"
+        class="icon-btn-sm shrink-0"
+        :aria-label="sidebarCollapsed ? t('common.expand') : t('common.collapse')"
+        :title="sidebarCollapsed ? t('nav.expand') : t('nav.collapse')"
+        @click="toggleSidebar"
+      >
+        <ChevronDoubleLeftIcon v-if="!sidebarCollapsed" class="h-4 w-4 flex-shrink-0" />
+        <ChevronDoubleRightIcon v-else class="h-4 w-4 flex-shrink-0" />
+      </button>
     </div>
 
     <!-- Navigation -->
@@ -68,7 +81,7 @@
                   v-for="child in item.children"
                   :key="child.path"
                   :to="child.path"
-                  class="sidebar-link mb-0.5 py-1.5 text-sm"
+                  class="sidebar-link mb-0.5 h-9 gap-2.5 px-3 py-0 text-[13px]"
                   :class="{ 'sidebar-link-active': route.path === child.path }"
                   @click="handleMenuItemClick(child.path)"
                 >
@@ -149,7 +162,7 @@
     </nav>
 
     <!-- Bottom Section -->
-    <div class="mt-auto border-t border-gray-200 p-3 dark:border-dark-700">
+    <div class="mt-auto border-t border-gray-200 px-3 py-3 dark:border-dark-700">
       <!-- Theme Toggle -->
       <button
         @click="toggleTheme"
@@ -182,7 +195,7 @@
   <transition name="fade">
     <div
       v-if="mobileOpen"
-      class="fixed inset-0 z-30 bg-black/50 lg:hidden"
+      class="fixed inset-x-0 bottom-0 top-14 z-30 bg-black/40 lg:hidden"
       @click="closeMobile"
     ></div>
   </transition>
@@ -193,7 +206,6 @@ import { computed, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'v
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAdminSettingsStore, useAppStore, useAuthStore, useOnboardingStore } from '@/stores'
-import VersionBadge from '@/components/common/VersionBadge.vue'
 import Icon from '@/components/icons/Icon.vue'
 import { sanitizeSvg } from '@/utils/sanitize'
 import { sanitizeUrl } from '@/utils/url'
@@ -261,11 +273,11 @@ const homePath = computed(() => (isAdmin.value ? '/admin/dashboard' : '/dashboar
 // state so an active group can still be collapsed manually.
 const groupExpandOverrides = ref<Map<string, boolean>>(new Map())
 
-// Site settings from appStore (cached, no flicker)
-const siteName = computed(() => appStore.siteName)
+// 站点品牌资源：logo 净化规则与顶栏一致（控制台框架下品牌主体在顶栏，折叠轨道保留 16px 标记）
 const siteLogo = computed(() => sanitizeUrl(appStore.siteLogo || '', { allowRelative: true, allowDataUrl: true }))
-const siteVersion = computed(() => appStore.siteVersion)
 const settingsLoaded = computed(() => appStore.publicSettingsLoaded)
+// 模块条文案：复用既有 i18n 键（管理端 = 管理控制台，用户端 = 控制台）
+const consoleLabel = computed(() => t(isAdmin.value ? 'admin.dashboard.title' : 'home.dashboard'))
 
 // SVG Icon Components
 const DashboardIcon = {
@@ -977,17 +989,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.sidebar-logo {
-  flex: 0 0 2rem;
-  min-width: 2rem;
-}
-
-.sidebar-header-collapsed {
-  gap: 0;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-}
-
 .sidebar-brand {
   min-width: 0;
   flex: 1 1 auto;
@@ -997,21 +998,6 @@ onBeforeUnmount(() => {
     opacity 0.14s ease,
     transform 0.14s ease;
   max-width: 12rem;
-}
-
-.sidebar-brand-collapsed {
-  max-width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(-4px);
-  pointer-events: none;
-}
-
-.sidebar-brand-title {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .sidebar-link-collapsed {

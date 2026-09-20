@@ -123,7 +123,7 @@
                     <div class="grid grid-cols-4 gap-2 text-right text-xs text-gray-500 dark:text-gray-400 sm:min-w-[280px]">
                       <div>
                         <p>{{ t('admin.riskControl.preBlockKeyActiveShort') }}</p>
-                        <p class="mt-1 text-sm font-semibold text-sky-700 dark:text-sky-300">{{ formatNumber(item.active) }}</p>
+                        <p class="mt-1 text-sm font-semibold text-primary-700 dark:text-primary-300">{{ formatNumber(item.active) }}</p>
                       </div>
                       <div>
                         <p>{{ t('admin.riskControl.preBlockKeyTotalShort') }}</p>
@@ -140,7 +140,7 @@
                     </div>
                   </div>
                   <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-white dark:bg-dark-900">
-                    <div class="h-full rounded-full bg-sky-500" :style="{ width: preBlockAPIKeyLoadWidth(item.total) }"></div>
+                    <div class="h-full rounded-full bg-primary-500" :style="{ width: preBlockAPIKeyLoadWidth(item.total) }"></div>
                   </div>
                 </div>
               </div>
@@ -618,7 +618,7 @@
                               <span class="truncate font-mono text-sm font-semibold text-gray-900 dark:text-white">{{ row.masked || '-' }}</span>
                               <span
                                 class="inline-flex rounded-md px-1.5 py-0.5 text-[11px] font-medium"
-                                :class="row.configured ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'"
+                                :class="row.configured ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'"
                               >
                                 {{ isStoredApiKeyPendingDelete(row) ? t('admin.riskControl.apiKeyPendingDelete') : row.configured ? t('admin.riskControl.apiKeyConfigured') : t('admin.riskControl.apiKeyTemporary') }}
                               </span>
@@ -1100,7 +1100,7 @@
                   {{ inputDetailRow.endpoint || '-' }} · {{ inputDetailRow.provider || '-' }} / {{ inputDetailRow.model || '-' }}
                 </p>
               </div>
-              <span v-if="inputDetailRow.group_name" class="inline-flex rounded-md bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-700 dark:bg-sky-900/20 dark:text-sky-300">
+              <span v-if="inputDetailRow.group_name" class="inline-flex rounded-md bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 dark:bg-primary-500/15 dark:text-primary-300">
                 {{ inputDetailRow.group_name }}
               </span>
             </div>
@@ -1540,7 +1540,7 @@ const overviewItems = computed<OverviewItem[]>(() => [
     value: configForm.api_key_configured ? t('admin.riskControl.apiKeyCount', { count: configForm.api_key_count }) : t('admin.riskControl.notConfigured'),
     meta: configForm.api_key_configured ? apiKeyHealthSummary.value || configForm.model || '-' : configForm.model || '-',
     icon: 'key',
-    iconClass: 'bg-sky-50 text-sky-600 dark:bg-sky-900/20 dark:text-sky-300',
+    iconClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300',
   },
   {
     key: 'scope',
@@ -1548,7 +1548,7 @@ const overviewItems = computed<OverviewItem[]>(() => [
     value: configForm.all_groups ? t('admin.riskControl.allGroups') : selectedGroupCount.value,
     meta: modelFilterSummary.value,
     icon: 'users',
-    iconClass: 'bg-violet-50 text-violet-600 dark:bg-violet-900/20 dark:text-violet-300',
+    iconClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300',
   },
   {
     key: 'logs',
@@ -1607,8 +1607,8 @@ const preBlockMetricItems = computed(() => [
     label: t('admin.riskControl.preBlockActive'),
     value: formatNumber(status.value?.pre_block_active ?? 0),
     meta: t('admin.riskControl.preBlockActiveHint'),
-    class: 'bg-sky-50 dark:bg-sky-900/10',
-    valueClass: 'text-sky-700 dark:text-sky-300',
+    class: 'bg-primary-50 dark:bg-primary-500/10',
+    valueClass: 'text-primary-700 dark:text-primary-300',
   },
   {
     key: 'checked',
@@ -1647,8 +1647,8 @@ const preBlockMetricItems = computed(() => [
     label: t('admin.riskControl.preBlockAvgLatency'),
     value: `${formatNumber(status.value?.pre_block_avg_latency_ms ?? 0)} ms`,
     meta: t('admin.riskControl.preBlockAvgLatencyHint'),
-    class: 'bg-violet-50 dark:bg-violet-900/10',
-    valueClass: 'text-violet-700 dark:text-violet-300',
+    class: 'bg-primary-50 dark:bg-primary-500/10',
+    valueClass: 'text-primary-700 dark:text-primary-300',
   },
 ])
 
@@ -2148,7 +2148,7 @@ function resultBadgeClass(row: ContentModerationLog): string {
 
 function workerSlotClass(state: WorkerSlotState): string {
   if (state === 'active') {
-    return 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900/60 dark:bg-sky-900/20 dark:text-sky-300'
+    return 'border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-500/25 dark:bg-primary-500/15 dark:text-primary-300'
   }
   if (state === 'idle') {
     return 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-900/20 dark:text-emerald-300'
@@ -2157,7 +2157,7 @@ function workerSlotClass(state: WorkerSlotState): string {
 }
 
 function workerDotClass(state: WorkerSlotState): string {
-  if (state === 'active') return 'bg-sky-500'
+  if (state === 'active') return 'bg-primary-500'
   if (state === 'idle') return 'bg-emerald-500'
   return 'bg-gray-300 dark:bg-dark-500'
 }
