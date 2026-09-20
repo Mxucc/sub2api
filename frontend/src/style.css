@@ -35,17 +35,11 @@
   }
 
   /*
-   * ===== 图标设计样式：直角端点线框（sharp line）=====
-   * 全站描边图标统一改为「方头端点 + 直线折角」，与直角视觉体系一致，
-   * 观感从原先的圆润线性图标变为方正、工程化的线性图标。
-   * 只影响以 stroke 描边的图标（图标组件与各页面内联 SVG），
-   * 不影响品牌 / 支付渠道等填充型（fill）SVG。
+   * ===== 图标设计样式：Lucide 线性图标（round cap / 1.5px）=====
+   * 图标组件（components/icons/Icon.vue）已切换为 Lucide 图标库，自带圆头端点与圆角折线；
+   * 各页面内联的 stroke 图标保持同一观感，此处不再统一切成直角端点。
+   * 全站直角只针对「面」——卡片 / 按钮 / 输入框 / 弹窗等容器（见 theme.borderRadius = 0）。
    */
-  svg[stroke='currentColor'],
-  svg[stroke='currentColor'] * {
-    stroke-linecap: square;
-    stroke-linejoin: miter;
-  }
   /* 自定义滚动条 - 仅针对 Firefox，避免 Chrome 取消 webkit 的全局定制 */
   @supports (-moz-appearance:none) {
     * {

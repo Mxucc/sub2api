@@ -139,6 +139,7 @@ deploy/docker-compose.override.yml
 vite.config.js
 docs/*
 !docs/FORK_RELEASE.md
+!docs/TDESIGN_MIGRATION.md
 !docs/ANTIGRAVITY_ATTRIBUTION_429.md
 !docs/PAYMENT.md
 !docs/PAYMENT_CN.md

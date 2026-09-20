@@ -100,7 +100,7 @@ const PROVIDER_TINT: Record<string, string> = {
   antigravity: 'text-purple-600 dark:text-purple-300',
   kimi: 'text-pink-600 dark:text-pink-300',
   zhipu: 'text-indigo-600 dark:text-indigo-300',
-  deepseek: 'text-teal-600 dark:text-teal-300',
+  deepseek: 'text-primary-600 dark:text-primary-300',
   opencode_go: 'text-amber-700 dark:text-amber-300',
 }
 

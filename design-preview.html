@@ -400,58 +400,68 @@
         </div>
       </section>
 
-      <!-- 图标样式（直角端点线框） -->
+      <!-- 图标样式（Lucide 线性） -->
       <section class="card p-6">
-        <h2 class="section-title mb-1">图标样式 · 直角端点线框（sharp line）</h2>
+        <h2 class="section-title mb-1">图标样式 · Lucide 线性（round cap / 1.5px）</h2>
         <p class="section-description mb-5">
-          stroke-linecap: square / stroke-linejoin: miter / stroke-width: 1.75 —— 与直角视觉体系一致
+          lucide-vue-next · stroke-width 1.5 · 圆头端点 —— 面是直角，线是圆润
         </p>
         <div class="grid grid-cols-4 gap-3 sm:grid-cols-8">
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">play</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+              <path d="M8 16H3v5" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">refresh</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+              <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">edit</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M12 4.5v15m7.5-7.5h-15" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">plus</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="m21 21-4.34-4.34" />
+              <circle cx="11" cy="11" r="8" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">search</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M6 18L18 6M6 6l12 12" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">x</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <path d="m6 9 6 6 6-6" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">chevronDown</span>
           </div>
           <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-              <path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+              <rect width="7" height="7" x="3" y="3" />
+              <rect width="7" height="7" x="14" y="3" />
+              <rect width="7" height="7" x="14" y="14" />
+              <rect width="7" height="7" x="3" y="14" />
             </svg>
             <span class="text-[10px] text-gray-500 dark:text-dark-400">grid</span>
           </div>
