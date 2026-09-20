@@ -234,39 +234,39 @@ Centered: Both horizontally and vertically
 
 ## Color Palette
 
-### Primary Colors
+> 本节的权威来源是 `frontend/tailwind.config.js` 与 `docs/UI_DESIGN.md`（企业级控制台规范）。
+> 下面列出登录/注册等认证页实际使用的令牌。
 
-- **Indigo-600**: `#4F46E5` - Primary buttons, links, brand color
-- **Indigo-700**: `#4338CA` - Button hover state
-- **Indigo-500**: `#6366F1` - Focus ring
+### Brand（品牌蓝，交互色）
 
-### Neutral Colors
+- **primary-500**: `#0052D9` - 主按钮、链接、选中态
+- **primary-400**: `#366EF4` - hover
+- **primary-600**: `#003CAB` - active
+- **primary-50**: `#F2F3FF` - 品牌浅底（选中背景、提示条）
 
-- **Gray-900**: `#111827` - Headings
-- **Gray-700**: `#374151` - Labels
-- **Gray-600**: `#4B5563` - Body text
-- **Gray-500**: `#6B7280` - Helper text
-- **Gray-300**: `#D1D5DB` - Borders
-- **Gray-100**: `#F3F4F6` - Disabled backgrounds
-- **White**: `#FFFFFF` - Card backgrounds
+### Neutral（TDesign 灰阶）
 
-### Error Colors
+- **gray-900**: `#242424` - 标题与主正文
+- **gray-700**: `#4B4B4B` - 表单标签
+- **gray-600**: `#5E5E5E` - 次级正文
+- **gray-500**: `#777777` - 说明文字、placeholder
+- **gray-200**: `#E7E7E7` - 默认描边
+- **gray-50**: `#F7F8FA` - 页面底色
+- **White**: `#FFFFFF` - 卡片底色
 
-- **Red-600**: `#DC2626` - Error text
-- **Red-500**: `#EF4444` - Error border, focus ring
-- **Red-50**: `#FEF2F2` - Error banner background
-- **Red-200**: `#FECACA` - Error banner border
+### Semantic（状态色）
 
-### Success Colors
+- **成功/正常/验证通过**: `sky` 系（天蓝）— 文字 `sky-700`、浅底 `sky-50`、
+  深色模式文字 `sky-400` / 浅底 `sky-500/10`；实底按钮 `sky-700`
+- **警告**: `amber` 系 — 文字 `amber-700`、浅底 `amber-50`
+- **错误**: `red` 系 — 文字 `red-700`、浅底 `red-50`、描边 `red-200`
 
-- **Green-600**: `#16A34A` - Success text
-- **Green-50**: `#F0FDF4` - Success banner background
+> 注意：本项目的状态色**不使用绿色**（emerald/green 已全部替换为天蓝 sky）。
 
-### Background Gradient
+### Shape
 
-- **From**: Indigo-100 (`#E0E7FF`)
-- **Via**: White (`#FFFFFF`)
-- **To**: Purple-100 (`#F3E8FF`)
+- 全站直角：圆角令牌统一为 `0`（唯一例外是加载指示器 `.spinner`）
+- 控件高度 32px、字号 13px；卡片 1px 描边 + `shadow-xs`
 
 ## Typography
 

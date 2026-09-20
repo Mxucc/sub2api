@@ -94,7 +94,7 @@
                 </p>
                 <span
                   v-if="credential.backup"
-                  class="rounded-full bg-green-50 px-2 py-0.5 text-xs text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                  class="rounded-full bg-sky-50 px-2 py-0.5 text-xs text-sky-700 dark:bg-sky-900/30 dark:text-sky-400"
                 >
                   {{ t('profile.passkey.synced') }}
                 </span>

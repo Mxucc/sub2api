@@ -145,7 +145,7 @@
     </div>
     <div
       v-else-if="resetMessage"
-      class="text-[10px] text-emerald-600 dark:text-emerald-400"
+      class="text-[10px] text-sky-700 dark:text-sky-400"
     >
       {{ resetMessage }}
     </div>
@@ -223,7 +223,7 @@ const autoResetStateClass = computed(() => {
     case 'available':
       return 'bg-primary-50 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
     case 'success':
-      return 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+      return 'bg-sky-50 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
     case 'no_credit':
     case 'failed':
       return 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300'

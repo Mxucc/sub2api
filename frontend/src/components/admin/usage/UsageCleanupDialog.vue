@@ -207,7 +207,7 @@ const statusClass = (status: string) => {
   const map: Record<string, string> = {
     pending: 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-200',
     running: 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-200',
-    succeeded: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200',
+    succeeded: 'bg-sky-100 text-sky-700 dark:bg-sky-400/20 dark:text-sky-400',
     failed: 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-200',
     canceled: 'bg-gray-200 text-gray-600 dark:bg-dark-600 dark:text-gray-300'
   }

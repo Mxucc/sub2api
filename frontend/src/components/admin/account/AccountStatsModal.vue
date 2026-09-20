@@ -28,7 +28,7 @@
           :class="[
             'rounded-full px-2.5 py-1 text-xs font-semibold',
             account.status === 'active'
-              ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400'
+              ? 'bg-sky-100 text-sky-700 dark:bg-sky-400/20 dark:text-sky-400'
               : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
           ]"
         >
@@ -46,14 +46,14 @@
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <!-- 30-Day Total Cost -->
           <div
-            class="card border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800/30 dark:bg-emerald-500/10"
+            class="card border-sky-200 bg-sky-50 p-4 dark:border-sky-800/30 dark:bg-sky-400/10"
           >
             <div class="mb-2 flex items-center justify-between">
               <span class="text-xs font-medium text-gray-500 dark:text-gray-400">{{
                 t('admin.accounts.stats.totalCost')
               }}</span>
-              <div class="rounded-lg bg-emerald-100 p-1.5 dark:bg-emerald-900/30">
-                <Icon name="dollar" size="sm" class="text-emerald-600 dark:text-emerald-400" />
+              <div class="rounded-lg bg-sky-100 p-1.5 dark:bg-sky-900/30">
+                <Icon name="dollar" size="sm" class="text-sky-700 dark:text-sky-400" />
               </div>
             </div>
             <p class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -352,11 +352,11 @@
           <!-- Recent Activity -->
           <div class="card p-4">
             <div class="mb-3 flex items-center gap-2">
-              <div class="rounded-lg bg-lime-100 p-1.5 dark:bg-lime-900/30">
+              <div class="rounded-lg bg-sky-100 p-1.5 dark:bg-sky-900/30">
                 <Icon
                   name="clipboard"
                   size="sm"
-                  class="text-lime-600 dark:text-lime-400"
+                  class="text-sky-700 dark:text-sky-400"
                 />
               </div>
               <span class="text-sm font-semibold text-gray-900 dark:text-white">{{
@@ -525,8 +525,8 @@ const trendChartData = computed(() => {
       {
         label: t('usage.userBilled') + ' (USD)',
         data: stats.value.history.map((h) => h.user_cost),
-        borderColor: '#10b981',
-        backgroundColor: 'rgba(16, 185, 129, 0.08)',
+        borderColor: '#38bdf8',
+        backgroundColor: 'rgba(56, 189, 248, 0.08)',
         fill: false,
         tension: 0.3,
         borderDash: [5, 5],

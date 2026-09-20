@@ -330,9 +330,9 @@ onUnmounted(() => {
 }
 
 .aliyun-captcha-button--verified {
-  border-color: rgb(34 197 94);
-  background-color: rgb(240 253 244);
-  color: rgb(21 128 61);
+  border-color: rgb(14 165 233);
+  background-color: rgb(240 249 255);
+  color: rgb(3 105 161);
 }
 
 :root.dark .aliyun-captcha-button,
@@ -350,9 +350,9 @@ onUnmounted(() => {
 
 :root.dark .aliyun-captcha-button--verified,
 .dark .aliyun-captcha-button--verified {
-  border-color: rgb(34 197 94);
-  background-color: rgb(20 83 45 / 0.3);
-  color: rgb(134 239 172);
+  border-color: rgb(14 165 233);
+  background-color: rgb(14 165 233 / 0.2);
+  color: rgb(125 211 252);
 }
 
 .aliyun-captcha-icon {

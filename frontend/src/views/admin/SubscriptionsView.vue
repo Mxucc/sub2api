@@ -368,10 +368,10 @@
                   !row.group?.weekly_limit_usd &&
                   !row.group?.monthly_limit_usd
                 "
-                class="flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-50 to-primary-50 px-3 py-2 dark:from-emerald-500/10 dark:to-primary-500/10"
+                class="flex items-center gap-2 rounded-lg bg-gradient-to-r from-sky-50 to-primary-50 px-3 py-2 dark:from-sky-400/10 dark:to-primary-500/10"
               >
-                <span class="text-lg text-emerald-600 dark:text-emerald-400">∞</span>
-                <span class="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                <span class="text-lg text-sky-700 dark:text-sky-400">∞</span>
+                <span class="text-xs font-medium text-sky-700 dark:text-sky-400">
                   {{ t('admin.subscriptions.unlimited') }}
                 </span>
               </div>
@@ -449,7 +449,7 @@
               <button
                 v-if="row.status === 'revoked'"
                 @click="handleRestore(row)"
-                class="flex flex-col items-center gap-0.5 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-500/15 dark:hover:text-emerald-400"
+                class="flex flex-col items-center gap-0.5 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-sky-50 hover:text-sky-700 dark:hover:bg-sky-400/15 dark:hover:text-sky-400"
               >
                 <Icon name="refresh" size="sm" />
                 <span class="text-xs">{{ t('admin.subscriptions.restore') }}</span>
@@ -1538,7 +1538,7 @@ const getProgressClass = (used: number | null | undefined, limit: number | null)
   const percentage = (usedValue / limit) * 100
   if (percentage >= 90) return 'bg-red-500'
   if (percentage >= 70) return 'bg-orange-500'
-  return 'bg-green-500'
+  return 'bg-sky-500'
 }
 
 const formatResetDuration = (parts: RemainingDurationParts): string => {

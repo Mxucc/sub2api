@@ -17,7 +17,7 @@
               <span class="relative flex h-2 w-2 shrink-0">
                 <span
                   class="relative inline-flex h-2 w-2 rounded-full"
-                  :class="loading || refreshing ? 'bg-gray-400' : 'bg-green-500'"
+                  :class="loading || refreshing ? 'bg-gray-400' : 'bg-sky-500'"
                 ></span>
               </span>
               <span v-if="refreshing" class="inline-flex items-center gap-1 text-primary-600 dark:text-primary-300">
@@ -940,10 +940,10 @@ onBeforeUnmount(() => {
   border-radius: 0;
 }
 /* Multi-stop green → yellow → red score bands */
-.health-score10 { background: #16a34a; }
-.health-score9  { background: #22c55e; }
-.health-score8  { background: #4ade80; }
-.health-score7  { background: #a3e635; }
+.health-score10 { background: #0369a1; }
+.health-score9  { background: #0ea5e9; }
+.health-score8  { background: #38bdf8; }
+.health-score7  { background: #22d3ee; }
 .health-score6  { background: #facc15; }
 .health-score5  { background: #fbbf24; }
 .health-score4  { background: #f59e0b; }
@@ -951,7 +951,7 @@ onBeforeUnmount(() => {
 .health-score2  { background: #fb7185; }
 .health-score1  { background: #f87171; }
 .health-score0  { background: rgb(239, 67, 67); }
-.health-healthy  { background: #22c55e; }
+.health-healthy  { background: #0ea5e9; }
 .health-warning  { background: #f59e0b; }
 .health-critical { background: #ef4444; }
 .health-unknown  { background: #9ca3af; }

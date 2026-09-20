@@ -93,7 +93,7 @@ import MonitorQuotaView from '@/components/common/MonitorQuotaView.vue'
 
 // 图标配色与 utils/platformColors.ts 的平台色对齐（新 4 家）。
 const PROVIDER_TINT: Record<string, string> = {
-  openai: 'text-emerald-600 dark:text-emerald-300',
+  openai: 'text-sky-700 dark:text-sky-400',
   anthropic: 'text-orange-600 dark:text-orange-300',
   gemini: 'text-sky-600 dark:text-sky-300',
   grok: 'text-zinc-700 dark:text-zinc-200',

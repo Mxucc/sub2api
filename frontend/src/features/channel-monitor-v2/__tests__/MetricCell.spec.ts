@@ -17,7 +17,7 @@ describe('MetricCell', () => {
     expect(wrapper.text()).toContain('请求')
     expect(wrapper.text()).toContain('1,234')
     expect(wrapper.text()).toContain('12.5 RPM')
-    expect(wrapper.find('strong').classes().join(' ')).toMatch(/emerald/)
+    expect(wrapper.find('strong').classes().join(' ')).toMatch(/sky/)
   })
 
   it('does not paint missing first-token dash as critical red', () => {

@@ -173,7 +173,7 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            <Icon v-else-if="dbConnected" name="check" size="md" class="mr-2 text-emerald-500" :stroke-width="2" />
+            <Icon v-else-if="dbConnected" name="check" size="md" class="mr-2 text-sky-500" :stroke-width="2" />
             {{
               testingDb
                 ? t('setup.status.testing')
@@ -287,7 +287,7 @@
               v-else-if="redisConnected"
               name="check"
               size="md"
-              class="mr-2 text-emerald-500"
+              class="mr-2 text-sky-500"
               :stroke-width="2"
             />
             {{
@@ -403,12 +403,12 @@
         <!-- Success Message -->
         <div
           v-if="installSuccess"
-          class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/25 dark:bg-emerald-500/10"
+          class="mt-6 rounded-xl border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/25 dark:bg-sky-400/10"
         >
           <div class="flex items-start gap-3">
             <svg
               v-if="!serviceReady"
-              class="h-5 w-5 flex-shrink-0 animate-spin text-emerald-500"
+              class="h-5 w-5 flex-shrink-0 animate-spin text-sky-500"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -426,12 +426,12 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            <Icon v-else name="checkCircle" size="md" class="flex-shrink-0 text-emerald-500" />
+            <Icon v-else name="checkCircle" size="md" class="flex-shrink-0 text-sky-500" />
             <div>
-              <p class="text-sm font-medium text-emerald-700 dark:text-emerald-400">
+              <p class="text-sm font-medium text-sky-700 dark:text-sky-400">
                 {{ t('setup.status.completed') }}
               </p>
-              <p class="mt-1 text-sm text-emerald-600 dark:text-emerald-400">
+              <p class="mt-1 text-sm text-sky-700 dark:text-sky-400">
                 {{
                   serviceReady
                     ? t('setup.status.redirecting')

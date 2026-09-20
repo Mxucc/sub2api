@@ -61,7 +61,7 @@ describe('MonitorQuotaView', () => {
     const html = wrapper.html()
     // 阈值配色（三处共用的 UsageProgressBar 统一）：≥90 红 / ≥75 黄 / 其余绿
     // 42.4 → 绿、80 → 黄、95 → 红
-    expect(html).toContain('bg-green-500')
+    expect(html).toContain('bg-sky-500')
     expect(html).toContain('bg-amber-500')
     expect(html).toContain('bg-red-500')
   })

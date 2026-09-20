@@ -180,7 +180,7 @@
                   class="rounded px-2 py-0.5"
                   :class="
                     plugin.runtime_healthy
-                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+                      ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
                       : 'bg-gray-100 text-gray-600 dark:bg-dark-700 dark:text-gray-300'
                   "
                 >
@@ -698,7 +698,7 @@ async function handleBridgeMessage(event: MessageEvent): Promise<void> {
 
 function stateClass(state: PluginInstallation["state"]): string {
   if (state === "enabled")
-    return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300";
+    return "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400";
   if (state === "error" || state === "incompatible")
     return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";
   if (state === "starting")
@@ -710,7 +710,7 @@ function compatibilityClass(
   status: PluginInstallation["compatibility"]["status"],
 ): string {
   if (status === "compatible")
-    return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300";
+    return "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400";
   if (status === "untested")
     return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300";
   return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";

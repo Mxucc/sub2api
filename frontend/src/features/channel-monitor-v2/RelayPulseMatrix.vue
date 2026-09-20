@@ -5,7 +5,7 @@
     <div class="card-header mb-4 flex shrink-0 flex-wrap items-start justify-between gap-3 !border-0 !p-0">
       <div class="min-w-0">
         <h2 class="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white">
-          <span class="inline-flex h-4 w-4 text-emerald-500" aria-hidden="true">
+          <span class="inline-flex h-4 w-4 text-sky-500" aria-hidden="true">
             <Icon name="grid" size="sm" />
           </span>
           {{ t('channelMonitorV2.matrix.title') }}
@@ -508,10 +508,10 @@ function formatBucketRange(value: string) {
 }
 
 /* Multi-stop green → yellow → red (score10 best … score0 worst) */
-.health-score10 { background: #16a34a; }
-.health-score9  { background: #22c55e; }
-.health-score8  { background: #4ade80; }
-.health-score7  { background: #a3e635; }
+.health-score10 { background: #0369a1; }
+.health-score9  { background: #0ea5e9; }
+.health-score8  { background: #38bdf8; }
+.health-score7  { background: #22d3ee; }
 .health-score6  { background: #facc15; }
 .health-score5  { background: #fbbf24; }
 .health-score4  { background: #f59e0b; }
@@ -520,7 +520,7 @@ function formatBucketRange(value: string) {
 .health-score1  { background: #f87171; }
 .health-score0  { background: rgb(239, 67, 67); }
 /* Coarse fallbacks (older payloads without score) */
-.health-healthy  { background: #22c55e; }
+.health-healthy  { background: #0ea5e9; }
 .health-warning  { background: #f59e0b; }
 .health-critical { background: #ef4444; }
 .health-unknown  { background: #9ca3af; }
@@ -533,9 +533,9 @@ function formatBucketRange(value: string) {
     #f97316 30%,
     #f59e0b 45%,
     #facc15 55%,
-    #a3e635 70%,
-    #22c55e 85%,
-    #16a34a 100%
+    #22d3ee 70%,
+    #0ea5e9 85%,
+    #0369a1 100%
   );
 }
 

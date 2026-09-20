@@ -62,7 +62,7 @@
                 :class="[
                   'rounded-full px-2 py-0.5 text-xs font-medium',
                   subscription.status === 'active'
-                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                    ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400'
                     : subscription.status === 'expired'
                       ? 'bg-gray-100 text-gray-600 dark:bg-dark-700 dark:text-gray-400'
                       : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'
@@ -226,15 +226,15 @@
                 !subscription.group?.weekly_limit_usd &&
                 !subscription.group?.monthly_limit_usd
               "
-              class="flex items-center justify-center rounded-xl bg-emerald-50 py-6 dark:bg-emerald-500/10"
+              class="flex items-center justify-center rounded-xl bg-sky-50 py-6 dark:bg-sky-400/10"
             >
               <div class="flex items-center gap-3">
-                <span class="text-4xl text-emerald-600 dark:text-emerald-400">∞</span>
+                <span class="text-4xl text-sky-700 dark:text-sky-400">∞</span>
                 <div>
-                  <p class="text-sm font-medium text-emerald-700 dark:text-emerald-300">
+                  <p class="text-sm font-medium text-sky-700 dark:text-sky-400">
                     {{ t('userSubscriptions.unlimited') }}
                   </p>
-                  <p class="text-xs text-emerald-600/70 dark:text-emerald-400/70">
+                  <p class="text-xs text-sky-700/70 dark:text-sky-400/70">
                     {{ t('userSubscriptions.unlimitedDesc') }}
                   </p>
                 </div>
@@ -269,7 +269,7 @@ import {
 function platformAccentDotClass(p: string): string {
   switch (p) {
     case 'anthropic': return 'bg-orange-500'
-    case 'openai': return 'bg-emerald-500'
+    case 'openai': return 'bg-sky-500'
     case 'antigravity': return 'bg-primary-500'
     case 'gemini': return 'bg-primary-500'
     default: return 'bg-gray-400'
@@ -314,7 +314,7 @@ function getProgressBarClass(used: number | undefined, limit: number | null | un
   const percentage = ((used || 0) / limit) * 100
   if (percentage >= 90) return 'bg-red-500'
   if (percentage >= 70) return 'bg-orange-500'
-  return 'bg-green-500'
+  return 'bg-sky-500'
 }
 
 function formatExpirationDate(expiresAt: string): string {

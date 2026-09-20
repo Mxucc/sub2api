@@ -22,7 +22,7 @@ const statusMap: Record<OrderStatus, { key: string; class: string }> = {
   PENDING: { key: 'payment.status.pending', class: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' },
   PAID: { key: 'payment.status.paid', class: 'bg-primary-100 text-primary-800 dark:bg-primary-500/15 dark:text-primary-300' },
   RECHARGING: { key: 'payment.status.recharging', class: 'bg-primary-100 text-primary-800 dark:bg-primary-500/15 dark:text-primary-300' },
-  COMPLETED: { key: 'payment.status.completed', class: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
+  COMPLETED: { key: 'payment.status.completed', class: 'bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-400' },
   EXPIRED: { key: 'payment.status.expired', class: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400' },
   CANCELLED: { key: 'payment.status.cancelled', class: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400' },
   FAILED: { key: 'payment.status.failed', class: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' },

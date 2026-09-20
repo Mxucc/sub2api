@@ -146,7 +146,7 @@
                 value === 'anthropic'
                   ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
                   : value === 'openai'
-                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                    ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
                     : value === 'antigravity'
                       ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                       : value === 'grok'
@@ -285,7 +285,7 @@
                   t("admin.groups.accountsAvailable")
                 }}</span>
                 <span
-                  class="ml-1 font-medium text-emerald-600 dark:text-emerald-400"
+                  class="ml-1 font-medium text-sky-700 dark:text-sky-400"
                   >{{ row.active_account_count || 0 }}</span
                 >
                 <span
@@ -3823,7 +3823,7 @@
                     group.platform === 'anthropic'
                       ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
                       : group.platform === 'openai'
-                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                        ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
                         : group.platform === 'antigravity'
                           ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
                           : group.platform === 'grok'

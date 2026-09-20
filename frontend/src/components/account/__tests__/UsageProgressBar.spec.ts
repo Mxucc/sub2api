@@ -109,7 +109,7 @@ describe('UsageProgressBar', () => {
 
     expect(wrapper.text()).toContain('100%')
     expect(wrapper.get('.h-1\\.5 > div').attributes('style')).toContain('width: 100%')
-    expect(wrapper.get('.h-1\\.5 > div').classes()).toContain('bg-green-500')
+    expect(wrapper.get('.h-1\\.5 > div').classes()).toContain('bg-sky-500')
   })
 
   it('剩余容量模式在低量和耗尽时缩短并变红', async () => {
@@ -154,7 +154,7 @@ describe('UsageProgressBar', () => {
       })
 
     // 条形配色：74 绿 / 75 与 89 黄 / 90 红
-    expect(mountAt(74).get('.h-1\\.5 > div').classes()).toContain('bg-green-500')
+    expect(mountAt(74).get('.h-1\\.5 > div').classes()).toContain('bg-sky-500')
     expect(mountAt(75).get('.h-1\\.5 > div').classes()).toContain('bg-amber-500')
     expect(mountAt(89).get('.h-1\\.5 > div').classes()).toContain('bg-amber-500')
     expect(mountAt(90).get('.h-1\\.5 > div').classes()).toContain('bg-red-500')

@@ -62,10 +62,10 @@
               <!-- Unlimited subscription badge -->
               <div
                 v-if="isUnlimited(subscription)"
-                class="flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-50 to-primary-50 px-2.5 py-1.5 dark:from-emerald-500/10 dark:to-primary-500/10"
+                class="flex items-center gap-2 rounded-lg bg-gradient-to-r from-sky-50 to-primary-50 px-2.5 py-1.5 dark:from-sky-400/10 dark:to-primary-500/10"
               >
-                <span class="text-lg text-emerald-600 dark:text-emerald-400">∞</span>
-                <span class="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                <span class="text-lg text-sky-700 dark:text-sky-400">∞</span>
+                <span class="text-xs font-medium text-sky-700 dark:text-sky-400">
                   {{ t('subscriptionProgress.unlimited') }}
                 </span>
               </div>
@@ -232,12 +232,12 @@ function isUnlimited(sub: UserSubscription): boolean {
 function getProgressDotClass(sub: UserSubscription): string {
   // Unlimited subscriptions get a special color
   if (isUnlimited(sub)) {
-    return 'bg-emerald-500'
+    return 'bg-sky-500'
   }
   const maxPercentage = getMaxUsagePercentage(sub)
   if (maxPercentage >= 90) return 'bg-red-500'
   if (maxPercentage >= 70) return 'bg-orange-500'
-  return 'bg-green-500'
+  return 'bg-sky-500'
 }
 
 function getProgressBarClass(used: number | undefined, limit: number | null | undefined): string {
@@ -245,7 +245,7 @@ function getProgressBarClass(used: number | undefined, limit: number | null | un
   const percentage = ((used || 0) / limit) * 100
   if (percentage >= 90) return 'bg-red-500'
   if (percentage >= 70) return 'bg-orange-500'
-  return 'bg-green-500'
+  return 'bg-sky-500'
 }
 
 function getProgressWidth(used: number | undefined, limit: number | null | undefined): string {
