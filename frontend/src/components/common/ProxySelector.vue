@@ -96,7 +96,7 @@
                 <template v-if="testResults[proxy.id]">
                   <span
                     v-if="testResults[proxy.id].success"
-                    class="inline-flex flex-shrink-0 items-center gap-1 rounded bg-sky-100 px-1.5 py-0.5 text-xs text-sky-700 dark:bg-sky-900/30 dark:text-sky-400"
+                    class="inline-flex flex-shrink-0 items-center gap-1 rounded bg-primary-100 px-1.5 py-0.5 text-xs text-primary-700 dark:bg-primary-900/30 dark:text-primary-400"
                   >
                     <span v-if="testResults[proxy.id].country">{{
                       testResults[proxy.id].country
@@ -361,8 +361,8 @@ onUnmounted(() => {
 
 .batch-test-btn {
   @apply flex-shrink-0 rounded-lg p-1.5;
-  @apply text-gray-500 hover:text-sky-700 dark:hover:text-sky-400;
-  @apply hover:bg-sky-50 dark:hover:bg-sky-900/20;
+  @apply text-gray-500 hover:text-primary-700 dark:hover:text-primary-400;
+  @apply hover:bg-primary-50 dark:hover:bg-primary-900/20;
   @apply transition-colors disabled:cursor-not-allowed disabled:opacity-50;
 }
 
@@ -394,8 +394,8 @@ onUnmounted(() => {
 
 .test-btn {
   @apply flex-shrink-0 rounded p-1;
-  @apply text-gray-400 hover:text-sky-700 dark:hover:text-sky-400;
-  @apply hover:bg-sky-50 dark:hover:bg-sky-900/20;
+  @apply text-gray-400 hover:text-primary-700 dark:hover:text-primary-400;
+  @apply hover:bg-primary-50 dark:hover:bg-primary-900/20;
   @apply transition-colors disabled:cursor-not-allowed disabled:opacity-50;
 }
 

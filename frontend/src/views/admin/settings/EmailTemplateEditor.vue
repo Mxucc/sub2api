@@ -110,7 +110,7 @@
               :class="
                 selectedEventMeta.optional
                   ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                  : 'bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-400'
+                  : 'bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-400'
               "
             >
               {{ selectedEventMeta.optional ? localText("可退订通知", "Optional") : localText("事务邮件", "Transactional") }}

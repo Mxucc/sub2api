@@ -96,7 +96,7 @@
         <!-- 公开分组区域 -->
         <div v-if="publicGroups.length > 0">
           <div class="mb-3 flex flex-wrap items-center gap-2">
-            <div class="h-1.5 w-1.5 rounded-full bg-sky-500"></div>
+            <div class="h-1.5 w-1.5 rounded-full bg-primary-500"></div>
             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
               {{ restrictPublicGroups ? t('admin.users.publicGroupsRestricted') : t('admin.users.publicGroups') }}
             </h4>
@@ -116,7 +116,7 @@
             <div
               v-for="config in publicGroupConfigs"
               :key="config.groupId"
-              class="relative overflow-hidden rounded-xl border-2 border-sky-200 bg-sky-50/50 p-4 dark:border-sky-800/50 dark:bg-sky-900/10"
+              class="relative overflow-hidden rounded-xl border-2 border-primary-200 bg-primary-50/50 p-4 dark:border-primary-800/50 dark:bg-primary-900/10"
             >
               <div class="flex items-center gap-4">
                 <!-- 未开启限制时公开分组恒可用，此处仅作展示；开启后才是真实开关 -->
@@ -126,11 +126,11 @@
                     type="checkbox"
                     :checked="config.isSelected"
                     @change="togglePublicGroup(config.groupId)"
-                    class="h-5 w-5 cursor-pointer rounded-md border-2 border-sky-400 text-sky-700 focus:ring-sky-500 dark:border-sky-400"
+                    class="h-5 w-5 cursor-pointer rounded-md border-2 border-primary-400 text-primary-700 focus:ring-primary-500 dark:border-primary-400"
                   />
                   <div
                     v-else
-                    class="flex h-5 w-5 items-center justify-center rounded-md border-2 border-sky-400 bg-sky-500 dark:border-sky-400 dark:bg-sky-400"
+                    class="flex h-5 w-5 items-center justify-center rounded-md border-2 border-primary-400 bg-primary-500 dark:border-primary-400 dark:bg-primary-400"
                   >
                     <svg class="h-full w-full text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />

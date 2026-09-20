@@ -5,53 +5,62 @@
         <PageHeader :title="t('keys.title')" :description="t('keys.description')" />
       </template>
       <template #filters>
-        <div class="filter-bar flex flex-col gap-3">
-          <div class="flex flex-wrap items-center gap-3">
-            <SearchInput
-              v-model="filterSearch"
-              :placeholder="t('keys.searchPlaceholder')"
-              class="w-full sm:w-64"
-              @search="onFilterChange"
-            />
-            <Select
-              :model-value="filterGroupId"
-              class="w-40"
-              :options="groupFilterOptions"
-              @update:model-value="onGroupFilterChange"
-            />
-            <Select
-              :model-value="filterStatus"
-              class="w-40"
-              :options="statusFilterOptions"
-              @update:model-value="onStatusFilterChange"
-            />
-          </div>
+        <div class="filter-bar">
+          <SearchInput
+            v-model="filterSearch"
+            :placeholder="t('keys.searchPlaceholder')"
+            class="w-full sm:w-64"
+            @search="onFilterChange"
+          />
+          <Select
+            :model-value="filterGroupId"
+            class="w-40"
+            :options="groupFilterOptions"
+            @update:model-value="onGroupFilterChange"
+          />
+          <Select
+            :model-value="filterStatus"
+            class="w-40"
+            :options="statusFilterOptions"
+            @update:model-value="onStatusFilterChange"
+          />
+        </div>
+
+        <!-- API 端点条：可复制的接入地址 -->
+        <div
+          v-if="publicSettings?.api_base_url || (publicSettings?.custom_endpoints?.length ?? 0) > 0"
+          class="flex flex-wrap items-center gap-2 border-b border-gray-200 bg-gray-50/70 px-4 py-2 dark:border-dark-700 dark:bg-dark-950/60"
+        >
           <EndpointPopover
-            v-if="publicSettings?.api_base_url || (publicSettings?.custom_endpoints?.length ?? 0) > 0"
             :api-base-url="publicSettings?.api_base_url || ''"
             :custom-endpoints="publicSettings?.custom_endpoints || []"
           />
-          <div v-if="selectedIds.length" class="flex flex-wrap items-center gap-3 text-sm">
-            <span class="text-gray-600 dark:text-gray-300">
-              {{ t('keys.bulkEdit.selectedCount', { count: selectedIds.length }) }}
-            </span>
-            <button
-              class="btn btn-primary btn-sm"
-              :disabled="loading"
-              data-test="bulk-edit-keys"
-              @click="showBulkEditModal = true"
-            >
-              {{ t('keys.bulkEdit.title') }}
-            </button>
-            <button class="btn btn-secondary btn-sm" @click="selectedIds = []">
-              {{ t('keys.bulkEdit.clearSelection') }}
-            </button>
-          </div>
+        </div>
+
+        <!-- 批量操作条：仅在选中行时出现 -->
+        <div
+          v-if="selectedIds.length"
+          class="flex flex-wrap items-center gap-3 border-b border-gray-200 bg-primary-50 px-4 py-2 text-control dark:border-dark-700 dark:bg-primary-500/10"
+        >
+          <span class="text-gray-600 dark:text-gray-300">
+            {{ t('keys.bulkEdit.selectedCount', { count: selectedIds.length }) }}
+          </span>
+          <button
+            class="btn btn-primary btn-sm"
+            :disabled="loading"
+            data-test="bulk-edit-keys"
+            @click="showBulkEditModal = true"
+          >
+            {{ t('keys.bulkEdit.title') }}
+          </button>
+          <button class="btn btn-secondary btn-sm" @click="selectedIds = []">
+            {{ t('keys.bulkEdit.clearSelection') }}
+          </button>
         </div>
       </template>
 
       <template #actions>
-        <div class="flex justify-end gap-3">
+        <div class="flex items-center gap-2">
           <button
             @click="loadApiKeys"
             :disabled="loading"
@@ -128,7 +137,7 @@
                 class="rounded-lg p-1 transition-colors hover:bg-gray-100 dark:hover:bg-dark-700"
                 :class="
                   copiedKeyId === row.id
-                    ? 'text-sky-500'
+                    ? 'text-primary-500'
                     : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                 "
                 :title="copiedKeyId === row.id ? t('keys.copied') : t('keys.copyToClipboard')"
@@ -203,7 +212,7 @@
               :class="[
                 'inline-flex min-w-8 items-center justify-center rounded px-2 py-1 text-sm font-semibold tabular-nums',
                 (value ?? 0) > 0
-                  ? 'bg-sky-50 text-sky-700 ring-1 ring-sky-200 dark:bg-sky-900/25 dark:text-sky-400 dark:ring-sky-800'
+                  ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-200 dark:bg-primary-900/25 dark:text-primary-400 dark:ring-primary-800'
                   : 'bg-gray-100 text-gray-500 dark:bg-dark-700 dark:text-dark-400'
               ]"
             >
@@ -274,7 +283,7 @@
                       'h-full rounded-full transition-all',
                       row.usage_5h >= row.rate_limit_5h ? 'bg-red-500' :
                       row.usage_5h >= row.rate_limit_5h * 0.8 ? 'bg-yellow-500' :
-                      'bg-sky-500'
+                      'bg-primary-500'
                     ]"
                     :style="{ width: Math.min((row.usage_5h / row.rate_limit_5h) * 100, 100) + '%' }"
                   />
@@ -302,7 +311,7 @@
                       'h-full rounded-full transition-all',
                       row.usage_1d >= row.rate_limit_1d ? 'bg-red-500' :
                       row.usage_1d >= row.rate_limit_1d * 0.8 ? 'bg-yellow-500' :
-                      'bg-sky-500'
+                      'bg-primary-500'
                     ]"
                     :style="{ width: Math.min((row.usage_1d / row.rate_limit_1d) * 100, 100) + '%' }"
                   />
@@ -330,7 +339,7 @@
                       'h-full rounded-full transition-all',
                       row.usage_7d >= row.rate_limit_7d ? 'bg-red-500' :
                       row.usage_7d >= row.rate_limit_7d * 0.8 ? 'bg-yellow-500' :
-                      'bg-sky-500'
+                      'bg-primary-500'
                     ]"
                     :style="{ width: Math.min((row.usage_7d / row.rate_limit_7d) * 100, 100) + '%' }"
                   />
@@ -398,7 +407,7 @@
               <!-- Use Key Button -->
               <button
                 @click="openUseKeyModal(row)"
-                class="flex flex-col items-center gap-0.5 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-sky-50 hover:text-sky-700 dark:hover:bg-sky-900/20 dark:hover:text-sky-400"
+                class="flex flex-col items-center gap-0.5 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-primary-50 hover:text-primary-700 dark:hover:bg-primary-900/20 dark:hover:text-primary-400"
               >
                 <Icon name="terminal" size="sm" />
                 <span class="text-xs">{{ t('keys.useKey') }}</span>
@@ -419,7 +428,7 @@
                   'flex flex-col items-center gap-0.5 rounded-lg p-1.5 transition-colors',
                   row.status === 'active'
                     ? 'text-gray-500 hover:bg-yellow-50 hover:text-yellow-600 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-400'
-                    : 'text-gray-500 hover:bg-sky-50 hover:text-sky-700 dark:hover:bg-sky-900/20 dark:hover:text-sky-400'
+                    : 'text-gray-500 hover:bg-primary-50 hover:text-primary-700 dark:hover:bg-primary-900/20 dark:hover:text-primary-400'
                 ]"
               >
                 <Icon v-if="row.status === 'active'" name="ban" size="sm" />
@@ -798,7 +807,7 @@
                       'h-full rounded-full transition-all',
                       selectedKey.usage_5h >= selectedKey.rate_limit_5h ? 'bg-red-500' :
                       selectedKey.usage_5h >= selectedKey.rate_limit_5h * 0.8 ? 'bg-yellow-500' :
-                      'bg-sky-500'
+                      'bg-primary-500'
                     ]"
                     :style="{ width: Math.min((selectedKey.usage_5h / selectedKey.rate_limit_5h) * 100, 100) + '%' }"
                   />
@@ -844,7 +853,7 @@
                       'h-full rounded-full transition-all',
                       selectedKey.usage_1d >= selectedKey.rate_limit_1d ? 'bg-red-500' :
                       selectedKey.usage_1d >= selectedKey.rate_limit_1d * 0.8 ? 'bg-yellow-500' :
-                      'bg-sky-500'
+                      'bg-primary-500'
                     ]"
                     :style="{ width: Math.min((selectedKey.usage_1d / selectedKey.rate_limit_1d) * 100, 100) + '%' }"
                   />
@@ -890,7 +899,7 @@
                       'h-full rounded-full transition-all',
                       selectedKey.usage_7d >= selectedKey.rate_limit_7d ? 'bg-red-500' :
                       selectedKey.usage_7d >= selectedKey.rate_limit_7d * 0.8 ? 'bg-yellow-500' :
-                      'bg-sky-500'
+                      'bg-primary-500'
                     ]"
                     :style="{ width: Math.min((selectedKey.usage_7d / selectedKey.rate_limit_7d) * 100, 100) + '%' }"
                   />

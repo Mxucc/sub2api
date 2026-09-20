@@ -98,7 +98,7 @@
                 :class="[
                   'flex items-center transition-colors',
                   copiedCode === value
-                    ? 'text-sky-500'
+                    ? 'text-primary-500'
                     : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                 ]"
                 :title="copiedCode === value ? t('admin.redeem.copied') : t('keys.copyToClipboard')"
@@ -537,10 +537,10 @@
           >
             <div class="flex items-center gap-3">
               <div
-                class="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 dark:bg-sky-900/30"
+                class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30"
               >
                 <svg
-                  class="h-5 w-5 text-sky-700 dark:text-sky-400"
+                  class="h-5 w-5 text-primary-700 dark:text-primary-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

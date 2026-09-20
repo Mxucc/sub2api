@@ -106,7 +106,7 @@ const getToastIconName = (type: string): 'checkCircle' | 'xCircle' | 'exclamatio
 
 const getIconChipClass = (type: string): string => {
   const classes: Record<string, string> = {
-    success: 'bg-sky-50 text-sky-700 dark:bg-sky-400/10 dark:text-sky-400',
+    success: 'bg-primary-50 text-primary-700 dark:bg-primary-400/10 dark:text-primary-400',
     error: 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400',
     warning: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
     info: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-300'
@@ -126,7 +126,7 @@ const getBorderColor = (type: string): string => {
 
 const getProgressBarColor = (type: string): string => {
   const colors: Record<string, string> = {
-    success: 'bg-sky-500',
+    success: 'bg-primary-500',
     error: 'bg-red-500',
     warning: 'bg-amber-500',
     info: 'bg-primary-500'

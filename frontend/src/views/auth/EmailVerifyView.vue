@@ -54,13 +54,13 @@
         <!-- Code Status -->
         <div
           v-if="codeSent"
-          class="rounded-xl border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/25 dark:bg-sky-400/10"
+          class="rounded-xl border border-primary-200 bg-primary-50 p-4 dark:border-primary-400/25 dark:bg-primary-400/10"
         >
           <div class="flex items-start gap-3">
             <div class="flex-shrink-0">
-              <Icon name="checkCircle" size="md" class="text-sky-500" />
+              <Icon name="checkCircle" size="md" class="text-primary-500" />
             </div>
-            <p class="text-sm text-sky-700 dark:text-sky-400">
+            <p class="text-sm text-primary-700 dark:text-primary-400">
               {{ t('auth.codeSentSuccess') }}
             </p>
           </div>

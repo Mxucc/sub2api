@@ -90,7 +90,7 @@
             :class="[
               'flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-colors',
               form.platform === 'openai'
-                ? 'bg-white text-sky-700 shadow-sm dark:bg-dark-600 dark:text-sky-400'
+                ? 'bg-white text-primary-700 shadow-sm dark:bg-dark-600 dark:text-primary-400'
                 : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'
             ]"
           >
@@ -371,15 +371,15 @@
             :class="[
               'flex items-center gap-3 rounded-lg border-2 p-3 text-left transition-colors',
               accountCategory === 'oauth-based'
-                ? 'border-sky-500 bg-sky-50 dark:bg-sky-900/20'
-                : 'border-gray-200 hover:border-sky-300 dark:border-dark-600 dark:hover:border-sky-400'
+                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                : 'border-gray-200 hover:border-primary-300 dark:border-dark-600 dark:hover:border-primary-400'
             ]"
           >
             <div
               :class="[
                 'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
                 accountCategory === 'oauth-based'
-                  ? 'bg-sky-600 text-white'
+                  ? 'bg-primary-600 text-white'
                   : 'bg-gray-100 text-gray-500 dark:bg-dark-600 dark:text-gray-400'
               ]"
             >
@@ -838,7 +838,7 @@
                     {{ t('admin.accounts.gemini.oauthType.badges.individuals') }}
                   </span>
                   <span
-                    class="rounded bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-sky-700 dark:bg-sky-900/40 dark:text-sky-400"
+                    class="rounded bg-primary-100 px-2 py-0.5 text-[10px] font-semibold text-primary-700 dark:bg-primary-900/40 dark:text-primary-400"
                   >
                     {{ t('admin.accounts.gemini.oauthType.badges.noGcp') }}
                   </span>
@@ -892,7 +892,7 @@
                     {{ t('admin.accounts.gemini.oauthType.badges.enterprise') }}
                   </span>
                   <span
-                    class="rounded bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-sky-700 dark:bg-sky-900/40 dark:text-sky-400"
+                    class="rounded bg-primary-100 px-2 py-0.5 text-[10px] font-semibold text-primary-700 dark:bg-primary-900/40 dark:text-primary-400"
                   >
                     {{ t('admin.accounts.gemini.oauthType.badges.highConcurrency') }}
                   </span>

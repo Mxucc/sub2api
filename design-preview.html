@@ -219,6 +219,135 @@
         </div>
       </section>
 
+
+      <!-- 列表页骨架（表格页）· 与 TablePageLayout 新结构一一对应： -->
+      <!-- 页头行（标题+操作同排） → 单张卡片（筛选=卡片头 / 表格 / 分页=卡片尾） -->
+      <section class="data-card">
+        <div class="border-b border-gray-200 px-4 py-3 dark:border-dark-700">
+          <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">列表页骨架 · 表格页新结构</h2>
+          <p class="mt-1 text-caption text-gray-500 dark:text-dark-400">
+            页头与操作按钮同一行；筛选栏是卡片头、分页是卡片尾，全部收在同一张卡片内（/keys、/accounts、/users … 通用）
+          </p>
+        </div>
+
+        <div class="space-y-3 p-4">
+          <!-- ① 页头行：标题/描述 左，操作 右 -->
+          <div class="flex items-start justify-between gap-4 border-b border-gray-200 pb-3 dark:border-dark-700">
+            <div class="min-w-0 flex-1">
+              <h3 class="page-title">API 密钥</h3>
+              <p class="page-description">管理您的 API 密钥、分组、配额与限速策略</p>
+            </div>
+            <div class="flex shrink-0 items-center gap-2">
+              <button class="btn btn-secondary btn-sm">刷新</button>
+              <button class="btn btn-secondary btn-sm">列设置</button>
+              <button class="btn btn-primary btn-sm">创建密钥</button>
+            </div>
+          </div>
+
+          <!-- ② 表格卡片 -->
+          <div class="surface">
+            <!-- 卡片头：筛选栏（.filter-bar 自带 px-4 py-3 + 底部 1px 线） -->
+            <div class="filter-bar">
+              <input class="input w-64" placeholder="搜索密钥名称" />
+              <button class="input flex w-40 items-center justify-between text-left">
+                <span class="text-gray-500 dark:text-dark-400">全部分组</span>
+                <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <button class="input flex w-40 items-center justify-between text-left">
+                <span class="text-gray-500 dark:text-dark-400">全部状态</span>
+                <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- 端点条：可复制的接入地址 -->
+            <div class="flex flex-wrap items-center gap-2 border-b border-gray-200 bg-gray-50/70 px-4 py-2 dark:border-dark-700 dark:bg-dark-950/60">
+              <span class="flex items-center gap-1.5 border border-gray-200 bg-white px-2.5 py-1.5 text-xs dark:border-dark-600 dark:bg-dark-800">
+                <span class="font-medium text-gray-600 dark:text-gray-300">API 端点</span>
+                <span class="bg-primary-50 px-1 py-px text-[10px] font-medium leading-tight text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">默认</span>
+                <span class="text-gray-300 dark:text-dark-500">|</span>
+                <code class="cursor-pointer font-mono text-gray-500 hover:text-primary-600 dark:text-gray-400">https://api.example.com</code>
+              </span>
+              <span class="flex items-center gap-1.5 border border-gray-200 bg-white px-2.5 py-1.5 text-xs dark:border-dark-600 dark:bg-dark-800">
+                <span class="font-medium text-gray-600 dark:text-gray-300">备用端点</span>
+                <span class="text-gray-300 dark:text-dark-500">|</span>
+                <code class="cursor-pointer font-mono text-gray-500 hover:text-primary-600 dark:text-gray-400">https://backup.example.com</code>
+              </span>
+            </div>
+
+            <!-- 批量操作条：选中行时才出现（品牌底色条） -->
+            <div class="flex flex-wrap items-center gap-3 border-b border-gray-200 bg-primary-50 px-4 py-2 text-control dark:border-dark-700 dark:bg-primary-500/10">
+              <span class="text-gray-600 dark:text-gray-300">已选择 2 个密钥</span>
+              <button class="btn btn-primary btn-sm">批量编辑</button>
+              <button class="btn btn-secondary btn-sm">取消选择</button>
+            </div>
+
+            <!-- 表格 -->
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="w-10"><input type="checkbox" class="checkbox" checked /></th>
+                    <th>名称</th>
+                    <th>密钥</th>
+                    <th>分组</th>
+                    <th class="text-center">当前并发</th>
+                    <th>用量</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="row-selected">
+                    <td><input type="checkbox" class="checkbox" checked /></td>
+                    <td class="font-medium text-gray-900 dark:text-gray-100">生产环境</td>
+                    <td><code class="code text-xs">sk-9f2a…c41d</code></td>
+                    <td><span class="tag tag-primary">VIP 专线 ×1.5</span></td>
+                    <td class="text-center">
+                      <span class="inline-flex min-w-8 items-center justify-center bg-primary-50 px-2 py-1 text-sm font-semibold tabular-nums text-primary-700 ring-1 ring-primary-200 dark:bg-primary-900/25 dark:text-primary-400 dark:ring-primary-800">3</span>
+                    </td>
+                    <td>
+                      <div class="text-caption text-gray-500 dark:text-dark-400">今日 $4.1280 / 累计 $128.4400</div>
+                      <div class="mt-1 h-1.5 w-full overflow-hidden bg-gray-200 dark:bg-dark-600">
+                        <div class="h-full bg-primary-500" style="width: 42%"></div>
+                      </div>
+                    </td>
+                    <td><span class="badge badge-success">正常</span></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" class="checkbox" /></td>
+                    <td class="font-medium text-gray-900 dark:text-gray-100">移动端</td>
+                    <td><code class="code text-xs">sk-31bc…77ae</code></td>
+                    <td><span class="tag tag-primary">GPT 分组 ×1.0</span></td>
+                    <td class="text-center">
+                      <span class="inline-flex min-w-8 items-center justify-center bg-gray-100 px-2 py-1 text-sm font-semibold tabular-nums text-gray-500 dark:bg-dark-700 dark:text-dark-400">0</span>
+                    </td>
+                    <td>
+                      <div class="text-caption text-gray-500 dark:text-dark-400">今日 $0.8020 / 累计 $12.0040</div>
+                      <div class="mt-1 h-1.5 w-full overflow-hidden bg-gray-200 dark:bg-dark-600">
+                        <div class="h-full bg-amber-500" style="width: 84%"></div>
+                      </div>
+                    </td>
+                    <td><span class="badge badge-warning">配额耗尽</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 卡片尾：分页 -->
+            <div class="card-footer flex flex-wrap items-center justify-between gap-3">
+              <span class="text-caption text-gray-500 dark:text-dark-400">共 2 条记录 · 每页 20 条</span>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary btn-sm">上一页</button>
+                <button class="btn btn-primary btn-sm">1</button>
+                <button class="btn btn-secondary btn-sm">下一页</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <!-- 指标卡 + 关键指标行 -->
       <section class="grid gap-4 md:grid-cols-4">
         <div class="stat-card">
@@ -623,19 +752,20 @@
             </div>
           </div>
           <div>
-            <p class="section-title mb-2">状态色 sky（天蓝 · 无绿色）</p>
+            <p class="section-title mb-2">状态色（正常 / 成功 = 品牌蓝 · 警告 = amber · 失败 = red）</p>
             <div class="flex flex-wrap gap-2">
-              <div class="h-10 w-16 bg-sky-50"></div>
-              <div class="h-10 w-16 bg-sky-100"></div>
-              <div class="h-10 w-16 bg-sky-200"></div>
-              <div class="h-10 w-16 bg-sky-300"></div>
-              <div class="h-10 w-16 bg-sky-400"></div>
-              <div class="h-10 w-16 bg-sky-500"></div>
-              <div class="h-10 w-16 bg-sky-600"></div>
-              <div class="h-10 w-16 bg-sky-700"></div>
+              <div class="h-10 w-16 bg-primary-100"></div>
+              <div class="h-10 w-16 bg-primary-200"></div>
+              <div class="h-10 w-16 bg-primary-300"></div>
+              <div class="h-10 w-16 bg-primary-500"></div>
+              <div class="h-10 w-16 bg-primary-700"></div>
+              <div class="h-10 w-16 bg-amber-100"></div>
+              <div class="h-10 w-16 bg-amber-500"></div>
+              <div class="h-10 w-16 bg-red-100"></div>
+              <div class="h-10 w-16 bg-red-500"></div>
             </div>
             <div class="mt-3 flex flex-wrap items-center gap-4 text-caption">
-              <span class="text-sky-700 dark:text-sky-400">正常 / 成功 → sky-700</span>
+              <span class="text-primary-700 dark:text-primary-400">正常 / 成功 → primary-700</span>
               <span class="text-amber-700 dark:text-amber-400">警告 → amber-700</span>
               <span class="text-red-700 dark:text-red-400">失败 → red-700</span>
               <span class="text-primary-600 dark:text-primary-300">品牌 / 交互 → primary-600</span>

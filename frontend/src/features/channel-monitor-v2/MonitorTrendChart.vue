@@ -19,7 +19,7 @@
           <span class="h-2 w-2 rounded-full bg-red-500"></span>{{ t('channelMonitorV2.chart.errorLegend') }}
         </span>
         <span class="flex shrink-0 items-center gap-1">
-          <span class="h-2 w-2 rounded-full bg-sky-500"></span>{{ t('channelMonitorV2.chart.cacheLegend') }}
+          <span class="h-2 w-2 rounded-full bg-primary-400"></span>{{ t('channelMonitorV2.chart.cacheLegend') }}
         </span>
         <span class="flex shrink-0 items-center gap-1">
           <span class="h-2 w-2 rounded-full bg-primary-500"></span>{{ t('channelMonitorV2.chart.ttftLegend') }}
@@ -145,8 +145,8 @@ const chartData = computed(() => {
       {
         label: t('channelMonitorV2.chart.cacheDataset'),
         data: cacheRates,
-        borderColor: '#38bdf8',
-        backgroundColor: 'rgba(56, 189, 248, 0.08)',
+        borderColor: '#366ef4',
+        backgroundColor: 'rgba(54, 110, 244, 0.08)',
         yAxisID: 'yPct',
         tension: 0.4,
         cubicInterpolationMode: 'monotone' as const,
@@ -159,8 +159,8 @@ const chartData = computed(() => {
       {
         label: t('channelMonitorV2.chart.ttftDataset'),
         data: ttftP50,
-        borderColor: '#0ea5e9',
-        backgroundColor: 'rgba(14, 165, 233, 0.08)',
+        borderColor: '#0052d9',
+        backgroundColor: 'rgba(0, 82, 217, 0.08)',
         yAxisID: 'yTtft',
         tension: 0.4,
         cubicInterpolationMode: 'monotone' as const,
@@ -260,12 +260,12 @@ const chartOptions = computed(() => {
         position: 'right' as const,
         min: 0,
         ticks: {
-          color: '#0ea5e9',
+          color: '#0052d9',
           font: { size: 10 },
           callback: (v: string | number) => formatMonitorMs(Number(v)),
         },
         grid: { display: false },
-        title: { display: true, text: t('channelMonitorV2.metrics.ttftP50'), color: '#0ea5e9', font: { size: 11 } },
+        title: { display: true, text: t('channelMonitorV2.metrics.ttftP50'), color: '#0052d9', font: { size: 11 } },
       },
     },
   }

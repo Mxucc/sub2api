@@ -2,7 +2,7 @@
   <AppLayout>
     <TablePageLayout>
       <template #filters>
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="filter-bar">
           <div class="relative w-full md:w-80">
             <Icon name="search" size="md" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input v-model="filters.search" type="text" class="input pl-10" :placeholder="t('admin.affiliates.records.searchPlaceholder')" @input="debounceLoad" />
@@ -362,7 +362,7 @@ const AmountText = defineComponent({
   setup(amountProps) {
     return () => h('span', {
       class: amountProps.strong
-        ? 'text-sm font-semibold text-sky-700 dark:text-sky-400'
+        ? 'text-sm font-semibold text-primary-700 dark:text-primary-400'
         : 'text-sm text-gray-900 dark:text-white',
     }, `$${formatAmount(amountProps.value)}`)
   },

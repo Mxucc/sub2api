@@ -59,12 +59,12 @@
       </div>
     </div>
     <div class="card p-4 flex items-center gap-3">
-      <div class="rounded-lg bg-sky-100 p-2 dark:bg-sky-900/30 text-sky-700">
+      <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-900/30 text-primary-700">
         <Icon name="dollar" size="md" />
       </div>
       <div class="min-w-0 flex-1">
         <p class="text-xs font-medium text-gray-500">{{ t('usage.totalCost') }}</p>
-        <p class="text-xl font-bold text-sky-700">
+        <p class="text-xl font-bold text-primary-700">
           ${{ (stats?.total_actual_cost || 0).toFixed(4) }}
         </p>
         <p class="text-xs text-gray-400">

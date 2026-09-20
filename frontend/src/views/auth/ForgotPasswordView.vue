@@ -13,16 +13,16 @@
 
       <!-- Success State -->
       <div v-if="isSubmitted" class="space-y-6">
-        <div class="rounded-xl border border-sky-200 bg-sky-50 p-6 dark:border-sky-400/25 dark:bg-sky-400/10">
+        <div class="rounded-xl border border-primary-200 bg-primary-50 p-6 dark:border-primary-400/25 dark:bg-primary-400/10">
           <div class="flex flex-col items-center gap-4 text-center">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 dark:bg-sky-400/15">
-              <Icon name="checkCircle" size="lg" class="text-sky-700 dark:text-sky-400" />
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-400/15">
+              <Icon name="checkCircle" size="lg" class="text-primary-700 dark:text-primary-400" />
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-sky-800 dark:text-sky-400">
+              <h3 class="text-lg font-semibold text-primary-800 dark:text-primary-400">
                 {{ t('auth.resetEmailSent') }}
               </h3>
-              <p class="mt-2 text-sm text-sky-700 dark:text-sky-400">
+              <p class="mt-2 text-sm text-primary-700 dark:text-primary-400">
                 {{ t('auth.resetEmailSentHint') }}
               </p>
             </div>

@@ -256,12 +256,12 @@ Centered: Both horizontally and vertically
 
 ### Semantic（状态色）
 
-- **成功/正常/验证通过**: `sky` 系（天蓝）— 文字 `sky-700`、浅底 `sky-50`、
-  深色模式文字 `sky-400` / 浅底 `sky-500/10`；实底按钮 `sky-700`
+- **成功/正常/验证通过**: 品牌蓝 `primary` (#0052D9) — 文字 `primary-700`、浅底 `primary-50`、
+  深色模式文字 `primary-400` / 浅底 `primary-500/10`；实底按钮 `primary-700`
 - **警告**: `amber` 系 — 文字 `amber-700`、浅底 `amber-50`
 - **错误**: `red` 系 — 文字 `red-700`、浅底 `red-50`、描边 `red-200`
 
-> 注意：本项目的状态色**不使用绿色**（emerald/green 已全部替换为天蓝 sky）。
+> 注意：本项目的状态色**不使用绿色**（emerald/green 已全部替换为品牌蓝 primary）。
 
 ### Shape
 

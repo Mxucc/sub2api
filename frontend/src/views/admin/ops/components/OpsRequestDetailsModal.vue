@@ -157,7 +157,7 @@ function openErrorDetail(errorId: number | null | undefined) {
 
 const kindBadgeClass = (kind: string) => {
   if (kind === 'error') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-  return 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
+  return 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
 }
 </script>
 

@@ -106,7 +106,7 @@
                 <td class="py-1.5 text-right text-gray-600 dark:text-gray-400">
                   {{ formatTokens(item.total_tokens) }}
                 </td>
-                <td class="py-1.5 text-right text-sky-700 dark:text-sky-400">
+                <td class="py-1.5 text-right text-primary-700 dark:text-primary-400">
                   ${{ formatCost(item.actual_cost) }}
                 </td>
                 <td class="py-1.5 text-right text-gray-400 dark:text-gray-500">
@@ -213,12 +213,12 @@ const toggleBreakdown = async (endpoint: string) => {
 
 const chartColors = [
   '#0052d9',
-  '#38bdf8',
+  '#366ef4',
   '#f59e0b',
   '#ef4444',
   '#8b5cf6',
   '#ec4899',
-  '#0284c7',
+  '#003cab',
   '#f97316',
   '#6366f1',
   '#22d3ee',

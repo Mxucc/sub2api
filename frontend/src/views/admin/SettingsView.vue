@@ -170,16 +170,16 @@
                 <!-- Newly Generated Key Display -->
                 <div
                   v-if="newAdminApiKey"
-                  class="space-y-3 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-800 dark:bg-sky-900/20"
+                  class="space-y-3 rounded-lg border border-primary-200 bg-primary-50 p-4 dark:border-primary-800 dark:bg-primary-900/20"
                 >
                   <p
-                    class="text-sm font-medium text-sky-700 dark:text-sky-400"
+                    class="text-sm font-medium text-primary-700 dark:text-primary-400"
                   >
                     {{ t("admin.settings.adminApiKey.keyWarning") }}
                   </p>
                   <div class="flex items-center gap-2">
                     <code
-                      class="flex-1 select-all break-all rounded border border-sky-300 bg-white px-3 py-2 font-mono text-sm dark:border-sky-400 dark:bg-dark-800"
+                      class="flex-1 select-all break-all rounded border border-primary-300 bg-white px-3 py-2 font-mono text-sm dark:border-primary-400 dark:bg-dark-800"
                     >
                       {{ newAdminApiKey }}
                     </code>
@@ -191,7 +191,7 @@
                       {{ t("admin.settings.adminApiKey.copyKey") }}
                     </button>
                   </div>
-                  <p class="text-xs text-sky-700 dark:text-sky-400">
+                  <p class="text-xs text-primary-700 dark:text-primary-400">
                     {{ t("admin.settings.adminApiKey.usage") }}
                   </p>
                 </div>
@@ -1668,7 +1668,7 @@
                   class="mt-3 rounded-lg border px-3 py-2 text-sm"
                   :class="
                     form.passkey_configured
-                      ? 'border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-400'
+                      ? 'border-primary-200 bg-primary-50 text-primary-800 dark:border-primary-900 dark:bg-primary-950/40 dark:text-primary-400'
                       : 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300'
                   "
                   data-testid="passkey-config-status"
@@ -5881,7 +5881,7 @@
                           !expandedProviders[pIdx] &&
                           provider.api_key_configured
                         "
-                        class="text-xs text-sky-500"
+                        class="text-xs text-primary-500"
                       >
                         {{
                           t(
@@ -6080,7 +6080,7 @@
                               ? 'bg-red-500'
                               : quotaPercentage(provider) > 70
                                 ? 'bg-yellow-500'
-                                : 'bg-sky-500'
+                                : 'bg-primary-500'
                           "
                           :style="{
                             width:

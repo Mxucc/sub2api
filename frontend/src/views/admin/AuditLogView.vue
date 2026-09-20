@@ -3,7 +3,7 @@
     <TablePageLayout>
       <!-- Filters -->
       <template #filters>
-        <div class="card p-4 sm:p-6">
+        <div class="border-b border-gray-200 p-4 dark:border-dark-700 sm:p-6">
           <div class="flex flex-wrap items-end justify-between gap-4">
             <!-- Left: filter fields -->
             <div class="flex flex-1 flex-wrap items-end gap-4">
@@ -672,13 +672,13 @@ function statusBadgeClass(status: number): string {
   const base = 'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold '
   if (status >= 500) return base + 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
   if (status >= 400) return base + 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
-  return base + 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
+  return base + 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
 }
 
 function statusDotClass(status: number): string {
   if (status >= 500) return 'bg-red-500'
   if (status >= 400) return 'bg-amber-500'
-  return 'bg-sky-500'
+  return 'bg-primary-500'
 }
 
 onMounted(fetchLogs)

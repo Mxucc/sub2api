@@ -85,7 +85,7 @@ const BORDER_STRONG_DEFAULT = 'border-gray-300 dark:border-dark-600'
 //    from it via CSS color-mix, e.g. plaza paid-price zone) ──
 const ACCENT: Record<Platform, string> = {
   anthropic: '#f97316', // orange-500
-  openai: '#0ea5e9', // green-500
+  openai: '#0ea5e9', // sky-500 (OpenAI 平台身份色)
   antigravity: '#a855f7', // purple-500
   gemini: '#3b82f6', // blue-500
   grok: '#71717a', // zinc-500

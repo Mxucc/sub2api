@@ -531,6 +531,6 @@ function apiModeBadgeClass(mode: APIMode): string {
   if (normalizeAPIMode(mode) === API_MODE_RESPONSES) {
     return 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
   }
-  return 'bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-400'
+  return 'bg-primary-100 text-primary-700 dark:bg-primary-400/15 dark:text-primary-400'
 }
 </script>

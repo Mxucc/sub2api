@@ -22,7 +22,7 @@
                 <p class="text-xl font-bold text-gray-900 dark:text-white">
                   {{ stats.total_api_keys }}
                 </p>
-                <p class="text-xs text-sky-700 dark:text-sky-400">
+                <p class="text-xs text-primary-700 dark:text-primary-400">
                   {{ stats.active_api_keys }} {{ t('common.active') }}
                 </p>
               </div>
@@ -43,7 +43,7 @@
                   {{ stats.total_accounts }}
                 </p>
                 <p class="text-xs">
-                  <span class="text-sky-700 dark:text-sky-400"
+                  <span class="text-primary-700 dark:text-primary-400"
                     >{{ stats.normal_accounts }} {{ t('common.active') }}</span
                   >
                   <span v-if="stats.error_accounts > 0" class="ml-1 text-red-500"
@@ -57,8 +57,8 @@
           <!-- Today Requests -->
           <div class="card p-4">
             <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-sky-100 p-2 dark:bg-sky-900/30">
-                <Icon name="chart" size="md" class="text-sky-700 dark:text-sky-400" :stroke-width="2" />
+              <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-900/30">
+                <Icon name="chart" size="md" class="text-primary-700 dark:text-primary-400" :stroke-width="2" />
               </div>
               <div>
                 <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
@@ -77,14 +77,14 @@
           <!-- New Users Today -->
           <div class="card p-4">
             <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-sky-100 p-2 dark:bg-sky-900/30">
-                <Icon name="userPlus" size="md" class="text-sky-700 dark:text-sky-400" :stroke-width="2" />
+              <div class="rounded-lg bg-primary-100 p-2 dark:bg-primary-900/30">
+                <Icon name="userPlus" size="md" class="text-primary-700 dark:text-primary-400" :stroke-width="2" />
               </div>
               <div>
                 <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
                   {{ t('admin.dashboard.users') }}
                 </p>
-                <p class="text-xl font-bold text-sky-700 dark:text-sky-400">
+                <p class="text-xl font-bold text-primary-700 dark:text-primary-400">
                   +{{ stats.today_new_users }}
                 </p>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
@@ -112,7 +112,7 @@
                 </p>
                 <p class="text-xs">
                   <span
-                    class="text-sky-700 dark:text-sky-400"
+                    class="text-primary-700 dark:text-primary-400"
                     :title="t('admin.dashboard.actual')"
                     >${{ formatCost(stats.today_actual_cost) }}</span
                   >
@@ -148,7 +148,7 @@
                 </p>
                 <p class="text-xs">
                   <span
-                    class="text-sky-700 dark:text-sky-400"
+                    class="text-primary-700 dark:text-primary-400"
                     :title="t('admin.dashboard.actual')"
                     >${{ formatCost(stats.total_actual_cost) }}</span
                   >
@@ -245,10 +245,10 @@
             </button>
             <button
               type="button"
-              class="group flex items-center gap-3 rounded-lg bg-gray-50 p-3 text-left transition-colors hover:bg-sky-50 dark:bg-dark-800/50 dark:hover:bg-sky-900/20"
+              class="group flex items-center gap-3 rounded-lg bg-gray-50 p-3 text-left transition-colors hover:bg-primary-50 dark:bg-dark-800/50 dark:hover:bg-primary-900/20"
               @click="router.push('/admin/groups')"
             >
-              <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400">
+              <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
                 <Icon name="grid" size="md" :stroke-width="2" />
               </span>
               <span class="min-w-0 flex-1">
@@ -259,7 +259,7 @@
                   {{ t('admin.dashboard.groupPricingDesc') }}
                 </span>
               </span>
-              <Icon name="chevronRight" size="sm" class="text-gray-400 group-hover:text-sky-500" />
+              <Icon name="chevronRight" size="sm" class="text-gray-400 group-hover:text-primary-500" />
             </button>
           </div>
         </div>
@@ -542,12 +542,12 @@ const userTrendChartData = computed(() => {
   const sortedDates = Array.from(allDates).sort()
   const colors = [
     '#0052d9',
-    '#38bdf8',
+    '#366ef4',
     '#f59e0b',
     '#ef4444',
     '#8b5cf6',
     '#ec4899',
-    '#0284c7',
+    '#003cab',
     '#f97316',
     '#6366f1',
     '#22d3ee',

@@ -399,7 +399,7 @@
           >
             <span
               v-if="grokPrepaidMoneyLine.showPrepaid"
-              class="rounded bg-sky-50 px-1 py-0.5 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400"
+              class="rounded bg-primary-50 px-1 py-0.5 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400"
               :title="t('admin.accounts.usageWindow.grokPrepaid')"
             >
               {{ t('admin.accounts.usageWindow.grokPrepaid') }} ${{ grokPrepaidMoneyLine.prepaid }}

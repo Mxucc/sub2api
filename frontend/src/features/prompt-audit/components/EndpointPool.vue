@@ -47,7 +47,7 @@
             <div class="min-w-0">
               <div class="flex min-w-0 items-center gap-2">
                 <p class="truncate font-semibold text-gray-950 dark:text-white">{{ endpoint.name }}</p>
-                <span class="h-1.5 w-1.5 shrink-0 rounded-full" :class="endpoint.enabled ? 'bg-sky-500' : 'bg-gray-300 dark:bg-dark-500'" aria-hidden="true" />
+                <span class="h-1.5 w-1.5 shrink-0 rounded-full" :class="endpoint.enabled ? 'bg-primary-500' : 'bg-gray-300 dark:bg-dark-500'" aria-hidden="true" />
               </div>
               <p class="mt-0.5 truncate font-mono text-[11px] text-gray-500 dark:text-dark-400" :title="endpoint.base_url">{{ endpoint.base_url }}</p>
             </div>
@@ -68,14 +68,14 @@
 
           <div class="min-w-0">
             <p class="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 xl:hidden">{{ t('admin.promptAudit.pool.credential') }}</p>
-            <div class="flex items-center gap-1.5 text-xs font-medium" :class="credentialInvalid(endpoint) ? 'text-red-600 dark:text-red-300' : hasCredential(endpoint) ? 'text-sky-700 dark:text-sky-400' : 'text-gray-500 dark:text-dark-400'">
-              <span class="h-1.5 w-1.5 rounded-full" :class="credentialInvalid(endpoint) ? 'bg-red-500' : hasCredential(endpoint) ? 'bg-sky-500' : 'bg-gray-300 dark:bg-dark-500'" aria-hidden="true" />
+            <div class="flex items-center gap-1.5 text-xs font-medium" :class="credentialInvalid(endpoint) ? 'text-red-600 dark:text-red-300' : hasCredential(endpoint) ? 'text-primary-700 dark:text-primary-400' : 'text-gray-500 dark:text-dark-400'">
+              <span class="h-1.5 w-1.5 rounded-full" :class="credentialInvalid(endpoint) ? 'bg-red-500' : hasCredential(endpoint) ? 'bg-primary-500' : 'bg-gray-300 dark:bg-dark-500'" aria-hidden="true" />
               {{ credentialInvalid(endpoint) ? t('admin.promptAudit.pool.invalid') : hasCredential(endpoint) ? t('admin.promptAudit.pool.configured') : t('admin.promptAudit.pool.missing') }}
             </div>
             <p v-if="probingIds.includes(endpoint.id)" class="mt-1.5 text-xs text-primary-600 dark:text-primary-300">
               {{ t('admin.promptAudit.pool.probeProgress') }}
             </p>
-            <p v-if="probeResults[endpoint.id]" class="mt-1.5 line-clamp-2 text-xs leading-5" :class="probeResults[endpoint.id].ok ? 'text-sky-700 dark:text-sky-400' : 'text-red-600 dark:text-red-300'">
+            <p v-if="probeResults[endpoint.id]" class="mt-1.5 line-clamp-2 text-xs leading-5" :class="probeResults[endpoint.id].ok ? 'text-primary-700 dark:text-primary-400' : 'text-red-600 dark:text-red-300'">
               {{ t('admin.promptAudit.pool.probeResult', { status: probeResults[endpoint.id].status, http: probeResults[endpoint.id].http_status || '—', latency: probeResults[endpoint.id].latency_ms }) }}
               · {{ probeResults[endpoint.id].message }}
             </p>

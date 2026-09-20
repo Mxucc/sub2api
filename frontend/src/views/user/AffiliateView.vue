@@ -29,7 +29,7 @@
           </div>
           <div class="card p-5">
             <p class="text-sm text-gray-500 dark:text-dark-400">{{ t('affiliate.stats.availableQuota') }}</p>
-            <p class="mt-2 text-2xl font-semibold text-sky-700 dark:text-sky-400">
+            <p class="mt-2 text-2xl font-semibold text-primary-700 dark:text-primary-400">
               {{ formatCurrency(detail.aff_quota) }}
             </p>
           </div>
@@ -127,7 +127,7 @@
                 >
                   <td class="px-3 py-3 text-gray-900 dark:text-white">{{ item.email || '-' }}</td>
                   <td class="px-3 py-3 text-gray-700 dark:text-gray-300">{{ item.username || '-' }}</td>
-                  <td class="px-3 py-3 text-right font-medium text-sky-700 dark:text-sky-400">{{ formatCurrency(item.total_rebate) }}</td>
+                  <td class="px-3 py-3 text-right font-medium text-primary-700 dark:text-primary-400">{{ formatCurrency(item.total_rebate) }}</td>
                   <td class="px-3 py-3 text-gray-700 dark:text-gray-300">{{ formatDateTime(item.created_at) || '-' }}</td>
                 </tr>
               </tbody>

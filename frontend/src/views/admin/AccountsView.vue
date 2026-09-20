@@ -98,7 +98,7 @@
                         <span class="flex-1 text-left">{{ t('admin.accounts.syncFromCrs') }}</span>
                       </button>
                       <button class="account-tools-menu-item" @click="openImportData">
-                        <span class="account-tools-menu-icon bg-sky-50 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400">
+                        <span class="account-tools-menu-icon bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
                           <Icon name="upload" size="sm" />
                         </span>
                         <span class="flex-1 text-left">{{ t('admin.accounts.dataImport') }}</span>
@@ -355,7 +355,7 @@
               <span>{{ formatMultiplier(row.rate_multiplier ?? 1) }}x</span>
               <span
                 v-if="row.extra?.upstream_billing_rate_sync_enabled === true"
-                class="inline-flex cursor-help text-sky-700 dark:text-sky-400"
+                class="inline-flex cursor-help text-primary-700 dark:text-primary-400"
                 :aria-label="t('admin.accounts.upstreamBilling.syncedRateTooltip')"
                 :title="t('admin.accounts.upstreamBilling.syncedRateTooltip')"
                 data-testid="account-rate-sync-indicator"
@@ -425,7 +425,7 @@
                 </span>
                 <span
                   v-if="row.auto_pause_on_expired && value"
-                  class="inline-flex items-center rounded-md bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-900/30 dark:text-sky-400"
+                  class="inline-flex items-center rounded-md bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-400"
                 >
                   {{ t('admin.accounts.autoPauseOnExpired') }}
                 </span>
@@ -1746,8 +1746,8 @@ function getOpenAICompactMeta(row: any): { label: string; className: string; dot
     case 'active':
       return {
         label: t('admin.accounts.openai.compactSupported'),
-        className: 'text-sky-700 dark:text-sky-400',
-        dotClass: 'bg-sky-500 shadow-[0_0_0_2px_rgba(56,189,248,0.14)]'
+        className: 'text-primary-700 dark:text-primary-400',
+        dotClass: 'bg-primary-500 shadow-[0_0_0_2px_rgba(0,82,217,0.14)]'
       }
     case 'blocked':
       return {

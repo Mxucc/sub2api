@@ -151,7 +151,7 @@ const labelClass = computed(() => {
     return `${base} bg-orange-200/60 text-orange-800 dark:bg-orange-800/40 dark:text-orange-300`
   }
   if (props.platform === 'openai') {
-    return `${base} bg-sky-200/60 text-sky-800 dark:bg-sky-800/40 dark:text-sky-400`
+    return `${base} bg-primary-200/60 text-primary-800 dark:bg-primary-800/40 dark:text-primary-400`
   }
   if (props.platform === 'gemini') {
     return `${base} bg-blue-200/60 text-blue-800 dark:bg-blue-800/40 dark:text-blue-300`
@@ -194,13 +194,13 @@ const badgeClass = computed(() => {
   } else if (props.platform === 'openai') {
     // OpenAI: green theme
     return isSubscription.value
-      ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
-      : 'bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400'
+      ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+      : 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
   }
   if (props.platform === 'gemini') {
     return isSubscription.value
       ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-      : 'bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400'
+      : 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
   }
   if (props.platform === 'antigravity') {
     return isSubscription.value
@@ -240,6 +240,6 @@ const badgeClass = computed(() => {
   // Fallback: original colors
   return isSubscription.value
     ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400'
-    : 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
+    : 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
 })
 </script>

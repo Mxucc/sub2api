@@ -126,7 +126,7 @@
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="key" size="md" :class="invitationValidation.valid ? 'text-sky-500' : 'text-gray-400 dark:text-dark-500'" />
+              <Icon name="key" size="md" :class="invitationValidation.valid ? 'text-primary-500' : 'text-gray-400 dark:text-dark-500'" />
             </div>
             <input
               id="invitation_code"
@@ -135,7 +135,7 @@
               :disabled="registrationActionDisabled"
               class="input pl-11 pr-10"
               :class="{
-                'border-sky-500 focus:border-sky-500 focus:ring-sky-500/20': invitationValidation.valid,
+                'border-primary-500 focus:border-primary-500 focus:ring-primary-500/20': invitationValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': invitationValidation.invalid || errors.invitation_code
               }"
               :placeholder="t('auth.invitationCodePlaceholder')"
@@ -149,7 +149,7 @@
               </svg>
             </div>
             <div v-else-if="invitationValidation.valid" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
-              <Icon name="checkCircle" size="md" class="text-sky-500" />
+              <Icon name="checkCircle" size="md" class="text-primary-500" />
             </div>
             <div v-else-if="invitationValidation.invalid || errors.invitation_code" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
               <Icon name="exclamationCircle" size="md" class="text-red-500" />
@@ -157,9 +157,9 @@
           </div>
           <!-- Invitation code validation result -->
           <transition name="fade">
-            <div v-if="invitationValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 dark:bg-sky-400/10">
-              <Icon name="checkCircle" size="sm" class="text-sky-700 dark:text-sky-400" />
-              <span class="text-sm text-sky-700 dark:text-sky-400">
+            <div v-if="invitationValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-primary-50 px-3 py-2 dark:bg-primary-400/10">
+              <Icon name="checkCircle" size="sm" class="text-primary-700 dark:text-primary-400" />
+              <span class="text-sm text-primary-700 dark:text-primary-400">
                 {{ t('auth.invitationCodeValid') }}
               </span>
             </div>
@@ -195,7 +195,7 @@
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="gift" size="md" :class="promoValidation.valid ? 'text-sky-500' : 'text-gray-400 dark:text-dark-500'" />
+              <Icon name="gift" size="md" :class="promoValidation.valid ? 'text-primary-500' : 'text-gray-400 dark:text-dark-500'" />
             </div>
             <input
               id="promo_code"
@@ -204,7 +204,7 @@
               :disabled="registrationActionDisabled"
               class="input pl-11 pr-10"
               :class="{
-                'border-sky-500 focus:border-sky-500 focus:ring-sky-500/20': promoValidation.valid,
+                'border-primary-500 focus:border-primary-500 focus:ring-primary-500/20': promoValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': promoValidation.invalid
               }"
               :placeholder="t('auth.promoCodePlaceholder')"
@@ -218,7 +218,7 @@
               </svg>
             </div>
             <div v-else-if="promoValidation.valid" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
-              <Icon name="checkCircle" size="md" class="text-sky-500" />
+              <Icon name="checkCircle" size="md" class="text-primary-500" />
             </div>
             <div v-else-if="promoValidation.invalid" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
               <Icon name="exclamationCircle" size="md" class="text-red-500" />
@@ -226,9 +226,9 @@
           </div>
           <!-- Promo code validation result -->
           <transition name="fade">
-            <div v-if="promoValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 dark:bg-sky-400/10">
-              <Icon name="gift" size="sm" class="text-sky-700 dark:text-sky-400" />
-              <span class="text-sm text-sky-700 dark:text-sky-400">
+            <div v-if="promoValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-primary-50 px-3 py-2 dark:bg-primary-400/10">
+              <Icon name="gift" size="sm" class="text-primary-700 dark:text-primary-400" />
+              <span class="text-sm text-primary-700 dark:text-primary-400">
                 {{ t('auth.promoCodeValid', { amount: promoValidation.bonusAmount?.toFixed(2) }) }}
               </span>
             </div>

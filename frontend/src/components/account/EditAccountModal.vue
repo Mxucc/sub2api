@@ -1344,7 +1344,7 @@
               type="button"
               @click="syncAntigravityUpstreamModels"
               :disabled="isSyncingAntigravityUpstream || !account?.id"
-              class="rounded-lg border border-sky-200 px-3 py-1.5 text-sm text-sky-700 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-sky-800 dark:text-sky-400 dark:hover:bg-sky-900/30"
+              class="rounded-lg border border-primary-200 px-3 py-1.5 text-sm text-primary-700 hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/30"
             >
               {{ isSyncingAntigravityUpstream ? t('admin.accounts.syncUpstreamModelsLoading') : t('admin.accounts.syncUpstreamModels') }}
             </button>
@@ -3609,8 +3609,8 @@ const codexImageToolOptions = computed<Array<{
     value: 'enabled',
     label: t('admin.accounts.openai.codexImageToolEnabled'),
     description: t('admin.accounts.openai.codexImageToolEnabledDesc'),
-    selectedCardClass: 'border-sky-300 bg-sky-50 text-sky-900 shadow-sm ring-1 ring-sky-200 dark:border-sky-400 dark:bg-sky-900/25 dark:text-sky-400 dark:ring-sky-800',
-    selectedDotClass: 'border-sky-500 bg-sky-600 text-white'
+    selectedCardClass: 'border-primary-300 bg-primary-50 text-primary-900 shadow-sm ring-1 ring-primary-200 dark:border-primary-400 dark:bg-primary-900/25 dark:text-primary-400 dark:ring-primary-800',
+    selectedDotClass: 'border-primary-500 bg-primary-600 text-white'
   },
   {
     value: 'disabled',
@@ -3642,7 +3642,7 @@ const codexImageToolBadgeLabel = computed(() => {
 const codexImageToolBadgeClass = computed(() => {
   switch (codexImageToolMode.value) {
     case 'enabled':
-      return 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400'
+      return 'bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-400'
     case 'disabled':
       return 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
     case 'block':

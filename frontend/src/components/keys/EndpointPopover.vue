@@ -111,7 +111,7 @@ onBeforeUnmount(() => {
           type="button"
           class="rounded p-0.5 transition-colors"
           :class="copiedEndpoint === item.endpoint
-            ? 'text-sky-500 dark:text-sky-400'
+            ? 'text-primary-500 dark:text-primary-400'
             : 'text-gray-400 hover:text-primary-500 dark:text-gray-500 dark:hover:text-primary-400'"
           :aria-label="tooltipHint(item.endpoint)"
           @click="copy(item.endpoint)"

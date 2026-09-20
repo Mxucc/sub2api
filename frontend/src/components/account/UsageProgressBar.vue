@@ -113,7 +113,7 @@ watch(
 const labelClass = computed(() => {
   const colors = {
     indigo: 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300',
-    emerald: 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400',
+    emerald: 'bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-400',
     purple: 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300',
     amber: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
   }
@@ -136,14 +136,14 @@ const barClass = computed(() => {
     } else if (props.utilization <= 50) {
       return 'bg-amber-500'
     }
-    return 'bg-sky-500'
+    return 'bg-primary-500'
   }
   if (props.utilization >= 90) {
     return 'bg-red-500'
   } else if (props.utilization >= 75) {
     return 'bg-amber-500'
   } else {
-    return 'bg-sky-500'
+    return 'bg-primary-500'
   }
 })
 

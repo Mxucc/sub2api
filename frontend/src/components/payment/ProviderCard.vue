@@ -14,12 +14,12 @@
       <div class="flex items-center gap-3">
         <div :class="[
           'rounded-md p-1.5',
-          provider.enabled && enabled ? 'bg-sky-100 dark:bg-sky-900/30' : 'bg-gray-100 dark:bg-dark-700',
+          provider.enabled && enabled ? 'bg-primary-100 dark:bg-primary-900/30' : 'bg-gray-100 dark:bg-dark-700',
         ]">
           <Icon
             name="server"
             size="sm"
-            :class="provider.enabled && enabled ? 'text-sky-700 dark:text-sky-400' : 'text-gray-400'"
+            :class="provider.enabled && enabled ? 'text-primary-700 dark:text-primary-400' : 'text-gray-400'"
           />
         </div>
         <span class="text-sm font-medium text-gray-900 dark:text-white">{{ provider.name }}</span>
