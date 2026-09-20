@@ -99,10 +99,10 @@ MAJOR="$(printf '%s' "$BASE" | cut -d. -f1)"
 MINOR="$(printf '%s' "$BASE" | cut -d. -f2)"
 LINE_TAG="$MAJOR.$MINOR"
 
-# 与 .goreleaser.yaml 产出的多架构 manifest 标签保持一致：
-#   <构建版本>（不可变）、<major>.<minor>（滚动）、latest（滚动）、<major>；
-#   另有 <版本>-amd64 / -arm64 单架构标签
-PUSH="$(printf '%s\n' "$IMAGE:$VERSION" "$IMAGE:$LINE_TAG" "$IMAGE:latest")"
+# 两种构建配置都会产出的标签：<版本>（不可变）与 latest（滚动）。
+# 完整配置（SIMPLE_RELEASE 未设/false）另外还有 <major>.<minor>、<major> 两个滚动标签，
+# 以及两种配置都有的 <版本>-amd64 / -arm64 单架构标签。
+PUSH="$(printf '%s\n' "$IMAGE:$VERSION" "$IMAGE:latest")"
 
 # ------------------------------------------------------------------ 输出
 case "$FORMAT" in
@@ -141,9 +141,9 @@ case "$FORMAT" in
 发布标签     : $TAG
 镜像         :
   $IMAGE:$VERSION  （不可变，每个 commit 一个）
-  $IMAGE:$LINE_TAG        （滚动：$LINE_TAG 线最新构建）
   $IMAGE:latest           （滚动：最新构建）
-  （另有 $IMAGE:$VERSION-amd64 / -arm64 单架构标签）
+  （单架构：$IMAGE:$VERSION-amd64 / -arm64；
+    完整配置另有滚动标签 $IMAGE:$LINE_TAG 与 $IMAGE:$MAJOR）
 EOF
     ;;
   *) die "不支持的 --format：$FORMAT" ;;
