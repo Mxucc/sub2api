@@ -309,3 +309,37 @@ func TestUpdateServiceOfficialRepoStillUsesLatestEndpoint(t *testing.T) {
 func svcPlatformForTest() string {
 	return runtime.GOOS + "_" + runtime.GOARCH
 }
+
+func TestUpdateServiceCustomRepoSortsUnorderedReleaseList(t *testing.T) {
+	// GitHub 的 /releases 返回顺序并不保证按时间倒序（线上实测过乱序），
+	// 因此必须自行按 published_at 排序后再判断。
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gbbbb2222", []*GitHubRelease{
+		{TagName: "v0.2.7-gaaaa1111", PublishedAt: "2026-09-20T01:00:00Z"},
+		{TagName: "v0.2.7-gcccc3333", PublishedAt: "2026-09-20T03:00:00Z"},
+		{TagName: "v0.2.7-gbbbb2222", PublishedAt: "2026-09-20T02:00:00Z"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.Equal(t, "0.2.7-gcccc3333", info.LatestVersion, "最新的构建应按发布时间选出")
+	require.True(t, info.HasUpdate)
+}
+
+func TestUpdateServiceCustomRepoCurrentIsLatestInUnorderedList(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gcccc3333", []*GitHubRelease{
+		{TagName: "v0.2.7-gbbbb2222", PublishedAt: "2026-09-20T02:00:00Z"},
+		{TagName: "v0.2.7-gcccc3333", PublishedAt: "2026-09-20T03:00:00Z"},
+		{TagName: "v0.2.7-gaaaa1111", PublishedAt: "2026-09-20T01:00:00Z"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.Equal(t, "0.2.7-gcccc3333", info.LatestVersion)
+	require.False(t, info.HasUpdate, "自己就是最新时不应提示更新")
+}
