@@ -35,6 +35,7 @@ export default {
     updating: '正在更新...',
     updateComplete: '更新完成',
     updateFailed: '更新失败',
+    noBinaryAsset: '该发布不含当前平台的二进制归档（定制版通常只发布容器镜像），请按下方命令用镜像标签升级。',
     restartRequired: '请重启服务以应用更新',
     restartNow: '立即重启',
     restarting: '正在重启...',

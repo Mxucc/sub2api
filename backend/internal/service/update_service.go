@@ -8,6 +8,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -57,6 +58,16 @@ func releaseRepo() string {
 		return repo
 	}
 	return defaultUpdateRepo
+}
+
+// isCustomReleaseRepo 表示当前实例指向了定制版（fork）发布仓库。
+//
+// 定制版的每个构建都是一个 release，且版本号形如 0.2.7-g<sha>（semver 预发布）。
+// 这带来两个与官方发布不同的行为，需要专门处理：
+//  1. GitHub 的 /releases/latest 会跳过预发布版本 → 定制仓库通常直接 404；
+//  2. 版本比较只取 X.Y.Z（`-` 之后被截断）→ 同一上游基线的新构建会被判定为「无更新」。
+func isCustomReleaseRepo() bool {
+	return strings.TrimSpace(os.Getenv(updateRepoEnv)) != ""
 }
 
 // UpdateCache defines cache operations for update service
@@ -414,21 +425,22 @@ func (s *UpdateService) fetchRollbackCandidates(ctx context.Context) ([]*GitHubR
 }
 
 func (s *UpdateService) fetchLatestRelease(ctx context.Context) (*UpdateInfo, error) {
-	release, err := s.githubClient.FetchLatestRelease(ctx, releaseRepo())
+	repo := releaseRepo()
+
+	// 定制版（fork）发布仓库优先走 releases 列表：见 isCustomReleaseRepo 的说明。
+	// 列表查询失败（仓库名写错、网络问题等）时回退到官方路径，保证行为尽量可预期。
+	if isCustomReleaseRepo() {
+		if info, err := s.fetchLatestCustomRelease(ctx, repo); err == nil {
+			return info, nil
+		}
+	}
+
+	release, err := s.githubClient.FetchLatestRelease(ctx, repo)
 	if err != nil {
 		return nil, err
 	}
 
 	latestVersion := strings.TrimPrefix(release.TagName, "v")
-
-	assets := make([]Asset, len(release.Assets))
-	for i, a := range release.Assets {
-		assets[i] = Asset{
-			Name:        a.Name,
-			DownloadURL: a.BrowserDownloadURL,
-			Size:        a.Size,
-		}
-	}
 
 	return &UpdateInfo{
 		CurrentVersion: s.currentVersion,
@@ -439,11 +451,109 @@ func (s *UpdateService) fetchLatestRelease(ctx context.Context) (*UpdateInfo, er
 			Body:        release.Body,
 			PublishedAt: release.PublishedAt,
 			HTMLURL:     release.HTMLURL,
-			Assets:      assets,
+			Assets:      releaseAssets(release),
 		},
 		Cached:    false,
 		BuildType: s.buildType,
 	}, nil
+}
+
+// fetchLatestCustomRelease 用 releases 列表（含预发布）判断定制版是否有新构建。
+//
+// GitHub 的 releases 列表按创建时间倒序返回，因此：
+//   - 当前版本出现在列表第 i 项，则 i>0 说明存在更新的构建；
+//   - 当前版本不在列表内（很久以前构建 / 本地源码构建）时，退化为「与最新版本字符串比较」。
+func (s *UpdateService) fetchLatestCustomRelease(ctx context.Context, repo string) (*UpdateInfo, error) {
+	releases, err := s.githubClient.FetchRecentReleases(ctx, repo, rollbackFetchPageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	latest := firstPublishedRelease(releases)
+	if latest == nil {
+		return nil, errors.New("no published release found in " + repo)
+	}
+
+	latestVersion := strings.TrimPrefix(latest.TagName, "v")
+
+	info := &UpdateInfo{
+		CurrentVersion: s.currentVersion,
+		LatestVersion:  latestVersion,
+		HasUpdate:      s.hasNewerBuild(releases, latestVersion),
+		ReleaseInfo: &ReleaseInfo{
+			Name:        latest.Name,
+			Body:        latest.Body,
+			PublishedAt: latest.PublishedAt,
+			HTMLURL:     latest.HTMLURL,
+			Assets:      releaseAssets(latest),
+		},
+		Cached:    false,
+		BuildType: s.buildType,
+	}
+
+	// 简化发布（SIMPLE_RELEASE=true）只产出镜像、没有二进制归档/校验和，
+	// 此时应用内「一键更新」无法完成，给出明确提示，避免管理员误以为更新坏了。
+	if !hasPlatformArchive(latest, s.getArchiveName()) {
+		info.Warning = "release has no binary archive for this platform; pull the container image tag instead"
+	}
+
+	return info, nil
+}
+
+// hasNewerBuild 判断定制仓库里是否存在比当前构建更新的发布。
+func (s *UpdateService) hasNewerBuild(releases []*GitHubRelease, latestVersion string) bool {
+	current := strings.TrimPrefix(strings.TrimSpace(s.currentVersion), "v")
+	if current == "" {
+		return false
+	}
+
+	// 上游基线不同时用语义化版本比较，结论更准确
+	if cmp := compareVersions(current, latestVersion); cmp != 0 {
+		return cmp < 0
+	}
+
+	// 同一上游基线：靠列表顺序判断（GitHub 按创建时间倒序）
+	for i, release := range releases {
+		if release == nil || release.Draft {
+			continue
+		}
+		if strings.TrimPrefix(release.TagName, "v") == current {
+			return i > 0
+		}
+	}
+
+	return latestVersion != current
+}
+
+func firstPublishedRelease(releases []*GitHubRelease) *GitHubRelease {
+	for _, release := range releases {
+		if release == nil || release.Draft {
+			continue
+		}
+		return release
+	}
+	return nil
+}
+
+func releaseAssets(release *GitHubRelease) []Asset {
+	assets := make([]Asset, len(release.Assets))
+	for i, a := range release.Assets {
+		assets[i] = Asset{
+			Name:        a.Name,
+			DownloadURL: a.BrowserDownloadURL,
+			Size:        a.Size,
+		}
+	}
+	return assets
+}
+
+func hasPlatformArchive(release *GitHubRelease, platform string) bool {
+	for _, asset := range release.Assets {
+		if strings.Contains(asset.Name, platform) {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *UpdateService) downloadFile(ctx context.Context, downloadURL, dest string) error {

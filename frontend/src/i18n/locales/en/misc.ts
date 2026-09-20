@@ -35,6 +35,7 @@ export default {
     updating: 'Updating...',
     updateComplete: 'Update Complete',
     updateFailed: 'Update Failed',
+    noBinaryAsset: 'This release ships no binary archive for your platform (custom builds usually publish container images only). Use the image tag command below to upgrade.',
     restartRequired: 'Please restart the service to apply the update',
     restartNow: 'Restart Now',
     restarting: 'Restarting...',

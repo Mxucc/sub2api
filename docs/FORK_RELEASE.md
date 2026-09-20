@@ -123,8 +123,20 @@ Actions → 第一次构建完成后，打开
 | 变量 | 值 | 作用 |
 | --- | --- | --- |
 | `SUB2API_UPDATE_REPO` | `Mxucc/sub2api` | 让「检查更新 / 一键更新 / 回滚」用自己的 Release，**避免被更新回官方正式版**（默认值是上游仓库） |
+| `UPDATE_GITHUB_TOKEN` | 可选 | 私有仓库或触发 GitHub API 限流时填写 |
 
-> 不设置这个变量时，应用会把上游正式版当作「有更新」，一键更新会把定制版二进制覆盖成官方版 —— 定制部署请务必设置。
+> **这两个变量都必须在「运行时」设置**（容器环境变量 / systemd 环境文件 / config.yaml 的 env），
+> 不是构建期变量。`SUB2API_UPDATE_REPO` 不设置时，应用会去查上游 `Wei-Shaw/sub2api`，
+> 于是永远看不到我们自己的发布。
+>
+> 用镜像部署时改 `docker-compose.yml` 的环境变量并 `docker compose up -d` 重建容器：
+>
+> ```yaml
+> services:
+>   sub2api:
+>     environment:
+>       SUB2API_UPDATE_REPO: Mxucc/sub2api
+> ```
 
 ### 3.5 本地仓库
 
@@ -206,18 +218,61 @@ services:
 
 ## 7. 已知取舍与常见问题
 
-**Q：同一上游基线的不同构建，为什么应用内不提示「有新版本」？**
-A：应用的版本比较只看 `X.Y.Z`（`parseVersion` 在 `-` 处截断），所以 `0.2.7-aaaa` 与 `0.2.7-bbbb` 视为同一版本。
-这是刻意的：定制版靠镜像标签升级，不靠应用内自更新。
+### 7.1 为什么「检查更新」看不到我们自己的发布？
 
-**Q：每个 commit 都发版，镜像会不会太多？**
-A：GHCR 对公开包免费，`latest` / `0.2` 是滚动标签；如需要清理旧标签，可用 GitHub API 批量删除
-（`gh api --method DELETE /user/packages/container/sub2api/versions/<id>`）。
+三个原因叠加，缺一不可修：
 
-**Q：为什么 Release 被标记为 pre-release？**
-A：GoReleaser 配置为 `prerelease: auto`，`0.2.7-gxxxxxxxx` 在 semver 里属于预发布版本，因此 GitHub 会标为 pre-release
-（副作用：GitHub 的 `/releases/latest` 接口不会返回它，应用内自更新也就不会误判）。
-如需改为正式 Release，在 `.goreleaser.yaml` 里把 `release.prerelease: auto` 改成 `false`（注意这是上游文件，改动会在 rebase 时冲突）。
+1. **没设置 `SUB2API_UPDATE_REPO`** —— 应用默认只查上游 `Wei-Shaw/sub2api`（见 §3.4）。
+   这样即使点了「检查更新」，看到的也是官方版本，与我们的 `0.2.7-g<sha>` 一比就是「已是最新」。
+2. **我们的 Release 曾被标成 pre-release** —— 版本号 `0.2.7-g<sha>` 在 semver 里是预发布，
+   GoReleaser 的 `prerelease: auto` 就会把 Release 标成 Pre-release；
+   而 GitHub 的 `/releases/latest` 接口**会跳过预发布版本**，于是更新检查直接 404（前端只显示「已是最新」）。
+   现在 `fork-release.yml` 在发布后会自动执行
+   `gh release edit <tag> --prerelease=false --latest`，把定制版构建提升为正式 Release（Latest）。
+3. **同一上游基线的版本比较** —— `0.2.7-gAAAA` 与 `0.2.7-gBBBB` 只比 `X.Y.Z` 的话是「相同版本」。
+   后端在检测到 `SUB2API_UPDATE_REPO` 已配置时，会改用 **releases 列表顺序**判断
+   （列表按发布倒序；当前构建之前存在条目即为有更新），因此同一基线的新提交也能正确提示更新。
+
+对应修复后的行为：
+
+| 场景 | 结果 |
+| --- | --- |
+| 上游基线提升（0.2.7 → 0.2.8） | 「有新版本可用」，显示 `0.2.8-gxxxxxxx` |
+| 同一基线的新提交（gAAAA → gBBBB） | 「有新版本可用」，显示 `0.2.7-gBBBBBBB` |
+| 当前就是最新构建 | 「已是最新版本」 |
+
+**自检命令**（在部署机器上）：
+
+```bash
+# 1) 应用内检查更新走的是哪个仓库（应为你自己的仓库）
+docker compose exec sub2api printenv SUB2API_UPDATE_REPO
+
+# 2) 该仓库的 /releases/latest 是否可用（404 = 没有正式 Release，全是预发布）
+curl -s -o /dev/null -w '%{http_code}\n' https://api.github.com/repos/Mxucc/sub2api/releases/latest
+
+# 3) 直接看接口返回
+docker compose exec sub2api \
+  curl -s "localhost:8080/api/v1/admin/system/check-updates?force=true" | head -c 400
+```
+
+### 7.2 为什么「一键更新」不可用 / 报找不到归档？
+
+「一键更新」需要该 Release 里有**当前平台的二进制归档 + checksums**。
+仓库变量 `SIMPLE_RELEASE=true` 时只构建镜像（`archives: []`、`checksum.enable=false`），
+因此按钮会被替换为提示文案（`version.noBinaryAsset`），请按界面上给出的镜像标签命令升级：
+
+```bash
+# 1) 改 compose 里的 image: ghcr.io/mxucc/sub2api:<新版本>
+# 2) docker compose up -d
+```
+
+想要「一键更新」可用：把仓库变量 `SIMPLE_RELEASE` 设为 `false`（或删除），
+下次发布会同时产出各平台归档与 `checksums.txt`（构建时间更长）。
+
+> 容器部署推荐始终用镜像标签升级（可回滚、可审计），不要依赖应用内自更新覆盖容器内的二进制。
+
+
+### 7.3 其它常见问题
 
 **Q：构建太慢怎么办？**
 A：把仓库变量 `SIMPLE_RELEASE` 设为 `true`，只构建 x86_64 的 GHCR 镜像（跳过 arm64、归档、校验和）。
@@ -226,14 +281,24 @@ A：把仓库变量 `SIMPLE_RELEASE` 设为 `true`，只构建 x86_64 的 GHCR �
 A：先 `scripts/fork-sync-upstream.sh` 合并（基线版本随之上移），推送后会自动发 `0.2.8-gxxxxxxxx`；
 官方正式版仍在上游仓库，两边互不影响。
 
+**Q：已经发布的旧版本要不要补标记成正式 Release？**
+A：只有「最新那个」需要（`/releases/latest` 只认它）。补标记：
+`gh release edit v0.2.7-g605b448e --prerelease=false --latest`。
+历史版本保持 Pre-release 也无影响 —— 应用判定「是否有更新」用的是发布列表顺序，与 pre-release 标记无关。
+
+**Q：每个 commit 都发版，镜像会不会太多？**
+A：GHCR 对公开包免费，`latest` 是滚动标签；需要清理旧标签时可用 GitHub API 批量删除
+（`gh api --method DELETE /user/packages/container/sub2api/versions/<id>`）。
+
 ---
 
 ## 8. 相关文件
 
 | 文件 | 作用 |
 | --- | --- |
-| `.github/workflows/fork-release.yml` | 定制版流水线：每次提交构建并发版（本协议的唯一自动化入口） |
+| `.github/workflows/fork-release.yml` | 定制版流水线：每次提交构建、发版、推镜像，并把 Release 提升为 Latest |
 | `.github/workflows/release.yml` | 上游流水线，保留但排除 `v*-*` 标签（不处理我们的构建） |
+| `backend/internal/service/update_service.go` | 应用内「检查更新/回滚」：支持 `SUB2API_UPDATE_REPO`，并按发布列表判断定制版新构建 |
 | `scripts/fork-version.sh` | 版本号计算的唯一实现（本地 + CI 共用） |
 | `scripts/fork-sync-upstream.sh` | 合并上游正式版 |
 | `.goreleaser.yaml` / `.goreleaser.simple.yaml` | 上游构建配置，镜像命名按仓库所有者自动落到我们的命名空间 |

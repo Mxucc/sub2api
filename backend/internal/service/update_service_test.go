@@ -5,6 +5,7 @@ package service
 import (
 	"context"
 	"errors"
+	"runtime"
 	"testing"
 	"time"
 
@@ -184,4 +185,127 @@ func TestUpdateServiceRollbackToVersionAcceptsVPrefix(t *testing.T) {
 	require.Error(t, err)
 	require.NotErrorIs(t, err, ErrRollbackVersionNotAllowed)
 	require.Contains(t, err.Error(), "no compatible release found")
+}
+
+// ---------------------------------------------------------------------------
+// 定制版（fork）发布仓库：SUB2API_UPDATE_REPO 指向自己的仓库时，
+// 发布是 semver 预发布（0.2.7-g<sha>），必须走 releases 列表而不是 /releases/latest。
+// ---------------------------------------------------------------------------
+
+func newCustomRepoTestService(current string, releases []*GitHubRelease, official *GitHubRelease) *UpdateService {
+	return NewUpdateService(
+		&updateServiceCacheStub{},
+		&updateServiceGitHubClientStub{release: official, recentReleases: releases},
+		current,
+		"release",
+	)
+}
+
+func TestUpdateServiceCustomRepoDetectsNewerBuildOfSameBase(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gaaaa1111", []*GitHubRelease{
+		{TagName: "v0.2.7-gbbbb2222", Name: "newer"},
+		{TagName: "v0.2.7-gaaaa1111", Name: "current"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.True(t, info.HasUpdate, "同一上游基线的新构建应判定为有更新")
+	require.Equal(t, "0.2.7-gbbbb2222", info.LatestVersion)
+}
+
+func TestUpdateServiceCustomRepoCurrentBuildIsLatest(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gbbbb2222", []*GitHubRelease{
+		{TagName: "v0.2.7-gbbbb2222"},
+		{TagName: "v0.2.7-gaaaa1111"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.False(t, info.HasUpdate)
+}
+
+func TestUpdateServiceCustomRepoDetectsUpstreamBaseBump(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gbbbb2222", []*GitHubRelease{
+		{TagName: "v0.2.8-gcccc3333"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.True(t, info.HasUpdate)
+	require.Equal(t, "0.2.8-gcccc3333", info.LatestVersion)
+}
+
+func TestUpdateServiceCustomRepoSkippedDrafts(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gaaaa1111", []*GitHubRelease{
+		{TagName: "v0.2.7-gzzzz9999", Draft: true},
+		{TagName: "v0.2.7-gbbbb2222"},
+		{TagName: "v0.2.7-gaaaa1111"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.Equal(t, "0.2.7-gbbbb2222", info.LatestVersion)
+	require.True(t, info.HasUpdate)
+}
+
+func TestUpdateServiceCustomRepoWarnsWhenNoBinaryArchive(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gaaaa1111", []*GitHubRelease{
+		{TagName: "v0.2.7-gbbbb2222"},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.NotEmpty(t, info.Warning, "无二进制归档时应提示改用镜像升级")
+}
+
+func TestUpdateServiceCustomRepoNoWarningWhenArchiveExists(t *testing.T) {
+	t.Setenv(updateRepoEnv, "Mxucc/sub2api")
+
+	svc := newCustomRepoTestService("0.2.7-gaaaa1111", []*GitHubRelease{
+		{
+			TagName: "v0.2.7-gbbbb2222",
+			Assets:  []GitHubAsset{{Name: "sub2api_0.2.7-gbbbb2222_" + svcPlatformForTest() + ".tar.gz"}},
+		},
+	}, nil)
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.Empty(t, info.Warning)
+}
+
+func TestUpdateServiceOfficialRepoStillUsesLatestEndpoint(t *testing.T) {
+	// 未配置 SUB2API_UPDATE_REPO 时保持官方语义：
+	// 只用 /releases/latest（不会把预发布版本当成更新）。
+	t.Setenv(updateRepoEnv, "")
+
+	svc := newCustomRepoTestService("0.2.7", []*GitHubRelease{
+		{TagName: "v0.2.8-rc.1", Prerelease: true},
+	}, &GitHubRelease{TagName: "v0.2.7", Name: "official"})
+
+	info, err := svc.CheckUpdate(context.Background(), true)
+
+	require.NoError(t, err)
+	require.False(t, info.HasUpdate)
+	require.Equal(t, "0.2.7", info.LatestVersion)
+	require.Equal(t, "official", info.ReleaseInfo.Name)
+}
+
+func svcPlatformForTest() string {
+	return runtime.GOOS + "_" + runtime.GOARCH
 }

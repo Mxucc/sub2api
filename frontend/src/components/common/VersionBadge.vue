@@ -317,8 +317,18 @@
                   </div>
                 </div>
 
+                <!-- 该发布不含当前平台的二进制归档（例如定制版只发镜像）：
+                     提示改用手动升级命令，不显示必然失败的「立即更新」按钮 -->
+                <p
+                  v-if="versionWarning"
+                  class="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700 dark:border-amber-800/50 dark:bg-amber-900/20 dark:text-amber-300"
+                >
+                  {{ t('version.noBinaryAsset') }}
+                </p>
+
                 <!-- Update button -->
                 <button
+                  v-else
                   @click="handleUpdate"
                   :disabled="updating"
                   class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
@@ -678,6 +688,8 @@ const currentVersion = computed(() => appStore.currentVersion || props.version |
 const latestVersion = computed(() => appStore.latestVersion)
 const hasUpdate = computed(() => appStore.hasUpdate)
 const releaseInfo = computed(() => appStore.releaseInfo)
+// 后端提示（例如该发布不含当前平台的二进制归档，只能按镜像标签升级）
+const versionWarning = computed(() => appStore.versionWarning)
 const buildType = computed(() => appStore.buildType)
 
 // Update process states (local to this component)

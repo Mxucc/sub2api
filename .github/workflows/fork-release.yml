@@ -289,6 +289,19 @@ jobs:
           GITHUB_REPO_NAME: ${{ github.event.repository.name }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME || 'skip' }}
 
+      - name: Mark release as latest (not pre-release)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          # 定制版构建就是我们的正式发布：从 pre-release 提升为正式 Release 并标记 Latest。
+          # 原因：版本号 0.2.7-g<sha> 在 semver 里属于预发布，而 GitHub 的
+          # /releases/latest（应用内「检查更新」依赖的接口）会跳过预发布版本 ——
+          # 不提升的话，指向本仓库的更新检查永远拿不到我们的发布。
+          gh release edit "$TAG" --repo "${{ github.repository }}" --prerelease=false --latest
+          gh release view "$TAG" --repo "${{ github.repository }}" \
+            --json tagName,isPrerelease,isLatest --jq '"release: \(.tagName) prerelease=\(.isPrerelease) latest=\(.isLatest)"'
+
       - name: Publish summary
         if: success()
         run: |
