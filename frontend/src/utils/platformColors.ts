@@ -91,12 +91,12 @@ const ACCENT: Record<Platform, string> = {
   grok: '#71717a', // zinc-500
   kimi: '#ec4899', // pink-500
   zhipu: '#6366f1', // indigo-500
-  deepseek: '#3964fe', // brand blue
+  deepseek: '#0052d9', // brand blue
   minimax: '#f43f5e', // rose-500
   opencode_go: '#f59e0b', // amber-500
   composite: '#06b6d4', // cyan-500
 }
-const ACCENT_DEFAULT = '#3964fe' // primary-500 (brand blue)
+const ACCENT_DEFAULT = '#0052d9' // primary-500 (brand blue)
 
 // ── Accent bar (gradient) ───────────────────────────────────────────
 const ACCENT_BAR: Record<Platform, string> = {

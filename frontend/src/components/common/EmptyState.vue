@@ -20,17 +20,17 @@
     </slot>
 
     <!-- Title -->
-    <h3 class="empty-state-title">
+    <h3 class="empty-state-title text-control">
       {{ displayTitle }}
     </h3>
 
     <!-- Description -->
-    <p class="empty-state-description">
+    <p class="empty-state-description text-caption">
       {{ description }}
     </p>
 
     <!-- Action -->
-    <div v-if="actionText || $slots.action" class="mt-6">
+    <div v-if="actionText || $slots.action" class="mt-4">
       <slot name="action">
         <component
           :is="actionTo ? 'RouterLink' : 'button'"

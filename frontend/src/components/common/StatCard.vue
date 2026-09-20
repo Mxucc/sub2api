@@ -1,12 +1,12 @@
 <template>
-  <div class="stat-card">
-    <div :class="['stat-icon', iconClass]">
-      <component v-if="icon" :is="icon" class="h-6 w-6" aria-hidden="true" />
+  <div class="stat-card gap-3 p-4">
+    <div :class="['stat-icon h-8 w-8', iconClass]">
+      <component v-if="icon" :is="icon" class="h-4 w-4" aria-hidden="true" />
     </div>
     <div class="min-w-0 flex-1">
-      <p class="stat-label truncate">{{ title }}</p>
-      <p class="stat-value mt-1" :title="String(formattedValue)">{{ formattedValue }}</p>
-      <span v-if="change !== undefined" :class="['stat-trend', trendClass]">
+      <p class="stat-label truncate text-caption">{{ title }}</p>
+      <p class="stat-value mt-1 text-xl font-medium tabular-nums" :title="String(formattedValue)">{{ formattedValue }}</p>
+      <span v-if="change !== undefined" :class="['stat-trend text-caption', trendClass]">
         <Icon
           v-if="changeType !== 'neutral'"
           name="arrowUp"

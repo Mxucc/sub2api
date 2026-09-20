@@ -1,21 +1,21 @@
 <template>
   <div class="relative w-full">
     <div
-      class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 dark:text-dark-400"
+      class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-dark-400"
     >
       <Icon name="search" size="sm" />
     </div>
     <input
       :value="modelValue"
       type="text"
-      class="input pr-9 pl-10"
+      class="input h-control pr-8 pl-8 text-control"
       :placeholder="placeholder"
       @input="handleInput"
     />
     <button
       v-if="modelValue"
       type="button"
-      class="icon-btn icon-btn-sm absolute right-1.5 top-1/2 -translate-y-1/2"
+      class="icon-btn icon-btn-sm absolute right-1 top-1/2 -translate-y-1/2"
       aria-label="Clear search"
       @click="clear"
     >

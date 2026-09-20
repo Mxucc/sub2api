@@ -1,18 +1,18 @@
 <template>
   <aside
-    class="sidebar"
+    class="sidebar border-r border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-900"
     :class="[
-      sidebarCollapsed ? 'w-[72px]' : 'w-64',
+      sidebarCollapsed ? 'w-[72px]' : 'w-[232px]',
       { '-translate-x-full lg:translate-x-0': !mobileOpen }
     ]"
   >
     <!-- Logo/Brand -->
-    <div class="sidebar-header" :class="{ 'sidebar-header-collapsed': sidebarCollapsed }">
+    <div class="sidebar-header h-14 border-b border-gray-200 dark:border-dark-700" :class="{ 'sidebar-header-collapsed': sidebarCollapsed }">
       <!-- Custom Logo or Default Logo -->
       <router-link
         :to="homePath"
-        class="sidebar-logo flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl transition-opacity duration-150 hover:opacity-80"
-        :class="{ 'border border-gray-200/80 bg-white dark:border-dark-700 dark:bg-dark-800': siteLogo }"
+        class="sidebar-logo flex h-8 w-8 items-center justify-center overflow-hidden transition-opacity duration-150 hover:opacity-80"
+        :class="{ 'border border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-800': siteLogo }"
         @click="handleMenuItemClick(homePath)"
       >
         <img v-if="settingsLoaded" :src="siteLogo || '/logo.svg'" alt="Logo" class="h-full w-full object-contain" />
@@ -20,7 +20,7 @@
       <div class="sidebar-brand" :class="{ 'sidebar-brand-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">
         <router-link
           :to="homePath"
-          class="sidebar-brand-title text-lg font-bold text-gray-900 transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
+          class="sidebar-brand-title text-sm font-medium text-gray-900 transition-colors hover:text-primary-500 dark:text-white dark:hover:text-primary-400"
           @click="handleMenuItemClick(homePath)"
         >
           {{ siteName }}
@@ -35,13 +35,13 @@
       <!-- Admin View: Admin menu first, then personal menu -->
       <template v-if="isAdmin">
         <!-- Admin Section -->
-        <div class="sidebar-section">
+        <div class="sidebar-section mb-3">
           <template v-for="item in adminNavItems" :key="item.path">
             <!-- Collapsible group (has children) -->
             <template v-if="item.children?.length">
               <button
                 type="button"
-                class="sidebar-link mb-1 w-full"
+                class="sidebar-link mb-1 h-9 w-full gap-2.5 px-3 py-0 text-[13px] font-medium text-gray-700 dark:text-dark-400"
                 :class="{
                   'sidebar-link-active': isGroupActive(item) && !isGroupExpanded(item),
                   'sidebar-link-collapsed': sidebarCollapsed
@@ -49,7 +49,7 @@
                 :title="sidebarCollapsed ? item.label : undefined"
                 @click="handleGroupClick(item)"
               >
-                <component :is="item.icon" class="h-5 w-5 flex-shrink-0" />
+                <component :is="item.icon" class="h-4 w-4 flex-shrink-0" />
                 <span
                   class="sidebar-label sidebar-label-flex"
                   :class="{ 'sidebar-label-collapsed': sidebarCollapsed }"
@@ -63,7 +63,7 @@
                 </span>
               </button>
               <!-- Children -->
-              <div v-if="!sidebarCollapsed && isGroupExpanded(item)" class="mb-1 ml-4 border-l border-gray-200 pl-2 dark:border-dark-800">
+              <div v-if="!sidebarCollapsed && isGroupExpanded(item)" class="mb-1 ml-4 border-l border-gray-200 pl-2 dark:border-dark-700">
                 <router-link
                   v-for="child in item.children"
                   :key="child.path"
@@ -81,7 +81,7 @@
             <router-link
               v-else
               :to="item.path"
-              class="sidebar-link mb-1"
+              class="sidebar-link mb-1 h-9 gap-2.5 px-3 py-0 text-[13px] font-medium text-gray-700 dark:text-dark-400"
               :class="{ 'sidebar-link-active': isActive(item.path), 'sidebar-link-collapsed': sidebarCollapsed }"
               :title="sidebarCollapsed ? item.label : undefined"
               :id="
@@ -95,16 +95,16 @@
               "
               @click="handleMenuItemClick(item.path)"
             >
-              <span v-if="item.iconSvg" class="h-5 w-5 flex-shrink-0 sidebar-svg-icon" v-html="sanitizeSvg(item.iconSvg)"></span>
-              <component v-else :is="item.icon" class="h-5 w-5 flex-shrink-0" />
+              <span v-if="item.iconSvg" class="h-4 w-4 flex-shrink-0 sidebar-svg-icon" v-html="sanitizeSvg(item.iconSvg)"></span>
+              <component v-else :is="item.icon" class="h-4 w-4 flex-shrink-0" />
               <span class="sidebar-label" :class="{ 'sidebar-label-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">{{ item.label }}</span>
             </router-link>
           </template>
         </div>
 
         <!-- Personal Section for Admin (hidden in simple mode) -->
-        <div v-if="!authStore.isSimpleMode" class="sidebar-section">
-          <div class="sidebar-section-title" :class="{ 'sidebar-section-title-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">
+        <div v-if="!authStore.isSimpleMode" class="sidebar-section mb-3">
+          <div class="sidebar-section-title mb-1.5 text-xs font-medium normal-case tracking-normal text-gray-500 dark:text-dark-500" :class="{ 'sidebar-section-title-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">
             <span class="sidebar-section-title-text" :class="{ 'sidebar-section-title-text-collapsed': sidebarCollapsed }">
               {{ t('nav.myAccount') }}
             </span>
@@ -114,14 +114,14 @@
             v-for="item in personalNavItems"
             :key="item.path"
             :to="item.path"
-            class="sidebar-link mb-1"
+            class="sidebar-link mb-1 h-9 gap-2.5 px-3 py-0 text-[13px] font-medium text-gray-700 dark:text-dark-400"
             :class="{ 'sidebar-link-active': isActive(item.path), 'sidebar-link-collapsed': sidebarCollapsed }"
             :title="sidebarCollapsed ? item.label : undefined"
             :data-tour="item.path === '/keys' ? 'sidebar-my-keys' : undefined"
             @click="handleMenuItemClick(item.path)"
           >
-            <span v-if="item.iconSvg" class="h-5 w-5 flex-shrink-0 sidebar-svg-icon" v-html="sanitizeSvg(item.iconSvg)"></span>
-            <component v-else :is="item.icon" class="h-5 w-5 flex-shrink-0" />
+            <span v-if="item.iconSvg" class="h-4 w-4 flex-shrink-0 sidebar-svg-icon" v-html="sanitizeSvg(item.iconSvg)"></span>
+            <component v-else :is="item.icon" class="h-4 w-4 flex-shrink-0" />
             <span class="sidebar-label" :class="{ 'sidebar-label-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">{{ item.label }}</span>
           </router-link>
         </div>
@@ -129,19 +129,19 @@
 
       <!-- Regular User View -->
       <template v-else-if="!appStore.backendModeEnabled">
-        <div class="sidebar-section">
+        <div class="sidebar-section mb-3">
           <router-link
             v-for="item in userNavItems"
             :key="item.path"
             :to="item.path"
-            class="sidebar-link mb-1"
+            class="sidebar-link mb-1 h-9 gap-2.5 px-3 py-0 text-[13px] font-medium text-gray-700 dark:text-dark-400"
             :class="{ 'sidebar-link-active': isActive(item.path), 'sidebar-link-collapsed': sidebarCollapsed }"
             :title="sidebarCollapsed ? item.label : undefined"
             :data-tour="item.path === '/keys' ? 'sidebar-my-keys' : undefined"
             @click="handleMenuItemClick(item.path)"
           >
-            <span v-if="item.iconSvg" class="h-5 w-5 flex-shrink-0 sidebar-svg-icon" v-html="sanitizeSvg(item.iconSvg)"></span>
-            <component v-else :is="item.icon" class="h-5 w-5 flex-shrink-0" />
+            <span v-if="item.iconSvg" class="h-4 w-4 flex-shrink-0 sidebar-svg-icon" v-html="sanitizeSvg(item.iconSvg)"></span>
+            <component v-else :is="item.icon" class="h-4 w-4 flex-shrink-0" />
             <span class="sidebar-label" :class="{ 'sidebar-label-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">{{ item.label }}</span>
           </router-link>
         </div>
@@ -149,16 +149,16 @@
     </nav>
 
     <!-- Bottom Section -->
-    <div class="mt-auto border-t border-gray-200/80 p-3 dark:border-dark-800">
+    <div class="mt-auto border-t border-gray-200 p-3 dark:border-dark-700">
       <!-- Theme Toggle -->
       <button
         @click="toggleTheme"
-        class="sidebar-link mb-2 w-full"
+        class="sidebar-link mb-2 h-9 w-full gap-2.5 px-3 py-0 text-[13px] font-medium text-gray-700 dark:text-dark-400"
         :class="{ 'sidebar-link-collapsed': sidebarCollapsed }"
         :title="sidebarCollapsed ? (isDark ? t('nav.lightMode') : t('nav.darkMode')) : undefined"
       >
-        <SunIcon v-if="isDark" class="h-5 w-5 flex-shrink-0 text-amber-500" />
-        <MoonIcon v-else class="h-5 w-5 flex-shrink-0" />
+        <SunIcon v-if="isDark" class="h-4 w-4 flex-shrink-0" />
+        <MoonIcon v-else class="h-4 w-4 flex-shrink-0" />
         <span class="sidebar-label" :class="{ 'sidebar-label-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">{{
           isDark ? t('nav.lightMode') : t('nav.darkMode')
         }}</span>
@@ -167,12 +167,12 @@
       <!-- Collapse Button -->
       <button
         @click="toggleSidebar"
-        class="sidebar-link w-full"
+        class="sidebar-link h-9 w-full gap-2.5 px-3 py-0 text-[13px] font-medium text-gray-700 dark:text-dark-400"
         :class="{ 'sidebar-link-collapsed': sidebarCollapsed }"
         :title="sidebarCollapsed ? t('nav.expand') : t('nav.collapse')"
       >
-        <ChevronDoubleLeftIcon v-if="!sidebarCollapsed" class="h-5 w-5 flex-shrink-0" />
-        <ChevronDoubleRightIcon v-else class="h-5 w-5 flex-shrink-0" />
+        <ChevronDoubleLeftIcon v-if="!sidebarCollapsed" class="h-4 w-4 flex-shrink-0" />
+        <ChevronDoubleRightIcon v-else class="h-4 w-4 flex-shrink-0" />
         <span class="sidebar-label" :class="{ 'sidebar-label-collapsed': sidebarCollapsed }" :aria-hidden="sidebarCollapsed ? 'true' : 'false'">{{ t('nav.collapse') }}</span>
       </button>
     </div>
@@ -978,14 +978,14 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .sidebar-logo {
-  flex: 0 0 2.25rem;
-  min-width: 2.25rem;
+  flex: 0 0 2rem;
+  min-width: 2rem;
 }
 
 .sidebar-header-collapsed {
   gap: 0;
-  padding-left: 1.125rem;
-  padding-right: 1.125rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .sidebar-brand {
@@ -1016,8 +1016,8 @@ onBeforeUnmount(() => {
 
 .sidebar-link-collapsed {
   gap: 0;
-  padding-left: 0.875rem;
-  padding-right: 0.875rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .sidebar-section-title {
@@ -1046,14 +1046,14 @@ onBeforeUnmount(() => {
   right: 0.75rem;
   top: 50%;
   height: 1px;
-  background: rgb(229 232 238);
+  background: rgb(231 231 231); /* gray-200 */
   opacity: 0;
   transform: translateY(-50%);
   transition: opacity 0.18s ease;
 }
 
 .dark .sidebar-section-title::after {
-  background: rgb(53 54 56);
+  background: rgb(46 46 46); /* dark-700 */
 }
 
 .sidebar-section-title-text-collapsed {
@@ -1100,14 +1100,31 @@ onBeforeUnmount(() => {
 
 .sidebar-svg-icon :deep(svg) {
   display: block;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
 }
 
-/* Active nav item: soft brand pill with a subtle inset hairline */
+/* Nav icons: 16px, muted neutral; the active item inherits the brand color */
+.sidebar-link :deep(svg) {
+  color: rgb(119 119 119); /* gray-500 */
+}
+
+.dark .sidebar-link :deep(svg) {
+  color: #a6a6a6; /* dark-400 */
+}
+
+.sidebar-link-active :deep(svg),
+.sidebar-link-active:hover :deep(svg),
+.dark .sidebar-link-active :deep(svg),
+.dark .sidebar-link-active:hover :deep(svg) {
+  color: inherit;
+}
+
+/* Active nav item: soft brand chrome + a 2px brand bar on the left */
 .sidebar-link-active,
 .sidebar-link-active:hover {
-  @apply bg-primary-50 text-primary-600 ring-1 ring-inset ring-primary-100;
-  @apply dark:bg-primary-500/10 dark:text-primary-300 dark:ring-primary-500/20;
+  @apply bg-primary-50 text-primary-500;
+  box-shadow: inset 2px 0 0 0 #0052d9; /* primary-500 */
+  @apply dark:bg-primary-500/10 dark:text-primary-300;
 }
 </style>

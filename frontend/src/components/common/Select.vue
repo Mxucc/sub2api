@@ -61,7 +61,7 @@
         >
           <!-- Search input -->
           <div v-if="isSearchable" class="select-search">
-            <Icon name="search" size="sm" class="text-gray-400" />
+            <Icon name="search" size="sm" class="text-gray-500 dark:text-dark-400" />
             <input
               ref="searchInputRef"
               v-model="searchQuery"
@@ -96,14 +96,14 @@
                   v-if="option._creatable"
                   name="search"
                   size="sm"
-                  class="flex-shrink-0 text-gray-400"
+                  class="flex-shrink-0 text-gray-500 dark:text-dark-400"
                 />
                 <span class="select-option-label" :class="option._creatable && 'italic text-gray-500 dark:text-dark-300'">{{ getOptionLabel(option) }}</span>
                 <Icon
                   v-if="isSelected(option)"
                   name="check"
                   size="sm"
-                  class="text-primary-500"
+                  class="text-primary-500 dark:text-primary-300"
                   :stroke-width="2"
                 />
               </slot>
@@ -505,11 +505,11 @@ onUnmounted(() => {
 
 <style scoped>
 .select-trigger {
-  @apply flex w-full items-center justify-between gap-2;
-  @apply rounded-none px-3.5 py-2.5 text-sm;
+  @apply flex h-control w-full items-center justify-between gap-2;
+  @apply rounded-none px-3 text-control;
   @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
-  @apply text-gray-900 dark:text-gray-100;
+  @apply text-gray-900 dark:text-dark-300;
   @apply transition-[border-color,box-shadow,background-color] duration-150 ease-out;
   @apply hover:border-gray-300 dark:hover:border-dark-500;
   @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
@@ -547,7 +547,7 @@ onUnmounted(() => {
 }
 
 .select-clear {
-  @apply flex h-5 w-5 flex-shrink-0 cursor-pointer items-center justify-center rounded-md;
+  @apply flex h-6 w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-none;
   @apply text-gray-400 opacity-0 transition-[opacity,color,background-color] duration-150;
   @apply hover:bg-gray-100 hover:text-gray-600;
   @apply dark:text-dark-400 dark:hover:bg-dark-700 dark:hover:text-gray-200;
@@ -565,7 +565,7 @@ onUnmounted(() => {
 .select-dropdown-portal {
   @apply w-max min-w-[200px];
   @apply bg-white dark:bg-dark-800;
-  @apply rounded-xl;
+  @apply rounded-none;
   @apply border border-gray-200 dark:border-dark-600;
   @apply shadow-popover;
   @apply overflow-hidden;
@@ -573,14 +573,14 @@ onUnmounted(() => {
 }
 
 .select-dropdown-portal .select-search {
-  @apply flex items-center gap-2 px-3 py-2;
-  @apply border-b border-gray-100 dark:border-dark-700;
+  @apply flex h-control items-center gap-2 px-2.5;
+  @apply border-b border-gray-200/70 dark:border-dark-700;
 }
 
 .select-dropdown-portal .select-search-input {
-  @apply flex-1 bg-transparent text-sm;
-  @apply text-gray-900 dark:text-gray-100;
-  @apply placeholder:text-gray-400 dark:placeholder:text-dark-400;
+  @apply flex-1 bg-transparent text-control;
+  @apply text-gray-900 dark:text-dark-300;
+  @apply placeholder:text-gray-500 dark:placeholder:text-dark-400;
   @apply focus:outline-none;
 }
 
@@ -589,16 +589,16 @@ onUnmounted(() => {
 }
 
 .select-dropdown-portal .select-option {
-  @apply flex items-center justify-between gap-2;
-  @apply rounded-lg px-3 py-2 text-sm;
-  @apply text-gray-700 dark:text-gray-300;
+  @apply flex h-8 items-center justify-between gap-2;
+  @apply rounded-none px-3 text-control;
+  @apply text-gray-700 dark:text-dark-300;
   @apply cursor-pointer transition-colors duration-150;
   @apply hover:bg-gray-100 dark:hover:bg-dark-700;
   pointer-events: auto !important;
 }
 
 .select-dropdown-portal .select-option-selected {
-  @apply bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-300;
+  @apply bg-primary-50 text-primary-500 dark:bg-primary-500/10 dark:text-primary-300;
 }
 
 .select-dropdown-portal .select-option-focused {
@@ -611,7 +611,7 @@ onUnmounted(() => {
 
 .select-dropdown-portal .select-option-group {
   @apply cursor-default select-none;
-  @apply px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide;
+  @apply px-3 py-1 text-caption font-medium;
   @apply text-gray-500 dark:text-dark-400;
 }
 
@@ -624,7 +624,7 @@ onUnmounted(() => {
 }
 
 .select-dropdown-portal .select-empty {
-  @apply flex items-center justify-center gap-2 px-4 py-6 text-center text-sm;
+  @apply flex items-center justify-center gap-2 px-3 py-4 text-center text-caption;
   @apply text-gray-500 dark:text-dark-400;
 }
 

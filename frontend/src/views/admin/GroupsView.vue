@@ -1,9 +1,12 @@
 <template>
   <AppLayout>
     <TablePageLayout>
+      <template #header>
+        <PageHeader :title="t('admin.groups.title')" :description="t('admin.groups.description')" />
+      </template>
       <template #filters>
         <div
-          class="flex flex-col justify-between gap-4 lg:flex-row lg:items-start"
+          class="filter-bar flex flex-col justify-between gap-4 lg:flex-row lg:items-start"
         >
           <!-- Left: fuzzy search + filters (can wrap to multiple lines) -->
           <div class="flex flex-1 flex-wrap items-center gap-3">
@@ -4289,6 +4292,7 @@ import {
 import type { Column } from "@/components/common/types";
 import AppLayout from "@/components/layout/AppLayout.vue";
 import TablePageLayout from "@/components/layout/TablePageLayout.vue";
+import { PageHeader } from "@/components/layout";
 import DataTable from "@/components/common/DataTable.vue";
 import Pagination from "@/components/common/Pagination.vue";
 import Toggle from "@/components/common/Toggle.vue";

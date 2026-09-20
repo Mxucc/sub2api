@@ -1,8 +1,11 @@
 <template>
   <AppLayout>
     <TablePageLayout>
+      <template #header>
+        <PageHeader :title="t('keys.title')" :description="t('keys.description')" />
+      </template>
       <template #filters>
-        <div class="flex flex-col gap-3">
+        <div class="filter-bar flex flex-col gap-3">
           <div class="flex flex-wrap items-center gap-3">
             <SearchInput
               v-model="filterSearch"
@@ -1209,6 +1212,7 @@ const { t } = useI18n()
 import { keysAPI, authAPI, usageAPI, userGroupsAPI } from '@/api'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import TablePageLayout from '@/components/layout/TablePageLayout.vue'
+import { PageHeader } from '@/components/layout'
 import BulkEditKeysModal from '@/components/keys/BulkEditKeysModal.vue'
 	import DataTable from '@/components/common/DataTable.vue'
 	import Pagination from '@/components/common/Pagination.vue'

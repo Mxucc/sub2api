@@ -13106,7 +13106,7 @@ watch(
   height: 2px;
   border-radius: 0;
   content: "";
-  background: #3964fe;
+  background: #0052d9;
 }
 
 .settings-tab-icon {

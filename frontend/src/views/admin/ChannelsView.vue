@@ -1,8 +1,11 @@
 <template>
   <AppLayout>
     <TablePageLayout>
+      <template #header>
+        <PageHeader :title="t('admin.channels.title')" :description="t('admin.channels.description')" />
+      </template>
       <template #filters>
-        <div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
+        <div class="filter-bar flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
           <!-- Left: Search + Filters -->
           <div class="flex flex-1 flex-wrap items-center gap-3">
             <div class="relative w-full sm:w-64">
@@ -640,6 +643,7 @@ import type { Column } from '@/components/common/types'
 import { platformTextClass, platformBadgeLightClass } from '@/utils/platformColors'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import TablePageLayout from '@/components/layout/TablePageLayout.vue'
+import { PageHeader } from '@/components/layout'
 import DataTable from '@/components/common/DataTable.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import BaseDialog from '@/components/common/BaseDialog.vue'

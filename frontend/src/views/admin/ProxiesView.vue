@@ -1,8 +1,11 @@
 <template>
   <AppLayout>
     <TablePageLayout>
+      <template #header>
+        <PageHeader :title="t('admin.proxies.title')" :description="t('admin.proxies.description')" />
+      </template>
       <template #filters>
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="filter-bar flex flex-wrap items-center gap-3">
           <!-- Left: Search + Filters -->
           <div class="relative w-full sm:w-64">
             <Icon
@@ -972,6 +975,7 @@ import type { Proxy, ProxyAccountSummary, ProxyProtocol, ProxyQualityCheckResult
 import type { Column } from '@/components/common/types'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import TablePageLayout from '@/components/layout/TablePageLayout.vue'
+import { PageHeader } from '@/components/layout'
 import DataTable from '@/components/common/DataTable.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import BaseDialog from '@/components/common/BaseDialog.vue'

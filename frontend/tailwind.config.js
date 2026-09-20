@@ -1,16 +1,15 @@
 /**
- * DeepSeek 设计语言 Design Tokens
+ * 设计令牌：企业级控制台（TDesign / 腾讯云风格）
  *
- * 色值来源：从 deepseek.com 官方站点样式表 (--dsw-static-*) 与
- * DeepSeek App 语义别名 (--dsw-alias-*) 中提取的真实品牌色阶。
+ * 视觉基调：
+ *  - 品牌色：TDesign 蓝 #0052D9（企业控制台标准色，比消费级蓝更稳）
+ *  - 中性色：TDesign 灰阶（#f7f8fa / #f2f3f5 / #e7e7e7 …），冷而不蓝
+ *  - 深色：TDesign 深色层次（页面 #181818 → 容器 #1f1f1f → 浮层 #262626）
+ *  - 形状：全站直角（borderRadius 全部 0）
+ *  - 层次：靠 1px 描边 + 极淡投影，不用重阴影/彩色光晕
  *
- *  - primary : DeepSeek 品牌蓝（deepseek-50 … 900）
- *  - gray    : DeepSeek 冷中性色阶（neutral-bluish-*）
- *  - dark    : 深色模式层次色阶（bg-base → layer-1 → layer-2 → layer-3）
- *  - accent  : 保留旧类名，语义为冷中性色（兼容历史代码）
- *
- * 注意：全部类名与旧版本保持一一对应，仅替换色值，因此 200+ 页面
- * 无需改动即可整体换肤。
+ * 注意：类名与旧版本一一对应（primary/gray/dark/accent），因此 300+ 页面
+ * 无需改动即可整体换肤；仅调整色值与圆角。
  */
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -35,77 +34,79 @@ export default {
     },
     extend: {
       colors: {
-        // DeepSeek 品牌蓝（--dsw-static-deepseek-*）
-        // 500 = 品牌主色 #3964FE，400 = 深色模式品牌文字色 #679EFE
+        // 品牌色：TDesign 蓝（500 = #0052D9 品牌主色，400 = hover，600 = active）
         primary: {
-          50: '#edf3fe',
-          100: '#e4edfd',
-          200: '#d3e2ff',
-          300: '#b7c8fe',
-          400: '#679efe',
-          500: '#3964fe',
-          600: '#2f55e3',
-          700: '#2444c0',
-          800: '#34415b',
-          900: '#283142',
-          950: '#1c2230'
+          50: '#f2f3ff',
+          100: '#d9e1ff',
+          200: '#b5c7ff',
+          300: '#8aa4ff',
+          400: '#366ef4',
+          500: '#0052d9',
+          600: '#003cab',
+          700: '#002a8a',
+          800: '#00206b',
+          900: '#001a4d',
+          950: '#001230'
         },
-        // 冷中性色阶（--dsw-static-neutral-bluish-* 对齐 Tailwind 明度梯度）
+        // 中性色：TDesign 灰阶（50/100 用于页面与表头底色，500 起为文字）
         gray: {
-          50: '#f9fafb',
-          100: '#f1f3f5',
-          200: '#e5e8ee',
-          300: '#cfd3d6',
-          400: '#979da6',
-          500: '#6b7076',
-          600: '#61666b',
-          700: '#43454a',
-          800: '#2c2c2e',
-          900: '#1e232c',
-          950: '#151517'
+          50: '#f7f8fa',
+          100: '#f2f3f5',
+          200: '#e7e7e7',
+          300: '#dcdcdc',
+          400: '#c5c5c5',
+          500: '#777777',
+          600: '#5e5e5e',
+          700: '#4b4b4b',
+          800: '#383838',
+          900: '#242424',
+          950: '#181818'
         },
-        // 深色模式层次（base / layer-1 / layer-2 / layer-3）
+        // 深色模式层次：950 页面 / 900 容器 / 800 浮层 / 700 分隔 / 600 强描边
         dark: {
-          50: '#f9fafb',
-          100: '#f1f3f5',
-          200: '#e1e5ee',
-          300: '#cfd3d6',
-          400: '#adb2b8',
-          500: '#979da6',
-          600: '#43454a',
-          700: '#353638',
-          800: '#2c2c2e',
-          900: '#232324',
-          950: '#151517'
+          50: '#f7f8fa',
+          100: '#f2f3f5',
+          200: '#e7e7e7',
+          300: '#dcdcdc',
+          400: '#a6a6a6',
+          500: '#8b8b8b',
+          600: '#3d3d3d',
+          700: '#2e2e2e',
+          800: '#262626',
+          900: '#1f1f1f',
+          950: '#181818'
         },
-        // 兼容旧类名（原 Teal 辅助色），现为冷中性色
+        // 兼容旧类名（原辅助色），语义为冷中性色
         accent: {
-          50: '#f9fafb',
-          100: '#f1f3f5',
-          200: '#e1e5ee',
-          300: '#cfd3d6',
-          400: '#a5aab2',
-          500: '#83888f',
-          600: '#61666b',
-          700: '#43454a',
-          800: '#2c2c2e',
-          900: '#1e232c',
-          950: '#151517'
+          50: '#f7f8fa',
+          100: '#f2f3f5',
+          200: '#e7e7e7',
+          300: '#dcdcdc',
+          400: '#c5c5c5',
+          500: '#777777',
+          600: '#5e5e5e',
+          700: '#4b4b4b',
+          800: '#383838',
+          900: '#242424',
+          950: '#181818'
         },
         // 语义化品牌别名
         brand: {
-          DEFAULT: '#3964fe',
-          hover: '#2f55e3',
-          active: '#2444c0',
-          soft: '#edf3fe',
-          deep: '#34415b',
-          'dark-mode': '#5686fe',
-          text: '#3964fe',
-          'text-dark': '#679efe'
+          DEFAULT: '#0052d9',
+          hover: '#366ef4',
+          active: '#003cab',
+          soft: '#f2f3ff',
+          deep: '#002a8a',
+          'dark-mode': '#366ef4',
+          text: '#0052d9',
+          'text-dark': '#8aa4ff'
         },
-        // DeepSeek 官方站点辅助色
-        link: '#234792',
-        'ink-bluish': '#152443'
+        // TDesign 语义文本色（企业控制台常见分层）
+        'text-1': '#1f1f1f',
+        'text-2': '#5e5e5e',
+        'text-3': '#8b8b8b',
+        'text-4': '#c5c5c5',
+        link: '#0052d9'
       },
       fontFamily: {
         sans: [
@@ -123,34 +124,34 @@ export default {
         ],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
       },
-      // DeepSeek 表面层级阴影：整体偏平，用极淡的投影 + 边框营造层次
+      // 企业控制台阴影：极淡、中性，用于区分层级而不是装饰
       boxShadow: {
-        xs: '0 1px 2px 0 rgba(21, 34, 60, 0.04)',
-        glass: '0 8px 32px rgba(21, 34, 60, 0.08)',
-        'glass-sm': '0 4px 16px rgba(21, 34, 60, 0.06)',
-        glow: '0 0 0 3px rgba(57, 100, 254, 0.14)',
-        'glow-lg': '0 0 0 6px rgba(57, 100, 254, 0.18)',
-        card: '0 1px 2px 0 rgba(21, 34, 60, 0.04)',
-        'card-hover': '0 8px 24px -6px rgba(21, 34, 60, 0.12)',
-        popover: '0 12px 32px -8px rgba(21, 34, 60, 0.16), 0 2px 8px -2px rgba(21, 34, 60, 0.06)',
-        dialog: '0 24px 60px -12px rgba(21, 34, 60, 0.22)',
+        xs: '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+        glass: '0 2px 8px rgba(0, 0, 0, 0.06)',
+        'glass-sm': '0 1px 4px rgba(0, 0, 0, 0.05)',
+        glow: '0 0 0 3px rgba(0, 82, 217, 0.12)',
+        'glow-lg': '0 0 0 5px rgba(0, 82, 217, 0.16)',
+        card: '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+        'card-hover': '0 2px 8px -2px rgba(0, 0, 0, 0.10)',
+        popover: '0 4px 12px -2px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06)',
+        dialog: '0 8px 24px -4px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08)',
         'inner-glow': 'inset 0 1px 0 rgba(255, 255, 255, 0.08)'
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-primary': 'linear-gradient(135deg, #3964fe 0%, #2444c0 100%)',
-        'gradient-dark': 'linear-gradient(135deg, #232324 0%, #151517 100%)',
+        'gradient-primary': 'linear-gradient(135deg, #0052d9 0%, #003cab 100%)',
+        'gradient-dark': 'linear-gradient(135deg, #1f1f1f 0%, #181818 100%)',
         'gradient-glass':
           'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
         'mesh-gradient':
-          'radial-gradient(at 40% 20%, rgba(57, 100, 254, 0.10) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(86, 134, 254, 0.08) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(103, 158, 254, 0.06) 0px, transparent 50%)'
+          'radial-gradient(at 40% 20%, rgba(0, 82, 217, 0.06) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(54, 110, 244, 0.05) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(138, 164, 255, 0.04) 0px, transparent 50%)'
       },
       animation: {
-        'fade-in': 'fadeIn 0.25s ease-out',
-        'slide-up': 'slideUp 0.25s ease-out',
-        'slide-down': 'slideDown 0.25s ease-out',
-        'slide-in-right': 'slideInRight 0.25s ease-out',
-        'scale-in': 'scaleIn 0.18s ease-out',
+        'fade-in': 'fadeIn 0.2s ease-out',
+        'slide-up': 'slideUp 0.2s ease-out',
+        'slide-down': 'slideDown 0.2s ease-out',
+        'slide-in-right': 'slideInRight 0.2s ease-out',
+        'scale-in': 'scaleIn 0.15s ease-out',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         shimmer: 'shimmer 2s linear infinite',
         glow: 'glow 2s ease-in-out infinite alternate'
@@ -161,19 +162,19 @@ export default {
           '100%': { opacity: '1' }
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
         },
         slideDown: {
-          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '0%': { opacity: '0', transform: 'translateY(-8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
         },
         slideInRight: {
-          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '0%': { opacity: '0', transform: 'translateX(16px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' }
         },
         scaleIn: {
-          '0%': { opacity: '0', transform: 'scale(0.97)' },
+          '0%': { opacity: '0', transform: 'scale(0.98)' },
           '100%': { opacity: '1', transform: 'scale(1)' }
         },
         shimmer: {
@@ -181,13 +182,25 @@ export default {
           '100%': { backgroundPosition: '200% 0' }
         },
         glow: {
-          '0%': { boxShadow: '0 0 0 3px rgba(57, 100, 254, 0.10)' },
-          '100%': { boxShadow: '0 0 0 5px rgba(57, 100, 254, 0.20)' }
+          '0%': { boxShadow: '0 0 0 3px rgba(0, 82, 217, 0.10)' },
+          '100%': { boxShadow: '0 0 0 4px rgba(0, 82, 217, 0.18)' }
         }
       },
       backdropBlur: {
         xs: '2px'
       },
+      // 企业控制台控件高度节奏：sm 24 / DEFAULT 28 / md 32 / lg 40
+      height: {
+        control: '32px',
+        'control-sm': '24px',
+        'control-lg': '40px'
+      },
+      fontSize: {
+        // 控制台高频字号
+        '2xs': ['11px', { lineHeight: '16px' }],
+        caption: ['12px', { lineHeight: '18px' }],
+        control: ['13px', { lineHeight: '20px' }]
+      }
       // 注：圆角已在上方 theme.borderRadius 统一归零（全站直角），此处不再新增圆角令牌
     }
   },

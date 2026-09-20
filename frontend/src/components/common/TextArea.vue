@@ -15,7 +15,7 @@
         :readonly="readonly"
         :rows="rows"
         :class="[
-          'input min-h-[80px] resize-y leading-relaxed',
+          'input min-h-[72px] resize-y text-control leading-relaxed',
           error ? 'input-error' : '',
           disabled ? 'cursor-not-allowed' : ''
         ]"

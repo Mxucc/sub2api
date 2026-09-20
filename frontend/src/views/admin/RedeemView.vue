@@ -1,8 +1,11 @@
 <template>
   <AppLayout>
     <TablePageLayout>
+      <template #header>
+        <PageHeader :title="t('admin.redeem.title')" :description="t('admin.redeem.description')" />
+      </template>
       <template #filters>
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="filter-bar flex flex-wrap items-center gap-3">
           <!-- Left: Search + Filters -->
           <div class="flex-1 sm:max-w-64">
             <input
@@ -634,6 +637,7 @@ import type {
 import type { Column } from '@/components/common/types'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import TablePageLayout from '@/components/layout/TablePageLayout.vue'
+import { PageHeader } from '@/components/layout'
 import DataTable from '@/components/common/DataTable.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'

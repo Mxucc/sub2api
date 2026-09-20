@@ -29,10 +29,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const sizeClasses = computed(() => {
   const sizes: Record<SpinnerSize, string> = {
-    sm: 'w-4 h-4 border-2',
-    md: 'w-8 h-8 border-2',
-    lg: 'w-12 h-12 border-[3px]',
-    xl: 'w-16 h-16 border-4'
+    sm: 'h-3.5 w-3.5 border-2',
+    md: 'h-6 w-6 border-2',
+    lg: 'h-8 w-8 border-[3px]',
+    xl: 'h-10 w-10 border-[3px]'
   }
   return sizes[props.size]
 })

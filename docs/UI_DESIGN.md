@@ -1,0 +1,191 @@
+# UI 设计规范 · 企业级控制台（TDesign / 腾讯云风格）
+
+本文是前端视觉的唯一准绳。新增页面/组件请对照本文，不要自行发明间距、字号、色值。
+
+---
+
+## 1. 设计基调
+
+| 维度 | 规范 |
+| --- | --- |
+| 定位 | **企业级控制台**（腾讯云 / TDesign 控制台），信息密度高、层级克制、可长时间阅读 |
+| 形状 | **全站直角**：所有容器/控件圆角 = 0（`theme.borderRadius` 统一归零） |
+| 层次 | 靠 **1px 描边** + 极淡中性投影（`shadow-xs` / `shadow-card` / `shadow-popover` / `shadow-dialog`），不用重阴影、不用彩色光晕 |
+| 主色 | **品牌蓝 #0052D9**（TDesign 蓝）；hover `#366EF4`、active `#003CAB`、浅底 `#F2F3FF` |
+| 彩色使用 | 只有「品牌交互」和「状态语义」用彩色；其余一律中性灰 |
+| 图标 | Lucide 线性图标，1.5px 描边，圆头端点（线圆润、面直角）；尺寸 12/16/20/24/32 |
+| 动效 | 120–150ms，明确属性（`transition-colors` 等），位移 ≤ 4px |
+
+---
+
+## 2. 设计令牌
+
+### 2.1 品牌色（primary）
+
+| Token | 值 | 用途 |
+| --- | --- | --- |
+| `primary-50` | #F2F3FF | 选中行/品牌浅底 |
+| `primary-100` | #D9E1FF | 焦点环、描边 |
+| `primary-200` | #B5C7FF | 品牌描边（hover） |
+| `primary-300` | #8AA4FF | 深色模式品牌文字 |
+| `primary-400` | #366EF4 | hover |
+| `primary-500` | #0052D9 | **主色**：主按钮、链接、选中 |
+| `primary-600` | #003CAB | active/pressed |
+| `primary-700` | #002A8A | 深色强调 |
+
+### 2.2 中性色（gray）
+
+| Token | 值 | 用途 |
+| --- | --- | --- |
+| `gray-50` | #F7F8FA | 页面底色、表头底色 |
+| `gray-100` | #F2F3F5 | 次级面（hover、禁用、代码块） |
+| `gray-200` | #E7E7E7 | **默认描边** |
+| `gray-300` | #DCDCDC | 强描边、分隔线 |
+| `gray-400` | #C5C5C5 | 装饰性图标、禁用态 |
+| `gray-500` | #777777 | 提示文本、placeholder |
+| `gray-600` | #5E5E5E | 次级正文 |
+| `gray-700` | #4B4B4B | 表头文字 |
+| `gray-900` | #242424 | 主标题、主正文 |
+
+### 2.3 深色模式（dark）
+
+| Token | 值 | 用途 |
+| --- | --- | --- |
+| `dark-950` | #181818 | 页面底色 |
+| `dark-900` | #1F1F1F | 容器（卡片/侧边栏） |
+| `dark-800` | #262626 | 浮层（菜单/弹窗/输入框） |
+| `dark-700` | #2E2E2E | 描边 |
+| `dark-600` | #3D3D3D | 强描边 |
+| `dark-400` | #A6A6A6 | 次级文字 |
+
+> 深色模式不使用纯黑，也不使用品牌色大面积铺底。
+
+### 2.4 语义色
+
+| 语义 | 主色 | 浅底 | 用途 |
+| --- | --- | --- | --- |
+| 成功 | emerald-600 | emerald-50 / dark:emerald-500/10 | 运行正常、支付成功 |
+| 警告 | amber-600 | amber-50 / dark:amber-500/10 | 限流、配额告警 |
+| 危险 | red-600 | red-50 / dark:red-500/10 | 失败、删除 |
+| 信息/品牌 | primary-500 | primary-50 / dark:primary-500/10 | 交互、选中、提示 |
+
+---
+
+## 3. 密度与尺寸（企业控制台的核心）
+
+| 元素 | 尺寸 |
+| --- | --- |
+| 控件高度 | 默认 **32px**（`h-control`）；小 24–28px（表格内/工具条）；大 40px（登录页主按钮） |
+| 控件字号 | **13px**（`text-control`），辅助文字 12px（`text-caption`），最小 11px（`text-2xs`） |
+| 正文 | 14px；表格单元格 13px；页面标题 18px `font-medium`；卡片标题 14px `font-medium` |
+| 行高 | 表格行 ≈ 40px（`py-2.5` + 13px）；列表行 32–36px |
+| 图标尺寸 | 控件内 16px；表格内 14px；功能入口 20px |
+| 间距 | 页面内容 `gap-4`；卡片内 `p-4`；工具条 `py-3 px-4`；表单纵向 `gap-4`，label 与控件 `gap-1.5` |
+| 页面留白 | 内容区 `px-4 py-4`（`lg:px-6 lg:py-5`），卡片之间 `gap-4` |
+
+**顶栏 48px / 侧边栏 232px / 侧边栏项 36px** —— 控制台标准节奏。
+
+---
+
+## 4. 组件规范
+
+### 按钮（`.btn`）
+- 高度 32px，`px-3.5`，13px `font-medium`，直角。
+- 变体：`.btn-primary`（实色品牌蓝）、`.btn-secondary`（白底 1px 描边）、`.btn-ghost`（无底）、`.btn-soft`（品牌浅底）、`.btn-danger`、`.btn-danger-soft`、`.btn-success`、`.btn-warning`。
+- 禁用态 `opacity-45` + `cursor-not-allowed`；焦点环 `ring-2 ring-primary-500/40`。
+- **禁止**渐变填充、彩色阴影、>1px 的描边。
+
+### 输入（`.input`）
+- 32px、13px、白底（深色 `dark-800`）、1px `gray-200` 描边、直角。
+- hover 描边 `gray-300`；focus 描边 `primary-500` + `ring-2 ring-primary-500/20`。
+- 错误态 `.input-error`（红描边）；辅助文字 `.input-hint` / `.input-error-text`（12px）。
+- `textarea.input` 自动恢复为多行（`h-auto py-2`），不会被困在 32px。
+
+### 页面头部（`PageHeader` / `.page-header-bar`）
+结构固定为：**面包屑（可选）→ 标题 + 描述 → 右侧操作**，底部 1px 分隔。
+- **面包屑由 `AppLayout` 的全局面包屑条统一提供**（`.crumb-strip`，来自路由 `meta.breadcrumbs`），
+  页头默认不再重复渲染；`PageHeader` 仅在显式传入 `breadcrumbs` 时内联展示（用于抽屉/二级工作台）。
+- 面包屑 12px `gray-500`，分隔符 `/`，最后一项为当前页（不可点）；`meta.breadcrumbs` 里写 i18n key，
+  由布局层用 `te()` + `t()` 解析（写已翻译文本也能正常显示）。
+- 标题 18px `font-medium`；描述 12–13px `gray-500`。
+- 同一页面只出现一次页面头部，不要在内容区重复标题。
+
+### 表格（企业控制台的骨架）
+- 表头：`bg-gray-50 dark:bg-dark-800`，13px `font-medium text-gray-700 dark:text-dark-400`，**不用大写、不加字距**（中文界面无意义）。
+- 单元格：13px，`px-3 py-2.5`，下分隔 `gray-200/70`（深色 `dark-700`）。
+- 行 hover `bg-gray-50 dark:bg-dark-800`；选中行 `bg-primary-50 dark:bg-primary-500/10`。
+- 数值列 `tabular-nums` 右对齐；操作列固定在右侧，用 `.icon-btn-sm`。
+- 纸面化：表格外层包一层 `.data-card`（1px 描边 + 直角）。
+
+### 卡片 / 区块
+- `.card`：1px `gray-200` 描边 + `shadow-xs`，无圆角。
+- `.card-header`：14px `font-medium` 标题 + 底部 1px 分隔；右侧放操作。
+- `.data-card`：表格/列表容器（`.card` + `overflow-hidden`）。
+- `.filter-bar`：筛选行（`px-4 py-3` + 底部分隔）；`.toolbar`：操作行（`flex justify-between py-3`）。
+
+### 页面头部（`PageHeader` / `.page-header-bar`）
+结构固定为：**面包屑 → 标题 + 描述 → 右侧操作**，底部 1px 分隔。
+- 面包屑 12px `gray-500`，分隔符 `/`，最后一项为当前页（不可点）。
+- 标题 18px `font-medium`；描述 12–13px `gray-500`。
+- 同一页面只出现一次页面头部，不要在内容区重复标题。
+
+### 徽章 / 标签
+- `.badge`：状态语义标签，20–22px 高，12px，直角或胶囊（当前为直角）。
+- `.tag`：紧凑契约标签（1px 描边 + 12px）；用于平台、分组、计费模式等。
+- `.status-dot`：8px 方形状态点 + 12px 文字，适合表格内状态列。
+
+### 弹窗 / 抽屉
+- 头部 `px-4 py-3`（14px `font-medium` 标题），正文 `px-4 py-4`，底部 `px-4 py-3`（右侧按钮 32px）。
+- 遮罩 `bg-black/45`；面板 `shadow-dialog` + 1px 描边；出现动效 150ms。
+
+### 下拉 / 菜单
+- 面板：1px `gray-200`（深色 `dark-600`）+ `shadow-popover`，`p-1`。
+- 选项：32px 高、13px、hover `bg-gray-100 dark:bg-dark-700`、选中 `bg-primary-50 text-primary-500 dark:bg-primary-500/10 dark:text-primary-300`。
+
+### 空态 / 骨架 / 加载
+- 空态：图标 ≤ 40px（`gray-300` / `dark-600`），标题 14px，描述 12–13px `gray-500`，最多一个主按钮。
+- 骨架：`.skeleton-shimmer`；加载指示器保留圆形（唯一圆角例外）。
+
+---
+
+## 5. 页面结构的标准骨架
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ AppHeader 48px：菜单 + 产品名 …… 公告/语言/余额/用户     │
+├──────────┬───────────────────────────────────────────────┤
+│ Sidebar  │ .crumb-strip（面包屑，可选）                  │
+│ 232px    ├───────────────────────────────────────────────┤
+│ 分组导航 │ .page-header-bar  标题 + 操作按钮             │
+│ 选中态： │ ───────────────────────────────────────────── │
+│ 品牌浅底 │ .data-card → .filter-bar（筛选）              │
+│ +2px 竖条│             → 表格 / 列表                     │
+│          │             → .card-footer（分页）             │
+└──────────┴───────────────────────────────────────────────┘
+```
+
+列表页统一用 `TablePageLayout`：`filters` 槽（筛选 + 操作）→ `table` 槽 → `pagination` 槽。
+
+---
+
+## 6. 禁止事项
+
+1. 不要用渐变填充按钮/卡片背景、不要彩色阴影或光晕。
+2. 不要使用 >1px 的装饰描边、不要 `rounded-*`（全站直角，令牌已归零）。
+3. 不要在中文界面使用 `uppercase` / `tracking-wider`。
+4. 不要用彩色表示「无含义的强调」；彩色只用于品牌交互与状态语义。
+5. 不要出现 12px 以下的正文；不要出现两层以上嵌套卡片。
+6. 不要新增未在本文登记的间距/字号/色值——需要时先补规范。
+
+---
+
+## 7. 相关实现
+
+| 文件 | 说明 |
+| --- | --- |
+| `frontend/tailwind.config.js` | 令牌唯一来源（色阶、阴影、控件高度、字号、圆角归零） |
+| `frontend/src/style.css` | 组件层（`.btn` / `.input` / `.table` / `.card` / `.data-card` / `.page-header-bar` / `.breadcrumb` / `.tag` …） |
+| `frontend/src/components/layout/PageHeader.vue` | 标准页面头部（面包屑 + 标题 + 操作槽） |
+| `frontend/src/components/icons/Icon.vue` + `iconMap.ts` | 图标（Lucide 映射，`name` 类型即契约） |
+| `design-preview.html` | 静态设计预览（不参与构建），改令牌后重新生成 `design-preview.css` |
+| `docs/TDESIGN_MIGRATION.md` | 若要真正替换组件框架（TDesign）的迁移方案与影响评估 |

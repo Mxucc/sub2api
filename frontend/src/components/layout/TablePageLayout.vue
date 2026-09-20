@@ -1,5 +1,10 @@
 <template>
   <div class="table-page-layout" :class="{ 'mobile-mode': isMobile }">
+    <!-- 可选固定区域：页面级 PageHeader（由页面通过 #header 传入） -->
+    <div v-if="$slots.header" class="layout-section-fixed">
+      <slot name="header" />
+    </div>
+
     <!-- 固定区域：操作按钮 -->
     <div v-if="$slots.actions" class="layout-section-fixed">
       <slot name="actions" />
@@ -46,8 +51,8 @@ onUnmounted(() => {
 <style scoped>
 /* 桌面端：Flexbox 布局 */
 .table-page-layout {
-  @apply flex flex-col gap-6;
-  height: calc(100vh - 64px - 4rem); /* 减去 header + lg:p-8 的上下padding */
+  @apply flex flex-col gap-3;
+  height: calc(100vh - 48px - 2.5rem); /* 减去 h-12 header + lg:py-5 的上下padding */
 }
 
 .layout-section-fixed {
@@ -76,7 +81,7 @@ onUnmounted(() => {
 }
 
 .table-scroll-container :deep(thead) {
-  @apply bg-gray-50 dark:bg-dark-900;
+  @apply bg-gray-50 dark:bg-dark-800;
 }
 
 .table-scroll-container :deep(tbody) {
@@ -84,11 +89,12 @@ onUnmounted(() => {
 }
 
 .table-scroll-container :deep(th) {
-  @apply px-5 py-4 text-left text-sm font-medium text-gray-500 dark:text-dark-400 border-b border-gray-200 dark:border-dark-700;
+  @apply px-3 py-2.5 text-left text-[13px] font-medium text-gray-700 dark:text-dark-400 border-b border-gray-200 dark:border-dark-700;
+  @apply bg-gray-50 dark:bg-dark-800;
 }
 
 .table-scroll-container :deep(td) {
-  @apply px-5 py-4 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-dark-800;
+  @apply px-3 py-2.5 text-[13px] text-gray-700 dark:text-dark-300 border-b border-gray-200/70 dark:border-dark-700;
 }
 
 /* 移动端：恢复正常滚动 */

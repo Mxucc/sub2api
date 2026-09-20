@@ -13,8 +13,8 @@
         <!-- Modal panel -->
         <div ref="dialogRef" :class="['modal-content', widthClasses]" @click.stop>
           <!-- Header -->
-          <div class="modal-header">
-            <h3 :id="dialogId" class="modal-title">
+          <div class="modal-header px-4 py-3">
+            <h3 :id="dialogId" class="modal-title text-sm font-medium">
               {{ title }}
             </h3>
             <button
@@ -28,12 +28,12 @@
           </div>
 
           <!-- Body -->
-          <div ref="modalBodyRef" class="modal-body">
+          <div ref="modalBodyRef" class="modal-body px-4 py-4">
             <slot></slot>
           </div>
 
           <!-- Footer -->
-          <div v-if="$slots.footer" class="modal-footer">
+          <div v-if="$slots.footer" class="modal-footer px-4 py-3">
             <slot name="footer"></slot>
           </div>
         </div>

@@ -200,7 +200,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Dashboard',
       titleKey: 'dashboard.title',
-      descriptionKey: 'dashboard.welcomeMessage'
+      descriptionKey: 'dashboard.welcomeMessage',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }],
     }
   },
   {
@@ -212,7 +213,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'API Keys',
       titleKey: 'keys.title',
-      descriptionKey: 'keys.description'
+      descriptionKey: 'keys.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.apiKeys', to: '/keys' }],
     }
   },
   {
@@ -225,7 +227,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Batch Image Guide',
       titleKey: 'batchImageGuide.title',
-      descriptionKey: 'batchImageGuide.description'
+      descriptionKey: 'batchImageGuide.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.batchImage', to: '/batch-image' }],
     }
   },
   {
@@ -237,7 +240,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Usage Records',
       titleKey: 'usage.title',
-      descriptionKey: 'usage.description'
+      descriptionKey: 'usage.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.usage', to: '/usage' }],
     }
   },
   {
@@ -249,7 +253,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Redeem Code',
       titleKey: 'redeem.title',
-      descriptionKey: 'redeem.description'
+      descriptionKey: 'redeem.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.redeem', to: '/redeem' }],
     }
   },
   {
@@ -261,7 +266,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Affiliate',
       titleKey: 'affiliate.title',
-      descriptionKey: 'affiliate.description'
+      descriptionKey: 'affiliate.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.affiliate', to: '/affiliate' }],
     }
   },
   {
@@ -273,7 +279,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Available Channels',
       titleKey: 'availableChannels.title',
-      descriptionKey: 'availableChannels.description'
+      descriptionKey: 'availableChannels.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.availableChannels', to: '/available-channels' }],
     }
   },
   {
@@ -285,7 +292,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'Profile',
       titleKey: 'profile.title',
-      descriptionKey: 'profile.description'
+      descriptionKey: 'profile.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.profile', to: '/profile' }],
     }
   },
   {
@@ -298,6 +306,7 @@ const routes: RouteRecordRaw[] = [
       title: 'My Subscriptions',
       titleKey: 'userSubscriptions.title',
       descriptionKey: 'userSubscriptions.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.mySubscriptions', to: '/subscriptions' }],
       requiresSubscription: true
     }
   },
@@ -311,6 +320,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Purchase Subscription',
       titleKey: 'nav.buySubscription',
       descriptionKey: 'purchase.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.buySubscription', to: '/purchase' }],
       requiresPayment: true
     }
   },
@@ -323,6 +333,7 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: false,
       title: 'My Orders',
       titleKey: 'nav.myOrders',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.myOrders', to: '/orders' }],
       requiresPayment: true
     }
   },
@@ -411,7 +422,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Admin Dashboard',
       titleKey: 'admin.dashboard.title',
-      descriptionKey: 'admin.dashboard.description'
+      descriptionKey: 'admin.dashboard.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }],
     }
   },
   {
@@ -423,7 +435,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Ops Monitoring',
       titleKey: 'admin.ops.title',
-      descriptionKey: 'admin.ops.description'
+      descriptionKey: 'admin.ops.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.ops', to: '/admin/ops' }],
     }
   },
   {
@@ -435,7 +448,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Audit Logs',
       titleKey: 'admin.audit.title',
-      descriptionKey: 'admin.audit.description'
+      descriptionKey: 'admin.audit.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.auditLogs', to: '/admin/audit-logs' }],
     }
   },
   {
@@ -447,7 +461,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'User Management',
       titleKey: 'admin.users.title',
-      descriptionKey: 'admin.users.description'
+      descriptionKey: 'admin.users.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.users', to: '/admin/users' }],
     }
   },
   {
@@ -459,7 +474,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Group Management',
       titleKey: 'admin.groups.title',
-      descriptionKey: 'admin.groups.description'
+      descriptionKey: 'admin.groups.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.groups', to: '/admin/groups' }],
     }
   },
   {
@@ -475,7 +491,12 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Channel Management',
       titleKey: 'admin.channels.title',
-      descriptionKey: 'admin.channels.description'
+      descriptionKey: 'admin.channels.description',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.channelManagement', to: '/admin/channels' },
+        { label: 'nav.channelPricing', to: '/admin/channels/pricing' }
+      ],
     }
   },
   {
@@ -487,7 +508,12 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Channel Monitor',
       titleKey: 'admin.channelMonitor.title',
-      descriptionKey: 'admin.channelMonitor.description'
+      descriptionKey: 'admin.channelMonitor.description',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.channelManagement', to: '/admin/channels' },
+        { label: 'nav.channelMonitor', to: '/admin/channels/monitor' }
+      ],
     }
   },
   {
@@ -498,7 +524,8 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true,
       requiresAdmin: false,
       title: 'Channel Status',
-      titleKey: 'nav.channelStatus'
+      titleKey: 'nav.channelStatus',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/dashboard' }, { label: 'nav.channelStatus', to: '/monitor' }],
     }
   },
   {
@@ -510,7 +537,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Subscription Management',
       titleKey: 'admin.subscriptions.title',
-      descriptionKey: 'admin.subscriptions.description'
+      descriptionKey: 'admin.subscriptions.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.subscriptions', to: '/admin/subscriptions' }],
     }
   },
   {
@@ -522,7 +550,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Account Management',
       titleKey: 'admin.accounts.title',
-      descriptionKey: 'admin.accounts.description'
+      descriptionKey: 'admin.accounts.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.accounts', to: '/admin/accounts' }],
     }
   },
   {
@@ -534,7 +563,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Plugin Management',
       titleKey: 'admin.plugins.title',
-      descriptionKey: 'admin.plugins.description'
+      descriptionKey: 'admin.plugins.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.plugins', to: '/admin/plugins' }],
     }
   },
   {
@@ -546,7 +576,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Announcements',
       titleKey: 'admin.announcements.title',
-      descriptionKey: 'admin.announcements.description'
+      descriptionKey: 'admin.announcements.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.announcements', to: '/admin/announcements' }],
     }
   },
   {
@@ -558,7 +589,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Proxy Management',
       titleKey: 'admin.proxies.title',
-      descriptionKey: 'admin.proxies.description'
+      descriptionKey: 'admin.proxies.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.proxies', to: '/admin/proxies' }],
     }
   },
   {
@@ -570,7 +602,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Redeem Code Management',
       titleKey: 'admin.redeem.title',
-      descriptionKey: 'admin.redeem.description'
+      descriptionKey: 'admin.redeem.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.redeemCodes', to: '/admin/redeem' }],
     }
   },
   {
@@ -582,7 +615,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Promo Code Management',
       titleKey: 'admin.promo.title',
-      descriptionKey: 'admin.promo.description'
+      descriptionKey: 'admin.promo.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.promoCodes', to: '/admin/promo-codes' }],
     }
   },
   {
@@ -594,7 +628,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'System Settings',
       titleKey: 'admin.settings.title',
-      descriptionKey: 'admin.settings.description'
+      descriptionKey: 'admin.settings.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.settings', to: '/admin/settings' }],
     }
   },
   {
@@ -607,6 +642,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Risk Control',
       titleKey: 'admin.riskControl.title',
       descriptionKey: 'admin.riskControl.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.contentModeration', to: '/admin/risk-control' }],
       requiresRiskControl: true
     }
   },
@@ -620,6 +656,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Prompt Audit',
       titleKey: 'admin.promptAudit.title',
       descriptionKey: 'admin.promptAudit.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.promptAudit', to: '/admin/prompt-audit' }],
       requiresRiskControl: true
     }
   },
@@ -632,7 +669,8 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Usage Records',
       titleKey: 'admin.usage.title',
-      descriptionKey: 'admin.usage.description'
+      descriptionKey: 'admin.usage.description',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.usage', to: '/admin/usage' }],
     }
   },
   {
@@ -648,7 +686,12 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Affiliate Invite Records',
       titleKey: 'nav.affiliateInviteRecords',
-      descriptionKey: 'admin.affiliates.invitesDescription'
+      descriptionKey: 'admin.affiliates.invitesDescription',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.affiliateManagement', to: '/admin/affiliates' },
+        { label: 'nav.affiliateInviteRecords', to: '/admin/affiliates/invites' }
+      ],
     }
   },
   {
@@ -660,7 +703,12 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Affiliate Rebate Records',
       titleKey: 'nav.affiliateRebateRecords',
-      descriptionKey: 'admin.affiliates.rebatesDescription'
+      descriptionKey: 'admin.affiliates.rebatesDescription',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.affiliateManagement', to: '/admin/affiliates' },
+        { label: 'nav.affiliateRebateRecords', to: '/admin/affiliates/rebates' }
+      ],
     }
   },
   {
@@ -672,7 +720,12 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Affiliate Transfer Records',
       titleKey: 'nav.affiliateTransferRecords',
-      descriptionKey: 'admin.affiliates.transfersDescription'
+      descriptionKey: 'admin.affiliates.transfersDescription',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.affiliateManagement', to: '/admin/affiliates' },
+        { label: 'nav.affiliateTransferRecords', to: '/admin/affiliates/transfers' }
+      ],
     }
   },
 
@@ -687,6 +740,11 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Payment Dashboard',
       titleKey: 'nav.paymentDashboard',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.orderManagement', to: '/admin/orders' },
+        { label: 'nav.paymentDashboard', to: '/admin/orders/dashboard' }
+      ],
       requiresPayment: true
     }
   },
@@ -699,6 +757,7 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Order Management',
       titleKey: 'nav.orderManagement',
+      breadcrumbs: [{ label: 'nav.dashboard', to: '/admin/dashboard' }, { label: 'nav.orderManagement', to: '/admin/orders' }],
       requiresPayment: true
     }
   },
@@ -711,6 +770,11 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
       title: 'Subscription Plans',
       titleKey: 'nav.paymentPlans',
+      breadcrumbs: [
+        { label: 'nav.dashboard', to: '/admin/dashboard' },
+        { label: 'nav.orderManagement', to: '/admin/orders' },
+        { label: 'nav.paymentPlans', to: '/admin/orders/plans' }
+      ],
       requiresPayment: true
     }
   },

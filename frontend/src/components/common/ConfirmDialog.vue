@@ -1,7 +1,7 @@
 <template>
   <BaseDialog :show="show" :title="title" width="narrow" @close="handleCancel">
-    <div class="space-y-4">
-      <p class="text-sm leading-relaxed text-gray-600 dark:text-dark-300">{{ message }}</p>
+    <div class="space-y-3">
+      <p class="text-control leading-relaxed text-gray-600 dark:text-dark-400">{{ message }}</p>
       <slot></slot>
     </div>
 
@@ -9,14 +9,14 @@
       <button
         @click="handleCancel"
         type="button"
-        class="btn btn-secondary"
+        class="btn btn-secondary h-control px-4 text-control"
       >
         {{ cancelText }}
       </button>
       <button
         @click="handleConfirm"
         type="button"
-        :class="['btn', danger ? 'btn-danger' : 'btn-primary']"
+        :class="['btn h-control px-4 text-control', danger ? 'btn-danger' : 'btn-primary']"
       >
         {{ confirmText }}
       </button>

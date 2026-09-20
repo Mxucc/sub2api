@@ -2,176 +2,229 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <title>Sub2API 设计系统预览 · DeepSeek 主题</title>
+    <title>Sub2API 控制台设计系统 · TDesign / 腾讯云风格</title>
     <!--
-      静态设计预览页（可选文件）。
+      静态设计预览页（可选文件，不参与应用构建）。
       重新生成样式：
         cd frontend
         pnpm exec tailwindcss -c tailwind.config.js \
-          --content "../design-preview.html" -i src/style.css -o ../design-preview.css
+          --content "./src/**/*.{vue,ts}" --content "../design-preview.html" \
+          -i src/style.css -o ../design-preview.css
     -->
     <link rel="stylesheet" href="design-preview.css" />
   </head>
-  <body class="min-h-screen bg-gray-50 p-8 dark:bg-dark-950">
-    <div class="mx-auto max-w-5xl space-y-8">
-      <header class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 class="text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
-            Sub2API 设计系统 · DeepSeek 主题
-          </h1>
-          <p class="mt-1 text-sm text-gray-500 dark:text-dark-400">
-            品牌蓝 #3964FE · 冷中性色阶 · 扁平描边层次 · 全站直角（0 圆角）+ 直角端点线框图标
-          </p>
+  <body class="min-h-screen bg-gray-50 p-6 dark:bg-dark-950">
+    <div class="mx-auto max-w-6xl space-y-4">
+      <!-- 顶部：产品名 + 主题切换 -->
+      <header class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 pb-4 dark:border-dark-700">
+        <div class="flex items-center gap-3">
+          <div class="flex h-9 w-9 items-center justify-center bg-primary-500 text-sm font-medium text-white">
+            S2
+          </div>
+          <div>
+            <h1 class="text-[18px] font-medium text-gray-900 dark:text-gray-100">
+              Sub2API 控制台 · 设计系统
+            </h1>
+            <p class="text-caption text-gray-500 dark:text-dark-400">
+              品牌蓝 #0052D9 · 全站直角 · 32px 控件 · 13px 控制台字号 · TDesign 灰阶
+            </p>
+          </div>
         </div>
         <button class="btn btn-secondary" onclick="document.documentElement.classList.toggle('dark')">
-          切换明/暗
+          切换明 / 暗
         </button>
       </header>
 
-      <!-- 色板 -->
-      <section class="card p-6">
-        <h2 class="section-title mb-4">品牌色阶</h2>
-        <div class="grid grid-cols-6 gap-2 sm:grid-cols-11">
-          <div class="space-y-1 text-center" x-data>
-            <div class="h-12 rounded-lg bg-primary-50"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">50</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-100"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">100</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-200"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">200</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-300"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">300</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-400"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">400</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-500"></div>
-            <span class="text-[10px] font-semibold text-gray-900 dark:text-white">500</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-600"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">600</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-700"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">700</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-800"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">800</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-900"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">900</span>
-          </div>
-          <div class="space-y-1 text-center">
-            <div class="h-12 rounded-lg bg-primary-950"></div>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">950</span>
-          </div>
-        </div>
-        <h2 class="section-title mb-4 mt-6">中性色阶 / 深色层次</h2>
-        <div class="flex flex-wrap gap-2">
-          <div class="h-10 w-10 rounded-lg bg-gray-50 ring-1 ring-gray-200 dark:ring-dark-700"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-100"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-200"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-300"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-400"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-500"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-600"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-700"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-800"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-900"></div>
-          <div class="h-10 w-10 rounded-lg bg-gray-950"></div>
-        </div>
-      </section>
-
-      <!-- 按钮 -->
-      <section class="card p-6">
-        <h2 class="section-title mb-4">按钮</h2>
-        <div class="flex flex-wrap items-center gap-3">
-          <button class="btn btn-primary">主按钮</button>
-          <button class="btn btn-secondary">次按钮</button>
-          <button class="btn btn-ghost">幽灵按钮</button>
-          <button class="btn btn-soft">品牌柔色</button>
-          <button class="btn btn-danger">危险操作</button>
-          <button class="btn btn-danger-soft">危险柔色</button>
-          <button class="btn btn-secondary" disabled>禁用</button>
-        </div>
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          <button class="btn btn-primary btn-sm">小号</button>
-          <button class="btn btn-primary btn-md">中号</button>
-          <button class="btn btn-primary btn-lg">大号</button>
-          <button class="icon-btn">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-width="2" d="M12 5v14M5 12h14" />
-            </svg>
-          </button>
-          <button class="btn btn-link">文字按钮</button>
-        </div>
-      </section>
-
-      <!-- 表单 -->
-      <section class="card p-6">
-        <h2 class="section-title mb-4">表单控件</h2>
-        <div class="grid gap-5 md:grid-cols-3">
-          <div>
-            <label class="input-label">名称</label>
-            <input class="input" placeholder="请输入名称" />
-            <p class="input-hint">用于在列表中区分资源</p>
-          </div>
-          <div>
-            <label class="input-label">错误状态</label>
-            <input class="input input-error" value="重复的名称" />
-            <p class="input-error-text">该名称已被占用</p>
-          </div>
-          <div>
-            <label class="input-label">选择器</label>
-            <button class="input flex items-center justify-between text-left">
-              <span class="text-gray-900 dark:text-gray-100">默认分组</span>
-              <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-width="2" d="m6 9 6 6 6-6" />
-              </svg>
-            </button>
-            <div class="dropdown relative mt-2 w-full">
-              <div class="dropdown-item dropdown-item-active">默认分组</div>
-              <div class="dropdown-item">高倍率分组</div>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item">
-                <span>内部测试</span>
-                <span class="ml-auto text-xs text-gray-400">仅管理员</span>
-              </div>
+      <!-- 面包屑 + 页头 -->
+      <section class="page-header-bar">
+        <div class="page-header-main">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a class="breadcrumb-link" href="#">控制台</a>
+            <span class="breadcrumb-separator">/</span>
+            <a class="breadcrumb-link" href="#">资源管理</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">账号管理</span>
+          </nav>
+          <div class="page-header-row">
+            <div class="min-w-0">
+              <h1 class="page-title">账号管理</h1>
+              <p class="page-description">上游账号、配额与调度策略的统一管理入口</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="btn btn-secondary">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                导出
+              </button>
+              <button class="btn btn-primary">新建账号</button>
             </div>
           </div>
         </div>
-        <div class="mt-6 flex flex-wrap items-center gap-8">
-          <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-            <span class="switch switch-active"><span class="switch-thumb"></span></span>
-            启用自动刷新
-          </label>
-          <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-            <input type="checkbox" class="checkbox" checked />
-            记住本次选择
-          </label>
-          <span class="text-sm text-gray-700 dark:text-gray-300">
-            快捷键 <span class="kbd">⌘</span> <span class="kbd">K</span>
-          </span>
+        <div class="page-header-tabs">
+          <div class="tabs">
+            <button class="tab tab-active">全部账号</button>
+            <button class="tab">异常账号</button>
+            <button class="tab">待续期</button>
+          </div>
         </div>
       </section>
 
-      <!-- 卡片 / 统计 -->
-      <section class="grid gap-4 md:grid-cols-3">
+      <!-- 数据卡片：筛选 + 表格 + 分页 -->
+      <section class="data-card">
+        <div class="filter-bar">
+          <span class="filter-label">筛选</span>
+          <input class="input w-56" placeholder="按名称 / 备注搜索" />
+          <button class="input flex w-40 items-center justify-between text-left">
+            <span class="text-gray-500 dark:text-dark-400">全部平台</span>
+            <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <span class="tag tag-primary">Anthropic ×12</span>
+          <span class="tag tag-success">正常 ×9</span>
+          <span class="tag tag-warning">限流 ×2</span>
+          <span class="ml-auto flex items-center gap-2">
+            <button class="btn btn-secondary btn-sm">批量操作</button>
+            <button class="btn btn-ghost btn-sm">重置</button>
+          </span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="w-10">
+                  <input type="checkbox" class="checkbox" />
+                </th>
+                <th>账号名称</th>
+                <th>平台</th>
+                <th>状态</th>
+                <th class="text-right">优先级</th>
+                <th class="text-right">今日消耗</th>
+                <th class="w-24 text-right">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" class="checkbox" /></td>
+                <td class="font-medium text-gray-900 dark:text-gray-100">claude-pro-01</td>
+                <td><span class="tag">Anthropic</span></td>
+                <td>
+                  <span class="flex items-center gap-1.5 text-caption text-gray-700 dark:text-dark-300">
+                    <span class="status-dot status-dot-success"></span> 正常
+                  </span>
+                </td>
+                <td class="text-right tabular-nums">10</td>
+                <td class="text-right tabular-nums">$128.40</td>
+                <td class="text-right">
+                  <button class="icon-btn-sm" aria-label="编辑">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                      <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
+                    </svg>
+                  </button>
+                  <button class="icon-btn-sm" aria-label="删除">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M10 11v6M14 11v6M17 19H7a2 2 0 0 1-2-2V7h14v10a2 2 0 0 1-2 2zM9 7V4h6v3" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="row-selected">
+                <td><input type="checkbox" class="checkbox" checked /></td>
+                <td class="font-medium text-gray-900 dark:text-gray-100">gemini-batch-02</td>
+                <td><span class="tag">Google</span></td>
+                <td>
+                  <span class="flex items-center gap-1.5 text-caption text-gray-700 dark:text-dark-300">
+                    <span class="status-dot status-dot-warning"></span> 限流中
+                  </span>
+                </td>
+                <td class="text-right tabular-nums">20</td>
+                <td class="text-right tabular-nums">$64.05</td>
+                <td class="text-right">
+                  <button class="icon-btn-sm" aria-label="编辑">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    </svg>
+                  </button>
+                  <button class="icon-btn-sm" aria-label="删除">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M10 11v6M14 11v6M17 19H7a2 2 0 0 1-2-2V7h14v10a2 2 0 0 1-2 2zM9 7V4h6v3" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="checkbox" /></td>
+                <td class="font-medium text-gray-900 dark:text-gray-100">deepseek-v3-03</td>
+                <td><span class="tag">DeepSeek</span></td>
+                <td>
+                  <span class="flex items-center gap-1.5 text-caption text-gray-700 dark:text-dark-300">
+                    <span class="status-dot status-dot-primary"></span> 默认
+                  </span>
+                </td>
+                <td class="text-right tabular-nums">30</td>
+                <td class="text-right tabular-nums">$12.88</td>
+                <td class="text-right">
+                  <button class="icon-btn-sm" aria-label="编辑">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    </svg>
+                  </button>
+                  <button class="icon-btn-sm" aria-label="删除">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M10 11v6M14 11v6M17 19H7a2 2 0 0 1-2-2V7h14v10a2 2 0 0 1-2 2zM9 7V4h6v3" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="checkbox" /></td>
+                <td class="font-medium text-gray-900 dark:text-gray-100">gpt-legacy-04</td>
+                <td><span class="tag">OpenAI</span></td>
+                <td>
+                  <span class="flex items-center gap-1.5 text-caption text-gray-500 dark:text-dark-400">
+                    <span class="status-dot status-dot-gray"></span> 已禁用
+                  </span>
+                </td>
+                <td class="text-right tabular-nums">90</td>
+                <td class="text-right tabular-nums">$0.00</td>
+                <td class="text-right">
+                  <button class="icon-btn-sm" aria-label="编辑">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    </svg>
+                  </button>
+                  <button class="icon-btn-sm" aria-label="删除">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path d="M10 11v6M14 11v6M17 19H7a2 2 0 0 1-2-2V7h14v10a2 2 0 0 1-2 2zM9 7V4h6v3" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer flex flex-wrap items-center justify-between gap-3">
+          <span class="text-caption text-gray-500 dark:text-dark-400">共 4 条记录 · 每页 20 条</span>
+          <div class="flex items-center gap-2">
+            <button class="btn btn-secondary btn-sm">上一页</button>
+            <button class="btn btn-primary btn-sm">1</button>
+            <button class="btn btn-secondary btn-sm">2</button>
+            <button class="btn btn-secondary btn-sm">3</button>
+            <button class="btn btn-secondary btn-sm">下一页</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 指标卡 + 关键指标行 -->
+      <section class="grid gap-4 md:grid-cols-4">
         <div class="stat-card">
           <div class="stat-icon stat-icon-primary">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-width="1.8" d="M4 19V5m16 14V9M9 19v-7m4 7V8m4 11v-4" />
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 19V5m16 14V9M9 19v-7m4 7V8m4 11v-4" />
             </svg>
           </div>
           <div class="min-w-0">
@@ -182,8 +235,8 @@
         </div>
         <div class="stat-card">
           <div class="stat-icon stat-icon-success">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-width="1.8" d="m5 13 4 4L19 7" />
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="m5 13 4 4L19 7" />
             </svg>
           </div>
           <div class="min-w-0">
@@ -194,8 +247,8 @@
         </div>
         <div class="stat-card">
           <div class="stat-icon stat-icon-warning">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-width="1.8" d="M12 9v5m0 3h.01M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.4h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 9v5m0 3h.01M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.4h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
             </svg>
           </div>
           <div class="min-w-0">
@@ -204,121 +257,143 @@
             <div class="stat-trend stat-trend-down">↓ 2 条已恢复</div>
           </div>
         </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-danger">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 8v5m0 3h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <div class="stat-value">2</div>
+            <div class="stat-label">异常账号</div>
+            <div class="stat-trend stat-trend-down">↓ 1 条待复检</div>
+          </div>
+        </div>
       </section>
 
-      <!-- 表格 -->
-      <section class="surface overflow-hidden">
-        <div class="card-header flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 class="section-title">账号列表</h2>
-            <p class="section-description">表格头部、行悬停与状态徽章的统一样式</p>
+      <section class="grid gap-4 lg:grid-cols-2">
+        <div class="card">
+          <div class="card-header flex items-center justify-between">
+            <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">配额概览</h2>
+            <button class="btn btn-ghost btn-sm">查看详情</button>
           </div>
-          <div class="flex items-center gap-2">
-            <button class="btn btn-secondary btn-sm">导出</button>
-            <button class="btn btn-primary btn-sm">新建账号</button>
+          <div class="card-body space-y-3">
+            <div class="metric-row">
+              <span class="metric-label">5 小时窗口</span>
+              <span class="metric-value">62%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" style="width: 62%"></div>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">7 天窗口</span>
+              <span class="metric-value">41%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" style="width: 41%"></div>
+            </div>
+          </div>
+          <div class="card-footer flex items-center justify-between">
+            <span class="text-caption text-gray-500 dark:text-dark-400">数据每 5 分钟刷新</span>
+            <button class="btn btn-secondary btn-sm">立即刷新</button>
           </div>
         </div>
-        <div class="table-wrapper">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>名称</th>
-                <th>平台</th>
-                <th>状态</th>
-                <th class="text-right">优先级</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="font-medium text-gray-900 dark:text-white">claude-pro-01</td>
-                <td>Anthropic</td>
-                <td><span class="badge badge-success">正常</span></td>
-                <td class="text-right tabular-nums">10</td>
-              </tr>
-              <tr class="row-selected">
-                <td class="font-medium text-gray-900 dark:text-white">gemini-batch-02</td>
-                <td>Google</td>
-                <td><span class="badge badge-warning">限流中</span></td>
-                <td class="text-right tabular-nums">20</td>
-              </tr>
-              <tr>
-                <td class="font-medium text-gray-900 dark:text-white">deepseek-v3-03</td>
-                <td>DeepSeek</td>
-                <td><span class="badge badge-primary">默认</span></td>
-                <td class="text-right tabular-nums">30</td>
-              </tr>
-              <tr>
-                <td class="font-medium text-gray-900 dark:text-white">gpt-legacy-04</td>
-                <td>OpenAI</td>
-                <td><span class="badge badge-gray">已禁用</span></td>
-                <td class="text-right tabular-nums">90</td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">表单控件</h2>
+          </div>
+          <div class="card-body grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="input-label">账号名称</label>
+              <input class="input" placeholder="请输入账号名称" />
+              <p class="input-hint">用于在列表中区分不同账号</p>
+            </div>
+            <div>
+              <label class="input-label">优先级</label>
+              <input class="input input-error" value="重复的优先级" />
+              <p class="input-error-text">该优先级已被占用</p>
+            </div>
+            <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
+              <label class="flex items-center gap-2 text-control text-gray-700 dark:text-dark-300">
+                <span class="switch switch-active"><span class="switch-thumb"></span></span>
+                启用自动续期
+              </label>
+              <label class="flex items-center gap-2 text-control text-gray-700 dark:text-dark-300">
+                <input type="checkbox" class="checkbox" checked />
+                加入默认调度池
+              </label>
+              <span class="text-caption text-gray-500 dark:text-dark-400">
+                快捷键 <span class="kbd">⌘</span> <span class="kbd">K</span>
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="card-footer flex flex-wrap items-center justify-between gap-3">
-          <span class="text-xs text-gray-500 dark:text-dark-400">共 4 条记录</span>
-          <div class="flex items-center gap-1">
-            <button class="icon-btn icon-btn-sm">
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-width="2" d="m15 18-6-6 6-6" />
+      </section>
+
+      <!-- 按钮 / 标签 / 状态 -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">按钮、标签与状态</h2>
+        </div>
+        <div class="card-body space-y-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="btn btn-primary">主操作</button>
+            <button class="btn btn-secondary">次操作</button>
+            <button class="btn btn-ghost">幽灵</button>
+            <button class="btn btn-soft">品牌浅底</button>
+            <button class="btn btn-danger">危险</button>
+            <button class="btn btn-danger-soft">危险浅底</button>
+            <button class="btn btn-secondary" disabled>禁用</button>
+            <button class="btn btn-primary btn-sm">小号</button>
+            <button class="btn btn-primary btn-lg">大号</button>
+            <button class="icon-btn" aria-label="新增">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path d="M5 12h14M12 5v14" />
               </svg>
             </button>
-            <button class="btn btn-primary btn-sm">1</button>
-            <button class="btn btn-ghost btn-sm">2</button>
-            <button class="btn btn-ghost btn-sm">3</button>
-            <button class="icon-btn icon-btn-sm">
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-width="2" d="m9 6 6 6-6 6" />
-              </svg>
-            </button>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="badge badge-primary">品牌</span>
+            <span class="badge badge-success">成功</span>
+            <span class="badge badge-warning">警告</span>
+            <span class="badge badge-danger">错误</span>
+            <span class="badge badge-gray">中性</span>
+            <span class="badge badge-outline">描边</span>
+            <span class="tag tag-primary">按量计费</span>
+            <span class="tag tag-success">已备案</span>
+            <span class="tag tag-warning">限流</span>
+            <span class="tag tag-danger">已过期</span>
+            <span class="tag tag-gray">内部</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-6">
+            <span class="flex items-center gap-1.5 text-caption text-gray-700 dark:text-dark-300">
+              <span class="status-dot status-dot-success"></span> 运行中
+            </span>
+            <span class="flex items-center gap-1.5 text-caption text-gray-700 dark:text-dark-300">
+              <span class="status-dot status-dot-warning"></span> 降级
+            </span>
+            <span class="flex items-center gap-1.5 text-caption text-gray-700 dark:text-dark-300">
+              <span class="status-dot status-dot-danger"></span> 故障
+            </span>
+            <span class="flex items-center gap-1.5 text-caption text-gray-500 dark:text-dark-400">
+              <span class="status-dot status-dot-gray"></span> 未启用
+            </span>
+            <span class="spinner text-primary-500"></span>
+            <span class="code">model=gpt-5</span>
+            <span class="link">文档链接</span>
           </div>
         </div>
       </section>
 
-      <!-- 徽章与标签页 -->
-      <section class="card p-6">
-        <h2 class="section-title mb-4">徽章 / 标签页 / 提示</h2>
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="badge badge-primary">品牌</span>
-          <span class="badge badge-success">成功</span>
-          <span class="badge badge-warning">警告</span>
-          <span class="badge badge-danger">错误</span>
-          <span class="badge badge-purple">高级</span>
-          <span class="badge badge-gray">中性</span>
-          <span class="badge badge-outline">描边</span>
-          <span class="code">model=gpt-5</span>
-        </div>
-        <div class="tabs mt-5">
-          <button class="tab tab-active">概览</button>
-          <button class="tab">用量</button>
-          <button class="tab">日志</button>
-        </div>
-        <div class="mt-5 flex gap-6 border-b border-gray-200 dark:border-dark-800">
-          <button class="tab-underline tab-underline-active">下划线标签</button>
-          <button class="tab-underline">另一个</button>
-        </div>
-        <div class="mt-5 grid gap-3 md:grid-cols-2">
-          <div class="surface-brand px-3 py-2 text-xs text-primary-900 dark:text-primary-200">
-            <b>提示：</b>分组倍率会直接影响计费金额。
-          </div>
-          <div class="tour-error-box">
-            <b>错误：</b>上游凭证已过期，请重新授权。
-          </div>
-        </div>
-        <div class="mt-5 h-2 w-full progress">
-          <div class="progress-bar" style="width: 62%"></div>
-        </div>
-      </section>
-
-      <!-- 弹窗与通知 -->
-      <section class="grid gap-6 md:grid-cols-2">
-        <div class="card p-0">
+      <!-- 弹窗 / 通知 / 空态 -->
+      <section class="grid gap-4 lg:grid-cols-2">
+        <div class="card">
           <div class="modal-header">
-            <h3 class="modal-title">创建 API 密钥</h3>
-            <button class="icon-btn icon-btn-sm">
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" />
+            <h3 class="modal-title">新建 API 密钥</h3>
+            <button class="icon-btn-sm" aria-label="关闭">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 6 6 18m12 0L6 6" />
               </svg>
             </button>
           </div>
@@ -337,147 +412,139 @@
             <button class="btn btn-primary">确认创建</button>
           </div>
         </div>
+
         <div class="space-y-3">
           <div class="toast relative !right-auto !top-auto">
-            <div class="flex items-start gap-3">
-              <span class="stat-icon stat-icon-success h-8 w-8 text-sm">✓</span>
+            <div class="flex items-start gap-2.5">
+              <span class="stat-icon stat-icon-success h-6 w-6 text-xs">✓</span>
               <div>
-                <div class="section-title">保存成功</div>
-                <div class="section-description mt-0.5">配置已同步到全部节点。</div>
+                <div class="text-control font-medium text-gray-900 dark:text-gray-100">保存成功</div>
+                <div class="text-caption text-gray-500 dark:text-dark-400">配置已同步到全部节点。</div>
               </div>
             </div>
           </div>
           <div class="toast toast-error relative !right-auto !top-auto">
-            <div class="flex items-start gap-3">
-              <span class="stat-icon stat-icon-danger h-8 w-8 text-sm">!</span>
+            <div class="flex items-start gap-2.5">
+              <span class="stat-icon stat-icon-danger h-6 w-6 text-xs">!</span>
               <div>
-                <div class="section-title">请求失败</div>
-                <div class="section-description mt-0.5">上游返回 429，请稍后重试。</div>
+                <div class="text-control font-medium text-gray-900 dark:text-gray-100">请求失败</div>
+                <div class="text-caption text-gray-500 dark:text-dark-400">上游返回 429，请稍后重试。</div>
               </div>
             </div>
           </div>
-          <div class="empty-state rounded-2xl border border-dashed border-gray-200 dark:border-dark-700">
-            <div class="empty-state-icon">◎</div>
-            <div class="empty-state-title">暂无数据</div>
-            <div class="empty-state-description">创建第一个账号后即可查看用量统计。</div>
-            <button class="btn btn-primary mt-4">立即创建</button>
+          <div class="card">
+            <div class="empty-state py-8">
+              <div class="empty-state-icon">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4 7h16M4 12h16M4 17h10" />
+                </svg>
+              </div>
+              <div class="empty-state-title">暂无数据</div>
+              <div class="empty-state-description">创建第一个账号后即可查看用量统计。</div>
+              <button class="btn btn-primary mt-4">立即创建</button>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- 侧边栏预览 -->
-      <section class="surface overflow-hidden">
+      <!-- 侧边栏 + 下拉 -->
+      <section class="data-card">
         <div class="flex">
-          <aside class="w-60 border-r border-gray-200/80 p-3 dark:border-dark-800">
-            <div class="sidebar-section-title">管理</div>
+          <aside class="w-[232px] border-r border-gray-200 p-3 dark:border-dark-700">
+            <div class="sidebar-section-title">控制台</div>
             <a class="sidebar-link sidebar-link-active" href="#">
-              <span class="h-4 w-4 rounded bg-current opacity-60"></span>仪表盘
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 10.5 12 3l9 7.5M5 10v10h14V10" />
+              </svg>
+              仪表盘
             </a>
             <a class="sidebar-link" href="#">
-              <span class="h-4 w-4 rounded bg-current opacity-40"></span>账号管理
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 7h16v12H4zM4 7l8 6 8-6" />
+              </svg>
+              账号管理
             </a>
-            <div class="sidebar-section mt-4">
+            <div class="sidebar-section mt-3">
               <div class="sidebar-section-title">用户</div>
               <a class="sidebar-link" href="#">
-                <span class="h-4 w-4 rounded bg-current opacity-40"></span>我的密钥
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M15 7a6 6 0 1 1-12 0 6 6 0 0 1 12 0ZM3 20a6 6 0 0 1 12 0" />
+                </svg>
+                我的密钥
               </a>
             </div>
           </aside>
-          <div class="flex-1 p-6">
-            <h3 class="page-title">仪表盘</h3>
-            <p class="page-description">侧边栏选中态使用品牌柔色药丸 + 内侧 1px 描边</p>
-            <div class="mt-4 grid gap-3 sm:grid-cols-2">
-              <div class="surface-flat p-4">
-                <div class="stat-label">请求数</div>
-                <div class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">48,213</div>
+          <div class="flex-1 p-4">
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">下拉菜单</h3>
+            <p class="text-caption text-gray-500 dark:text-dark-400">
+              选中项使用品牌浅底 + 品牌文字，未选中项 hover 使用中性灰
+            </p>
+            <div class="dropdown relative mt-4 w-64">
+              <div class="dropdown-item dropdown-item-active">
+                <span>默认分组</span>
+                <svg class="ml-auto h-4 w-4 text-primary-500 dark:text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="m5 13 4 4L19 7" />
+                </svg>
               </div>
-              <div class="surface-flat p-4">
-                <div class="stat-label">平均延迟</div>
-                <div class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">412 ms</div>
+              <div class="dropdown-item">高倍率分组</div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item">
+                <span>内部测试</span>
+                <span class="ml-auto text-2xs text-gray-500 dark:text-dark-400">仅管理员</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 图标样式（Lucide 线性） -->
-      <section class="card p-6">
-        <h2 class="section-title mb-1">图标样式 · Lucide 线性（round cap / 1.5px）</h2>
-        <p class="section-description mb-5">
-          lucide-vue-next · stroke-width 1.5 · 圆头端点 —— 面是直角，线是圆润
-        </p>
-        <div class="grid grid-cols-4 gap-3 sm:grid-cols-8">
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">play</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-              <path d="M21 3v5h-5" />
-              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-              <path d="M8 16H3v5" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">refresh</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-              <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">edit</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="M5 12h14" />
-              <path d="M12 5v14" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">plus</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="m21 21-4.34-4.34" />
-              <circle cx="11" cy="11" r="8" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">search</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">x</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">chevronDown</span>
-          </div>
-          <div class="surface-flat flex flex-col items-center gap-2 p-3">
-            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-              <rect width="7" height="7" x="3" y="3" />
-              <rect width="7" height="7" x="14" y="3" />
-              <rect width="7" height="7" x="14" y="14" />
-              <rect width="7" height="7" x="3" y="14" />
-            </svg>
-            <span class="text-[10px] text-gray-500 dark:text-dark-400">grid</span>
-          </div>
+      <!-- 色板 -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">设计令牌</h2>
         </div>
-        <div class="mt-5 flex flex-wrap items-center gap-4">
-          <span class="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-300">
-            <span class="spinner text-primary-500"></span> 加载指示器保留圆形（唯一例外）
-          </span>
-          <span class="text-sm text-gray-600 dark:text-dark-300">
-            圆角令牌：<span class="code">rounded-full / rounded-2xl / rounded-lg</span> 全部 = 0px
-          </span>
+        <div class="card-body space-y-5">
+          <div>
+            <p class="section-title mb-2">品牌蓝 primary（TDesign #0052D9）</p>
+            <div class="flex flex-wrap gap-2">
+              <div class="h-10 w-16 bg-primary-50"></div>
+              <div class="h-10 w-16 bg-primary-100"></div>
+              <div class="h-10 w-16 bg-primary-200"></div>
+              <div class="h-10 w-16 bg-primary-300"></div>
+              <div class="h-10 w-16 bg-primary-400"></div>
+              <div class="h-10 w-16 bg-primary-500"></div>
+              <div class="h-10 w-16 bg-primary-600"></div>
+              <div class="h-10 w-16 bg-primary-700"></div>
+              <div class="h-10 w-16 bg-primary-900"></div>
+            </div>
+          </div>
+          <div>
+            <p class="section-title mb-2">中性灰 gray / 深色层次 dark</p>
+            <div class="flex flex-wrap gap-2">
+              <div class="h-10 w-12 bg-gray-50 ring-1 ring-gray-200 dark:ring-dark-700"></div>
+              <div class="h-10 w-12 bg-gray-100"></div>
+              <div class="h-10 w-12 bg-gray-200"></div>
+              <div class="h-10 w-12 bg-gray-300"></div>
+              <div class="h-10 w-12 bg-gray-400"></div>
+              <div class="h-10 w-12 bg-gray-500"></div>
+              <div class="h-10 w-12 bg-gray-600"></div>
+              <div class="h-10 w-12 bg-gray-700"></div>
+              <div class="h-10 w-12 bg-gray-900"></div>
+              <div class="h-10 w-12 bg-dark-950"></div>
+              <div class="h-10 w-12 bg-dark-800"></div>
+              <div class="h-10 w-12 bg-dark-700"></div>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 text-caption text-gray-500 dark:text-dark-400">
+            <span>控件 32px / 字号 13px</span>
+            <span>表格行 40px / 表头 13px</span>
+            <span>顶栏 48px / 侧边栏 232px / 侧边栏项 36px</span>
+            <span>圆角全部 0（spinner 例外）</span>
+          </div>
         </div>
       </section>
 
-      <footer class="pb-6 text-center text-xs text-gray-400 dark:text-dark-500">
-        静态预览页 · 仅用于核对设计系统，不参与应用构建
+      <footer class="pb-4 text-center text-caption text-gray-500 dark:text-dark-500">
+        静态预览页 · 仅用于核对设计系统（docs/UI_DESIGN.md），不参与应用构建
       </footer>
     </div>
   </body>

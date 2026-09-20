@@ -340,7 +340,7 @@ const distributionColspan = computed(() => showAccountCost.value ? 6 : 5)
 const activeView = ref<'model_distribution' | 'spending_ranking'>('model_distribution')
 
 const chartColors = [
-  '#3964fe',
+  '#0052d9',
   '#10b981',
   '#f59e0b',
   '#ef4444',

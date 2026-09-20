@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div
-      class="pointer-events-none fixed right-4 top-4 z-[9999] space-y-3"
+      class="pointer-events-none fixed right-4 top-4 z-[9999] space-y-2"
       aria-live="polite"
       aria-atomic="true"
     >
@@ -17,19 +17,19 @@
           v-for="toast in toasts"
           :key="toast.id"
           :class="[
-            'pointer-events-auto min-w-[320px] max-w-md overflow-hidden rounded-xl',
+            'pointer-events-auto min-w-[300px] max-w-md overflow-hidden rounded-none',
             'bg-white dark:bg-dark-800',
             'border border-y-gray-200/80 border-r-gray-200/80 dark:border-y-dark-600/80 dark:border-r-dark-600/80',
             'border-l-[3px] shadow-popover',
             getBorderColor(toast.type)
           ]"
         >
-          <div class="p-4">
-            <div class="flex items-start gap-3">
+          <div class="p-3.5">
+            <div class="flex items-start gap-2.5">
               <!-- Icon -->
               <div
                 :class="[
-                  'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg',
+                  'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-none',
                   getIconChipClass(toast.type)
                 ]"
               >
@@ -42,15 +42,15 @@
 
               <!-- Content -->
               <div class="min-w-0 flex-1">
-                <p v-if="toast.title" class="text-sm font-semibold text-gray-900 dark:text-white">
+                <p v-if="toast.title" class="text-control font-medium text-gray-900 dark:text-dark-300">
                   {{ toast.title }}
                 </p>
                 <p
                   :class="[
-                    'text-sm leading-relaxed',
+                    'text-control leading-relaxed',
                     toast.title
-                      ? 'mt-1 text-gray-600 dark:text-gray-300'
-                      : 'text-gray-900 dark:text-white'
+                      ? 'mt-1 text-gray-600 dark:text-dark-400'
+                      : 'text-gray-900 dark:text-dark-300'
                   ]"
                 >
                   {{ toast.message }}
@@ -69,7 +69,7 @@
           </div>
 
           <!-- Progress bar -->
-          <div v-if="toast.duration" class="h-1 bg-gray-100 dark:bg-dark-800">
+          <div v-if="toast.duration" class="h-0.5 bg-gray-100 dark:bg-dark-800">
             <div
               :class="['h-full toast-progress', getProgressBarColor(toast.type)]"
               :style="{ animationDuration: `${toast.duration}ms` }"

@@ -6,7 +6,7 @@
     </label>
     <div class="relative">
       <!-- Prefix Icon Slot -->
-      <div v-if="$slots.prefix" class="input-affix inset-y-0 left-0 flex items-center pl-3.5">
+      <div v-if="$slots.prefix" class="input-affix inset-y-0 left-0 flex items-center pl-3">
         <slot name="prefix"></slot>
       </div>
 
@@ -21,9 +21,9 @@
         :autocomplete="autocomplete"
         :readonly="readonly"
         :class="[
-          'input',
-          $slots.prefix ? 'pl-10' : '',
-          $slots.suffix ? 'pr-10' : '',
+          'input h-control text-control',
+          $slots.prefix ? 'pl-9' : '',
+          $slots.suffix ? 'pr-9' : '',
           error ? 'input-error' : '',
           disabled ? 'cursor-not-allowed' : ''
         ]"
@@ -37,7 +37,7 @@
       <!-- Suffix Slot (e.g. Password Toggle or Clear Button) -->
       <div
         v-if="$slots.suffix"
-        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 dark:text-dark-400"
+        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-dark-400"
       >
         <slot name="suffix"></slot>
       </div>

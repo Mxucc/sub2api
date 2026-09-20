@@ -3,6 +3,7 @@ export default {
     loading: 'Loading...',
     submitting: 'Submitting...',
     justNow: 'just now',
+    breadcrumb: 'Breadcrumb',
     peakRateTooltip: 'Peak rate: {window}',
     peakRateImageNote: '; image tokens billed as tokens are also affected, per-image billing is unaffected',
     save: 'Save',
