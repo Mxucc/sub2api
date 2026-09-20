@@ -11,7 +11,8 @@
       <!-- Custom Logo or Default Logo -->
       <router-link
         :to="homePath"
-        class="sidebar-logo flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl shadow-glow transition-opacity hover:opacity-80"
+        class="sidebar-logo flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl transition-opacity duration-150 hover:opacity-80"
+        :class="{ 'border border-gray-200/80 bg-white dark:border-dark-700 dark:bg-dark-800': siteLogo }"
         @click="handleMenuItemClick(homePath)"
       >
         <img v-if="settingsLoaded" :src="siteLogo || '/logo.svg'" alt="Logo" class="h-full w-full object-contain" />
@@ -62,7 +63,7 @@
                 </span>
               </button>
               <!-- Children -->
-              <div v-if="!sidebarCollapsed && isGroupExpanded(item)" class="mb-1 ml-4 border-l border-gray-200 pl-2 dark:border-dark-600">
+              <div v-if="!sidebarCollapsed && isGroupExpanded(item)" class="mb-1 ml-4 border-l border-gray-200 pl-2 dark:border-dark-800">
                 <router-link
                   v-for="child in item.children"
                   :key="child.path"
@@ -148,7 +149,7 @@
     </nav>
 
     <!-- Bottom Section -->
-    <div class="mt-auto border-t border-gray-100 p-3 dark:border-dark-800">
+    <div class="mt-auto border-t border-gray-200/80 p-3 dark:border-dark-800">
       <!-- Theme Toggle -->
       <button
         @click="toggleTheme"
@@ -1045,14 +1046,14 @@ onBeforeUnmount(() => {
   right: 0.75rem;
   top: 50%;
   height: 1px;
-  background: rgb(229 231 235);
+  background: rgb(229 232 238);
   opacity: 0;
   transform: translateY(-50%);
   transition: opacity 0.18s ease;
 }
 
 .dark .sidebar-section-title::after {
-  background: rgb(55 65 81);
+  background: rgb(53 54 56);
 }
 
 .sidebar-section-title-text-collapsed {
@@ -1101,5 +1102,12 @@ onBeforeUnmount(() => {
   display: block;
   width: 1.25rem;
   height: 1.25rem;
+}
+
+/* Active nav item: soft brand pill with a subtle inset hairline */
+.sidebar-link-active,
+.sidebar-link-active:hover {
+  @apply bg-primary-50 text-primary-600 ring-1 ring-inset ring-primary-100;
+  @apply dark:bg-primary-500/10 dark:text-primary-300 dark:ring-primary-500/20;
 }
 </style>

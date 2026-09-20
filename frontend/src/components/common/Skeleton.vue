@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'animate-pulse bg-gray-200 dark:bg-dark-700',
+      'skeleton-shimmer bg-gray-200 dark:bg-dark-800',
       variant === 'circle' ? 'rounded-full' : 'rounded-lg',
       customClass
     ]"
@@ -44,3 +44,12 @@ const style = computed(() => {
   return s
 })
 </script>
+
+<style scoped>
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+    background-image: none;
+  }
+}
+</style>

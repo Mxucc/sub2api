@@ -541,7 +541,7 @@ const userTrendChartData = computed(() => {
 
   const sortedDates = Array.from(allDates).sort()
   const colors = [
-    '#3b82f6',
+    '#3964fe',
     '#10b981',
     '#f59e0b',
     '#ef4444',

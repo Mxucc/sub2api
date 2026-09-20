@@ -55,7 +55,7 @@
               </div>
               <div class="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-dark-400">
                 <span>#{{ row.id }}</span>
-                <span class="text-gray-300 dark:text-dark-700">·</span>
+                <span class="text-gray-300 dark:text-dark-600">·</span>
                 <span>{{ formatDateTime(row.created_at) }}</span>
               </div>
             </div>

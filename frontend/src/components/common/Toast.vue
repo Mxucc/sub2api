@@ -17,20 +17,25 @@
           v-for="toast in toasts"
           :key="toast.id"
           :class="[
-            'pointer-events-auto min-w-[320px] max-w-md overflow-hidden rounded-lg shadow-lg',
+            'pointer-events-auto min-w-[320px] max-w-md overflow-hidden rounded-xl',
             'bg-white dark:bg-dark-800',
-            'border-l-4',
+            'border border-y-gray-200/80 border-r-gray-200/80 dark:border-y-dark-600/80 dark:border-r-dark-600/80',
+            'border-l-[3px] shadow-popover',
             getBorderColor(toast.type)
           ]"
         >
           <div class="p-4">
             <div class="flex items-start gap-3">
               <!-- Icon -->
-              <div class="mt-0.5 flex-shrink-0">
+              <div
+                :class="[
+                  'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg',
+                  getIconChipClass(toast.type)
+                ]"
+              >
                 <Icon
                   :name="getToastIconName(toast.type)"
-                  size="md"
-                  :class="getIconColor(toast.type)"
+                  size="sm"
                   aria-hidden="true"
                 />
               </div>
@@ -55,7 +60,7 @@
               <!-- Close button -->
               <button
                 @click="removeToast(toast.id)"
-                class="-m-1 flex-shrink-0 rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-dark-700 dark:hover:text-gray-300"
+                class="icon-btn icon-btn-sm -mr-1 -mt-0.5 shrink-0"
                 aria-label="Close notification"
               >
                 <Icon name="x" size="sm" />
@@ -64,7 +69,7 @@
           </div>
 
           <!-- Progress bar -->
-          <div v-if="toast.duration" class="h-1 bg-gray-100 dark:bg-dark-700">
+          <div v-if="toast.duration" class="h-1 bg-gray-100 dark:bg-dark-800">
             <div
               :class="['h-full toast-progress', getProgressBarColor(toast.type)]"
               :style="{ animationDuration: `${toast.duration}ms` }"
@@ -99,32 +104,32 @@ const getToastIconName = (type: string): 'checkCircle' | 'xCircle' | 'exclamatio
   }
 }
 
-const getIconColor = (type: string): string => {
-  const colors: Record<string, string> = {
-    success: 'text-green-500',
-    error: 'text-red-500',
-    warning: 'text-yellow-500',
-    info: 'text-blue-500'
+const getIconChipClass = (type: string): string => {
+  const classes: Record<string, string> = {
+    success: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
+    error: 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400',
+    warning: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+    info: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-300'
   }
-  return colors[type] || colors.info
+  return classes[type] || classes.info
 }
 
 const getBorderColor = (type: string): string => {
-  const colors: Record<string, string> = {
-    success: 'border-green-500',
-    error: 'border-red-500',
-    warning: 'border-yellow-500',
-    info: 'border-blue-500'
+  const classes: Record<string, string> = {
+    success: 'toast-success',
+    error: 'toast-error',
+    warning: 'toast-warning',
+    info: 'toast-info'
   }
-  return colors[type] || colors.info
+  return classes[type] || classes.info
 }
 
 const getProgressBarColor = (type: string): string => {
   const colors: Record<string, string> = {
-    success: 'bg-green-500',
+    success: 'bg-emerald-500',
     error: 'bg-red-500',
-    warning: 'bg-yellow-500',
-    info: 'bg-blue-500'
+    warning: 'bg-amber-500',
+    info: 'bg-primary-500'
   }
   return colors[type] || colors.info
 }

@@ -107,7 +107,7 @@ export function useChannelMonitorFormat() {
       case PROVIDER_GROK:
         return 'bg-zinc-100 text-zinc-700 dark:bg-zinc-500/15 dark:text-zinc-300'
       // 配色与 utils/platformColors.ts 的平台色对齐：antigravity=purple /
-      // kimi=pink / zhipu=indigo / deepseek=teal。
+      // kimi=pink / zhipu=indigo / deepseek=primary（品牌蓝）。
       case PROVIDER_ANTIGRAVITY:
         return 'bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-300'
       case PROVIDER_KIMI:
@@ -115,7 +115,7 @@ export function useChannelMonitorFormat() {
       case PROVIDER_ZHIPU:
         return 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300'
       case PROVIDER_DEEPSEEK:
-        return 'bg-teal-100 text-teal-700 dark:bg-teal-500/15 dark:text-teal-300'
+        return 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-300'
       case PROVIDER_MINIMAX:
         return 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300'
       case PROVIDER_OPENCODE_GO:

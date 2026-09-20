@@ -4,7 +4,31 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f9fafb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#151517" media="(prefers-color-scheme: dark)" />
     <title>Sub2API - AI API Gateway</title>
+    <script>
+      // 首屏前置应用主题，避免深色模式下的白屏闪烁（与 src/main.ts 中的 initThemeClass 保持一致）
+      ;(function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var dark =
+            saved === 'dark' ||
+            (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (e) {
+          /* localStorage 不可用时忽略 */
+        }
+      })()
+    </script>
+    <style>
+      html {
+        background-color: #f9fafb;
+      }
+      html.dark {
+        background-color: #151517;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>

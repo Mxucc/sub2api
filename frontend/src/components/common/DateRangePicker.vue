@@ -323,18 +323,19 @@ onUnmounted(() => {
 <style scoped>
 .date-picker-trigger {
   @apply flex items-center gap-2;
-  @apply rounded-lg px-3 py-2 text-sm;
+  @apply rounded-[10px] px-3.5 py-2.5 text-sm;
   @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
-  @apply text-gray-700 dark:text-gray-300;
-  @apply transition-all duration-200;
-  @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30;
+  @apply text-gray-900 dark:text-gray-100;
+  @apply transition-[border-color,box-shadow,background-color] duration-150 ease-out;
   @apply hover:border-gray-300 dark:hover:border-dark-500;
+  @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
+  @apply dark:focus:border-primary-500 dark:focus:ring-primary-500/25;
   @apply cursor-pointer;
 }
 
 .date-picker-trigger-open {
-  @apply border-primary-500 ring-2 ring-primary-500/30;
+  @apply border-primary-500 ring-2 ring-primary-500/20 dark:ring-primary-500/25;
 }
 
 .date-picker-icon {
@@ -342,19 +343,23 @@ onUnmounted(() => {
 }
 
 .date-picker-value {
-  @apply font-medium;
+  @apply font-medium text-gray-900 dark:text-gray-100;
 }
 
 .date-picker-chevron {
-  @apply text-gray-400 dark:text-dark-400;
+  @apply text-gray-400 transition-colors duration-150 dark:text-dark-400;
+}
+
+.date-picker-trigger:hover .date-picker-chevron {
+  @apply text-gray-500 dark:text-dark-300;
 }
 
 .date-picker-dropdown {
   @apply absolute left-0 z-[100] mt-2;
   @apply bg-white dark:bg-dark-800;
   @apply rounded-xl;
-  @apply border border-gray-200 dark:border-dark-700;
-  @apply shadow-lg shadow-black/10 dark:shadow-black/30;
+  @apply border border-gray-200 dark:border-dark-600;
+  @apply shadow-popover;
   @apply overflow-hidden;
   @apply min-w-[320px];
 }
@@ -364,15 +369,14 @@ onUnmounted(() => {
 }
 
 .date-picker-preset {
-  @apply rounded-md px-3 py-1.5 text-xs font-medium;
-  @apply text-gray-600 dark:text-gray-400;
+  @apply rounded-lg px-3 py-2 text-sm;
+  @apply text-gray-700 dark:text-gray-300;
   @apply hover:bg-gray-100 dark:hover:bg-dark-700;
   @apply transition-colors duration-150;
 }
 
 .date-picker-preset-active {
-  @apply bg-primary-100 dark:bg-primary-900/30;
-  @apply text-primary-700 dark:text-primary-300;
+  @apply bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-300;
 }
 
 .date-picker-divider {
@@ -388,15 +392,22 @@ onUnmounted(() => {
 }
 
 .date-picker-label {
-  @apply mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400;
+  @apply mb-1.5 block text-xs font-medium text-gray-500 dark:text-dark-400;
 }
 
 .date-picker-input {
-  @apply w-full rounded-md px-2 py-1.5 text-sm;
-  @apply bg-gray-50 dark:bg-dark-700;
+  @apply w-full rounded-[10px] px-3 py-2 text-sm;
+  @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
   @apply text-gray-900 dark:text-gray-100;
-  @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30;
+  @apply transition-[border-color,box-shadow] duration-150;
+  @apply hover:border-gray-300 dark:hover:border-dark-500;
+  @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
+  @apply dark:focus:border-primary-500 dark:focus:ring-primary-500/25;
+}
+
+.dark .date-picker-input {
+  color-scheme: dark;
 }
 
 .date-picker-input::-webkit-calendar-picker-indicator {
@@ -409,29 +420,30 @@ onUnmounted(() => {
 }
 
 .date-picker-separator {
-  @apply flex items-center justify-center pb-1;
+  @apply flex items-center justify-center pb-2.5 text-gray-400 dark:text-dark-400;
 }
 
 .date-picker-actions {
-  @apply flex justify-end p-2 pt-0;
+  @apply flex justify-end border-t border-gray-100 p-2 dark:border-dark-700;
 }
 
 .date-picker-apply {
-  @apply rounded-lg px-4 py-1.5 text-sm font-medium;
-  @apply bg-primary-600 text-white;
-  @apply hover:bg-primary-700;
+  @apply rounded-[10px] px-4 py-2 text-sm font-medium;
+  @apply bg-primary-500 text-white;
+  @apply hover:bg-primary-600 dark:hover:bg-primary-400;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500/30;
   @apply transition-colors duration-150;
 }
 
 /* Dropdown animation */
 .date-picker-dropdown-enter-active,
 .date-picker-dropdown-leave-active {
-  transition: all 0.2s ease;
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 
 .date-picker-dropdown-enter-from,
 .date-picker-dropdown-leave-to {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
 }
 </style>

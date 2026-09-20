@@ -12,7 +12,7 @@
 
     <!-- 滚动区域：表格 -->
     <div class="layout-section-scrollable">
-      <div class="card table-scroll-container">
+      <div class="surface table-scroll-container">
         <slot name="table" />
       </div>
     </div>
@@ -58,9 +58,9 @@ onUnmounted(() => {
   @apply flex-1 min-h-0 flex flex-col;
 }
 
-/* 表格滚动容器 - 增强版表体滚动方案 */
+/* 表格滚动容器 - 增强版表体滚动方案（外观由 .surface 提供） */
 .table-scroll-container {
-  @apply flex flex-col overflow-hidden h-full bg-white dark:bg-dark-800 rounded-2xl border border-gray-200 dark:border-dark-700 shadow-sm;
+  @apply flex h-full flex-col overflow-hidden;
 }
 
 .table-scroll-container :deep(.table-wrapper) {
@@ -76,7 +76,7 @@ onUnmounted(() => {
 }
 
 .table-scroll-container :deep(thead) {
-  @apply bg-gray-50/80 dark:bg-dark-800/80 backdrop-blur-sm;
+  @apply bg-gray-50 dark:bg-dark-900;
 }
 
 .table-scroll-container :deep(tbody) {
@@ -84,7 +84,7 @@ onUnmounted(() => {
 }
 
 .table-scroll-container :deep(th) {
-  @apply px-5 py-4 text-left text-sm font-medium text-gray-600 dark:text-dark-300 border-b border-gray-200 dark:border-dark-700;
+  @apply px-5 py-4 text-left text-sm font-medium text-gray-500 dark:text-dark-400 border-b border-gray-200 dark:border-dark-700;
 }
 
 .table-scroll-container :deep(td) {

@@ -5,18 +5,16 @@
     </div>
     <div class="min-w-0 flex-1">
       <p class="stat-label truncate">{{ title }}</p>
-      <div class="mt-1 flex items-baseline gap-2">
-        <p class="stat-value" :title="String(formattedValue)">{{ formattedValue }}</p>
-        <span v-if="change !== undefined" :class="['stat-trend', trendClass]">
-          <Icon
-            v-if="changeType !== 'neutral'"
-            name="arrowUp"
-            size="xs"
-            :class="changeType === 'down' && 'rotate-180'"
-          />
-          {{ formattedChange }}
-        </span>
-      </div>
+      <p class="stat-value mt-1" :title="String(formattedValue)">{{ formattedValue }}</p>
+      <span v-if="change !== undefined" :class="['stat-trend', trendClass]">
+        <Icon
+          v-if="changeType !== 'neutral'"
+          name="arrowUp"
+          size="xs"
+          :class="changeType === 'down' && 'rotate-180'"
+        />
+        {{ formattedChange }}
+      </span>
     </div>
   </div>
 </template>

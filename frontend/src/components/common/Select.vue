@@ -40,7 +40,7 @@
         <Icon
           name="chevronDown"
           size="md"
-          :class="['transition-transform duration-200', isOpen && 'rotate-180']"
+          :class="['transition-transform duration-150', isOpen && 'rotate-180']"
         />
       </span>
     </button>
@@ -506,26 +506,28 @@ onUnmounted(() => {
 <style scoped>
 .select-trigger {
   @apply flex w-full items-center justify-between gap-2;
-  @apply rounded-xl px-4 py-2.5 text-sm;
+  @apply rounded-[10px] px-3.5 py-2.5 text-sm;
   @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
   @apply text-gray-900 dark:text-gray-100;
-  @apply transition-all duration-200;
-  @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30;
+  @apply transition-[border-color,box-shadow,background-color] duration-150 ease-out;
   @apply hover:border-gray-300 dark:hover:border-dark-500;
+  @apply focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
+  @apply dark:focus:border-primary-500 dark:focus:ring-primary-500/25;
   @apply cursor-pointer;
 }
 
 .select-trigger-open {
-  @apply border-primary-500 ring-2 ring-primary-500/30;
+  @apply border-primary-500 ring-2 ring-primary-500/20 dark:ring-primary-500/25;
 }
 
 .select-trigger-error {
-  @apply border-red-500 focus:border-red-500 focus:ring-red-500/30;
+  @apply border-red-400 focus:border-red-500 focus:ring-red-500/20;
+  @apply dark:border-red-500/60 dark:focus:border-red-500;
 }
 
 .select-trigger-disabled {
-  @apply cursor-not-allowed bg-gray-100 opacity-60 dark:bg-dark-900;
+  @apply cursor-not-allowed bg-gray-100 text-gray-500 dark:bg-dark-900 dark:text-dark-400;
 }
 
 .select-value {
@@ -533,14 +535,30 @@ onUnmounted(() => {
 }
 
 .select-icon {
-  @apply flex-shrink-0 text-gray-400 dark:text-dark-400;
+  @apply flex-shrink-0 text-gray-400 transition-colors duration-150 dark:text-dark-400;
+}
+
+.select-trigger:hover .select-icon {
+  @apply text-gray-500 dark:text-dark-300;
+}
+
+.select-trigger-disabled .select-icon {
+  @apply text-gray-400 dark:text-dark-500;
 }
 
 .select-clear {
-  @apply flex flex-shrink-0 cursor-pointer items-center justify-center;
-  @apply rounded text-gray-400 transition-colors;
-  @apply hover:text-gray-600 dark:hover:text-gray-200;
+  @apply flex h-5 w-5 flex-shrink-0 cursor-pointer items-center justify-center rounded-md;
+  @apply text-gray-400 opacity-0 transition-[opacity,color,background-color] duration-150;
+  @apply hover:bg-gray-100 hover:text-gray-600;
+  @apply dark:text-dark-400 dark:hover:bg-dark-700 dark:hover:text-gray-200;
 }
+
+.select-trigger:hover .select-clear,
+.select-trigger:focus-visible .select-clear,
+.select-clear:hover {
+  @apply opacity-100;
+}
+
 </style>
 
 <style>
@@ -548,8 +566,8 @@ onUnmounted(() => {
   @apply w-max min-w-[200px];
   @apply bg-white dark:bg-dark-800;
   @apply rounded-xl;
-  @apply border border-gray-200 dark:border-dark-700;
-  @apply shadow-lg shadow-black/10 dark:shadow-black/30;
+  @apply border border-gray-200 dark:border-dark-600;
+  @apply shadow-popover;
   @apply overflow-hidden;
   pointer-events: auto !important;
 }
@@ -567,21 +585,20 @@ onUnmounted(() => {
 }
 
 .select-dropdown-portal .select-options {
-  @apply max-h-80 overflow-y-auto py-1 outline-none;
+  @apply max-h-80 overflow-y-auto p-1 outline-none;
 }
 
 .select-dropdown-portal .select-option {
   @apply flex items-center justify-between gap-2;
-  @apply px-4 py-2.5 text-sm;
+  @apply rounded-lg px-3 py-2 text-sm;
   @apply text-gray-700 dark:text-gray-300;
   @apply cursor-pointer transition-colors duration-150;
-  @apply hover:bg-gray-50 dark:hover:bg-dark-700;
+  @apply hover:bg-gray-100 dark:hover:bg-dark-700;
   pointer-events: auto !important;
 }
 
 .select-dropdown-portal .select-option-selected {
-  @apply bg-primary-50 dark:bg-primary-900/20;
-  @apply text-primary-700 dark:text-primary-300;
+  @apply bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-300;
 }
 
 .select-dropdown-portal .select-option-focused {
@@ -594,13 +611,12 @@ onUnmounted(() => {
 
 .select-dropdown-portal .select-option-group {
   @apply cursor-default select-none;
-  @apply bg-gray-50 dark:bg-dark-900;
-  @apply text-[11px] font-bold uppercase tracking-wider;
-  @apply text-gray-500 dark:text-gray-400;
+  @apply px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide;
+  @apply text-gray-500 dark:text-dark-400;
 }
 
 .select-dropdown-portal .select-option-group:hover {
-  @apply bg-gray-50 dark:bg-dark-900;
+  @apply bg-transparent;
 }
 
 .select-dropdown-portal .select-option-label {
@@ -608,18 +624,18 @@ onUnmounted(() => {
 }
 
 .select-dropdown-portal .select-empty {
-  @apply px-4 py-8 text-center text-sm;
+  @apply flex items-center justify-center gap-2 px-4 py-6 text-center text-sm;
   @apply text-gray-500 dark:text-dark-400;
 }
 
 .select-dropdown-enter-active,
 .select-dropdown-leave-active {
-  transition: all 0.2s ease;
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 
 .select-dropdown-enter-from,
 .select-dropdown-leave-to {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
 }
 </style>

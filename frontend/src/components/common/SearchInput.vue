@@ -1,15 +1,26 @@
 <template>
   <div class="relative w-full">
-    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-      <Icon name="search" size="md" class="text-gray-400" />
+    <div
+      class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 dark:text-dark-400"
+    >
+      <Icon name="search" size="sm" />
     </div>
     <input
       :value="modelValue"
       type="text"
-      class="input pl-10"
+      class="input pr-9 pl-10"
       :placeholder="placeholder"
       @input="handleInput"
     />
+    <button
+      v-if="modelValue"
+      type="button"
+      class="icon-btn icon-btn-sm absolute right-1.5 top-1/2 -translate-y-1/2"
+      aria-label="Clear search"
+      @click="clear"
+    >
+      <Icon name="x" size="xs" />
+    </button>
   </div>
 </template>
 
@@ -34,6 +45,11 @@ const emit = defineEmits<{
 const debouncedEmitSearch = useDebounceFn((value: string) => {
   emit('search', value)
 }, props.debounceMs)
+
+const clear = () => {
+  emit('update:modelValue', '')
+  debouncedEmitSearch('')
+}
 
 const handleInput = (event: Event) => {
   const value = (event.target as HTMLInputElement).value
