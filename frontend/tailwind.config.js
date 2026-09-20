@@ -17,6 +17,22 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
+    // ===== 全站直角（sharp / square）=====
+    // 覆盖 Tailwind 默认圆角刻度，使 rounded / rounded-sm … rounded-3xl /
+    // rounded-full 全部解析为 0，因此 800+ 处既有类名无需改动即可整体变直角。
+    // 唯一例外：加载指示器 .spinner 在 style.css 里显式保留 50% 圆（否则转圈动画视觉上不可读）。
+    borderRadius: {
+      none: '0px',
+      sm: '0px',
+      DEFAULT: '0px',
+      md: '0px',
+      lg: '0px',
+      xl: '0px',
+      '2xl': '0px',
+      '3xl': '0px',
+      '4xl': '0px',
+      full: '0px'
+    },
     extend: {
       colors: {
         // DeepSeek 品牌蓝（--dsw-static-deepseek-*）
@@ -172,10 +188,7 @@ export default {
       backdropBlur: {
         xs: '2px'
       },
-      // DeepSeek 圆角体系：input 10px / media 12px / panel 16px / card 24px / pill 100px
-      borderRadius: {
-        '4xl': '2rem'
-      }
+      // 注：圆角已在上方 theme.borderRadius 统一归零（全站直角），此处不再新增圆角令牌
     }
   },
   plugins: []

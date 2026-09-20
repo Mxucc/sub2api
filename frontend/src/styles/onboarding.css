@@ -23,7 +23,7 @@
   position: relative !important;
   z-index: 99999999 !important;
   outline: 4px solid rgba(57, 100, 254, 0.2) !important;
-  border-radius: 4px !important;
+  border-radius: 0 !important;
 }
 
 /* 2. Popover Container */
@@ -33,7 +33,7 @@
   background-color: #ffffff !important;
   border: 1px solid #e5e8ee !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-  border-radius: 12px !important;
+  border-radius: 0 !important;
   padding: 0 !important;
   max-width: min(440px, 90vw) !important; /* Responsive on small screens */
   color: #1e232c !important;
@@ -78,7 +78,7 @@
   background-color: transparent !important;
   border: none !important;
   z-index: 20 !important;
-  border-radius: 6px !important;
+  border-radius: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -163,7 +163,7 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace !important;
   background-color: #ffffff !important;
   border: 1px solid #e5e8ee !important;
-  border-radius: 4px !important;
+  border-radius: 0 !important;
   padding: 1px 6px !important;
   font-size: 11px !important;
   font-weight: 600 !important;
@@ -188,7 +188,7 @@
   font-size: 13px !important;
   font-weight: 500 !important;
   text-shadow: none !important;
-  border-radius: 6px !important;
+  border-radius: 0 !important;
   cursor: pointer !important;
   transition: all 0.2s !important;
   border: 1px solid transparent !important;

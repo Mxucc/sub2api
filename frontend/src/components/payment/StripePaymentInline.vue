@@ -123,7 +123,7 @@ onMounted(async () => {
     const isDark = document.documentElement.classList.contains('dark')
     const elements = stripe.elements({
       clientSecret: props.clientSecret,
-      appearance: { theme: isDark ? 'night' : 'stripe', variables: { borderRadius: '8px' } },
+      appearance: { theme: isDark ? 'night' : 'stripe', variables: { borderRadius: '0' } },
     })
     elementsInstance = elements
     const paymentElement = elements.create('payment', {

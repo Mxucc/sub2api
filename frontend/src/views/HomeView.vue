@@ -580,7 +580,7 @@ onMounted(() => {
   width: 420px;
   background: #1f2229;
   border: 1px solid #353638;
-  border-radius: 12px;
+  border-radius: 0;
   box-shadow: 0 1px 2px 0 rgba(21, 34, 60, 0.06);
   overflow: hidden;
   transition: border-color 150ms ease;
@@ -691,7 +691,7 @@ onMounted(() => {
   color: #22c55e;
   background: rgba(34, 197, 94, 0.15);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   font-weight: 600;
 }
 .code-response {

@@ -43,7 +43,7 @@ const chartData = computed(() => {
         label: t('admin.ops.requests'),
         data: props.latencyData.buckets.map((b) => b.count),
         backgroundColor: c.blue,
-        borderRadius: 4,
+        borderRadius: 0,
         barPercentage: 0.6
       }
     ]

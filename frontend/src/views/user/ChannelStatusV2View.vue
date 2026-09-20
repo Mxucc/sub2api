@@ -937,7 +937,7 @@ onBeforeUnmount(() => {
   height: 0.5rem;
   width: 0.5rem;
   flex: none;
-  border-radius: 9999px;
+  border-radius: 0;
 }
 /* Multi-stop green → yellow → red score bands */
 .health-score10 { background: #16a34a; }

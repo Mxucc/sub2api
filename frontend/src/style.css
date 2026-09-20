@@ -34,6 +34,18 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
+  /*
+   * ===== 图标设计样式：直角端点线框（sharp line）=====
+   * 全站描边图标统一改为「方头端点 + 直线折角」，与直角视觉体系一致，
+   * 观感从原先的圆润线性图标变为方正、工程化的线性图标。
+   * 只影响以 stroke 描边的图标（图标组件与各页面内联 SVG），
+   * 不影响品牌 / 支付渠道等填充型（fill）SVG。
+   */
+  svg[stroke='currentColor'],
+  svg[stroke='currentColor'] * {
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
   /* 自定义滚动条 - 仅针对 Firefox，避免 Chrome 取消 webkit 的全局定制 */
   @supports (-moz-appearance:none) {
     * {
@@ -97,7 +109,7 @@
   /* ============ 按钮样式 ============ */
   .btn {
     @apply inline-flex items-center justify-center gap-2;
-    @apply rounded-[10px] px-4 py-2.5 text-sm font-medium;
+    @apply rounded-none px-4 py-2.5 text-sm font-medium;
     @apply whitespace-nowrap select-none;
     @apply transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-out;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-dark-950;
@@ -200,7 +212,7 @@
   }
 
   .btn-md {
-    @apply rounded-[10px] px-4 py-2 text-sm;
+    @apply rounded-none px-4 py-2 text-sm;
   }
 
   .btn-lg {
@@ -208,12 +220,12 @@
   }
 
   .btn-icon {
-    @apply rounded-[10px] p-2.5;
+    @apply rounded-none p-2.5;
   }
 
   /* 方形图标按钮（工具栏 / 表格操作） */
   .icon-btn {
-    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px];
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-none;
     @apply text-gray-500 transition-colors duration-150;
     @apply hover:bg-gray-100 hover:text-gray-900;
     @apply active:bg-gray-200/70;
@@ -227,7 +239,7 @@
 
   /* ============ 输入框样式 ============ */
   .input {
-    @apply w-full rounded-[10px] px-3.5 py-2.5 text-sm;
+    @apply w-full rounded-none px-3.5 py-2.5 text-sm;
     @apply bg-white;
     @apply border border-gray-200;
     @apply text-gray-900;
@@ -693,7 +705,7 @@
   }
 
   .sidebar-link {
-    @apply flex items-center gap-3 rounded-[10px] py-2.5;
+    @apply flex items-center gap-3 rounded-none py-2.5;
     @apply overflow-hidden;
     @apply text-sm font-medium;
     @apply text-gray-600 dark:text-dark-300;
@@ -764,8 +776,10 @@
   }
 
   /* ============ 加载状态 ============ */
+  /* 全站直角体系中唯一的圆形例外：旋转指示器若是方形，动画视觉上不可读 */
   .spinner {
-    @apply h-5 w-5 rounded-full border-2 border-current border-t-transparent;
+    @apply h-5 w-5 border-2 border-current border-t-transparent;
+    border-radius: 50%;
     @apply animate-spin;
   }
 
@@ -905,6 +919,12 @@
   /* ============ Tour Description ============ */
   .tour-step-description {
     @apply space-y-3 text-sm leading-relaxed text-gray-700 dark:text-gray-200;
+  }
+
+  /* 引导文案里内嵌的 HTML（来自 i18n）自带 inline style 圆角，这里统一压平，保持全站直角 */
+  .tour-step-description [style*='border-radius'],
+  .tour-step-description [style*='border-radius'] * {
+    border-radius: 0 !important;
   }
 
   .tour-step-description ul {

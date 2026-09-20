@@ -504,7 +504,7 @@ function formatBucketRange(value: string) {
   height: 0.5rem;
   width: 0.5rem;
   flex: none;
-  border-radius: 9999px;
+  border-radius: 0;
 }
 
 /* Multi-stop green → yellow → red (score10 best … score0 worst) */
@@ -569,7 +569,7 @@ function formatBucketRange(value: string) {
   min-width: 11.5rem;
   max-width: 16rem;
   transform: translateX(-50%) translateY(4px);
-  border-radius: 0.75rem;
+  border-radius: 0;
   border: 1px solid rgb(229 231 235);
   background: rgb(255 255 255);
   padding: 0.5rem 0.625rem;
@@ -619,7 +619,7 @@ function formatBucketRange(value: string) {
   min-width: 11.5rem;
   max-width: min(18rem, calc(100vw - 1.5rem));
   transform: translate(-50%, -100%);
-  border-radius: 0.75rem;
+  border-radius: 0;
   border: 1px solid rgb(229 231 235);
   background: rgb(255 255 255);
   padding: 0.5rem 0.625rem;

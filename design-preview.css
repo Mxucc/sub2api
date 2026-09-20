@@ -595,6 +595,20 @@ body {
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
+/*
+   * ===== 图标设计样式：直角端点线框（sharp line）=====
+   * 全站描边图标统一改为「方头端点 + 直线折角」，与直角视觉体系一致，
+   * 观感从原先的圆润线性图标变为方正、工程化的线性图标。
+   * 只影响以 stroke 描边的图标（图标组件与各页面内联 SVG），
+   * 不影响品牌 / 支付渠道等填充型（fill）SVG。
+   */
+
+svg[stroke='currentColor'],
+  svg[stroke='currentColor'] * {
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
 /* 自定义滚动条 - 仅针对 Firefox，避免 Chrome 取消 webkit 的全局定制 */
 
 @supports (-moz-appearance:none) {
@@ -624,7 +638,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 9999px;
+  border-radius: 0px;
   background-color: transparent;
   -webkit-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
@@ -697,7 +711,7 @@ h1,
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 10px;
+  border-radius: 0px;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.625rem;
@@ -977,7 +991,7 @@ h1,
 
 .btn-sm {
   gap: 0.375rem;
-  border-radius: 0.5rem;
+  border-radius: 0px;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.375rem;
@@ -987,7 +1001,7 @@ h1,
 }
 
 .btn-md {
-  border-radius: 10px;
+  border-radius: 0px;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
@@ -997,7 +1011,7 @@ h1,
 }
 
 .btn-lg {
-  border-radius: 0.75rem;
+  border-radius: 0px;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   padding-top: 0.75rem;
@@ -1014,7 +1028,7 @@ h1,
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0px;
   --tw-text-opacity: 1;
   color: rgb(107 112 118 / var(--tw-text-opacity, 1));
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
@@ -1057,7 +1071,7 @@ h1,
 .icon-btn-sm {
   height: 1.75rem;
   width: 1.75rem;
-  border-radius: 0.5rem;
+  border-radius: 0px;
   padding: 0px;
 }
 
@@ -1065,7 +1079,7 @@ h1,
 
 .input {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 0px;
   padding-left: 0.875rem;
   padding-right: 0.875rem;
   padding-top: 0.625rem;
@@ -1250,7 +1264,7 @@ input[type='number'] {
   width: 1rem;
   flex-shrink: 0;
   cursor: pointer;
-  border-radius: 0.25rem;
+  border-radius: 0px;
   --tw-border-opacity: 1;
   border-color: rgb(207 211 214 / var(--tw-border-opacity, 1));
   accent-color: #3964fe;
@@ -1283,7 +1297,7 @@ input[type='number'] {
 .card {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-  border-radius: 1rem;
+  border-radius: 0px;
   border-width: 1px;
   border-color: rgb(229 232 238 / 0.8);
 }
@@ -1309,7 +1323,7 @@ input[type='number'] {
 /* 更轻量的表面容器（表格页 / 设置区块） */
 
 .surface {
-  border-radius: 1rem;
+  border-radius: 0px;
   border-width: 1px;
   border-color: rgb(229 232 238 / 0.8);
   --tw-bg-opacity: 1;
@@ -1326,7 +1340,7 @@ input[type='number'] {
 }
 
 .surface-flat {
-  border-radius: 0.75rem;
+  border-radius: 0px;
   border-width: 1px;
   border-color: rgb(229 232 238 / 0.8);
   --tw-bg-opacity: 1;
@@ -1342,7 +1356,7 @@ input[type='number'] {
 /* 品牌强调容器（提示 / 引导） */
 
 .surface-brand {
-  border-radius: 0.75rem;
+  border-radius: 0px;
   border-width: 1px;
   border-color: rgb(211 226 255 / 0.7);
   background-color: rgb(237 243 254 / 0.6);
@@ -1388,8 +1402,8 @@ input[type='number'] {
 }
 
 .card-footer {
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 /* ============ 统计卡片 ============ */
@@ -1397,7 +1411,7 @@ input[type='number'] {
 .stat-card {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-  border-radius: 1rem;
+  border-radius: 0px;
   border-width: 1px;
   border-color: rgb(229 232 238 / 0.8);
 }
@@ -1431,7 +1445,7 @@ input[type='number'] {
   height: 2.75rem;
   width: 2.75rem;
   flex-shrink: 0;
-  border-radius: 0.75rem;
+  border-radius: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1671,7 +1685,7 @@ input[type='number'] {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  border-radius: 9999px;
+  border-radius: 0px;
   padding-left: 0.625rem;
   padding-right: 0.625rem;
   padding-top: 0.125rem;
@@ -1794,7 +1808,7 @@ input[type='number'] {
 }
 
 .dropdown {
-  border-radius: 0.75rem;
+  border-radius: 0px;
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(229 232 238 / var(--tw-border-opacity, 1));
@@ -2006,8 +2020,8 @@ input[type='number'] {
 }
 
 .modal-footer {
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -2038,7 +2052,7 @@ input[type='number'] {
 }
 
 .toast {
-  border-radius: 0.75rem;
+  border-radius: 0px;
   border-width: 1px;
   border-color: rgb(229 232 238 / 0.8);
 }
@@ -2082,7 +2096,7 @@ input[type='number'] {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border-radius: 10px;
+  border-radius: 0px;
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
   overflow: hidden;
@@ -2292,6 +2306,27 @@ input[type='number'] {
 
 /* ============ 加载状态 ============ */
 
+/* 全站直角体系中唯一的圆形例外：旋转指示器若是方形，动画视觉上不可读 */
+
+.spinner {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-width: 2px;
+  border-color: currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
 .dark .skeleton-shimmer {
   background-image: linear-gradient(
       90deg,
@@ -2309,7 +2344,7 @@ input[type='number'] {
   display: inline-flex;
   gap: 0.25rem;
   padding: 0.25rem;
-  border-radius: 0.75rem;
+  border-radius: 0px;
   --tw-bg-opacity: 1;
   background-color: rgb(241 243 245 / var(--tw-bg-opacity, 1));
 }
@@ -2320,7 +2355,7 @@ input[type='number'] {
 }
 
 .tab {
-  border-radius: 0.5rem;
+  border-radius: 0px;
   padding-left: 0.875rem;
   padding-right: 0.875rem;
   padding-top: 0.375rem;
@@ -2438,7 +2473,7 @@ input[type='number'] {
 .progress {
   height: 0.5rem;
   overflow: hidden;
-  border-radius: 9999px;
+  border-radius: 0px;
   --tw-bg-opacity: 1;
   background-color: rgb(229 232 238 / var(--tw-bg-opacity, 1));
 }
@@ -2450,7 +2485,7 @@ input[type='number'] {
 
 .progress-bar {
   height: 100%;
-  border-radius: 9999px;
+  border-radius: 0px;
   --tw-bg-opacity: 1;
   background-color: rgb(57 100 254 / var(--tw-bg-opacity, 1));
   transition-property: width;
@@ -2465,7 +2500,7 @@ input[type='number'] {
   height: 1.5rem;
   width: 2.75rem;
   cursor: pointer;
-  border-radius: 9999px;
+  border-radius: 0px;
   --tw-bg-opacity: 1;
   background-color: rgb(207 211 214 / var(--tw-bg-opacity, 1));
 }
@@ -2507,7 +2542,7 @@ input[type='number'] {
   top: 0.125rem;
   height: 1.25rem;
   width: 1.25rem;
-  border-radius: 9999px;
+  border-radius: 0px;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   --tw-shadow: 0 1px 2px 0 rgba(21, 34, 60, 0.04);
@@ -2528,7 +2563,7 @@ input[type='number'] {
 .code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 13px;
-  border-radius: 0.375rem;
+  border-radius: 0px;
   --tw-bg-opacity: 1;
   background-color: rgb(241 243 245 / var(--tw-bg-opacity, 1));
   padding-left: 0.375rem;
@@ -2551,7 +2586,7 @@ input[type='number'] {
 .kbd {
   display: inline-flex;
   align-items: center;
-  border-radius: 0.375rem;
+  border-radius: 0px;
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(229 232 238 / var(--tw-border-opacity, 1));
@@ -2599,8 +2634,10 @@ input[type='number'] {
 
 /* ============ Tour Description ============ */
 
+/* 引导文案里内嵌的 HTML（来自 i18n）自带 inline style 圆角，这里统一压平，保持全站直角 */
+
 .tour-error-box {
-  border-radius: 0.5rem;
+  border-radius: 0px;
   border-left-width: 3px;
   --tw-border-opacity: 1;
   border-color: rgb(239 68 68 / var(--tw-border-opacity, 1));
@@ -2655,8 +2692,16 @@ input[type='number'] {
   margin-right: auto;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 
 .ml-auto {
@@ -2719,6 +2764,10 @@ input[type='number'] {
   height: 1.25rem;
 }
 
+.h-6 {
+  height: 1.5rem;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -2737,6 +2786,10 @@ input[type='number'] {
 
 .w-5 {
   width: 1.25rem;
+}
+
+.w-6 {
+  width: 1.5rem;
 }
 
 .w-60 {
@@ -2763,8 +2816,16 @@ input[type='number'] {
   flex: 1 1 0%;
 }
 
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .grid-cols-6 {
   grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .flex-wrap {
@@ -2840,15 +2901,19 @@ input[type='number'] {
 }
 
 .rounded {
-  border-radius: 0.25rem;
+  border-radius: 0px;
 }
 
 .rounded-2xl {
-  border-radius: 1rem;
+  border-radius: 0px;
+}
+
+.rounded-full {
+  border-radius: 0px;
 }
 
 .rounded-lg {
-  border-radius: 0.5rem;
+  border-radius: 0px;
 }
 
 .border {
@@ -3086,6 +3151,11 @@ input[type='number'] {
   color: rgb(107 112 118 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(97 102 107 / var(--tw-text-opacity, 1));
+}
+
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(67 69 74 / var(--tw-text-opacity, 1));
@@ -3094,6 +3164,11 @@ input[type='number'] {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(30 35 44 / var(--tw-text-opacity, 1));
+}
+
+.text-primary-500 {
+  --tw-text-opacity: 1;
+  color: rgb(57 100 254 / var(--tw-text-opacity, 1));
 }
 
 .text-primary-900 {
@@ -3154,6 +3229,11 @@ input[type='number'] {
   background-color: rgb(21 21 23 / var(--tw-bg-opacity, 1));
 }
 
+.dark\:text-dark-300:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(207 211 214 / var(--tw-text-opacity, 1));
+}
+
 .dark\:text-dark-400:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(173 178 184 / var(--tw-text-opacity, 1));
@@ -3167,6 +3247,11 @@ input[type='number'] {
 .dark\:text-gray-100:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(241 243 245 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-gray-200:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(229 232 238 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-gray-300:is(.dark *) {
@@ -3196,6 +3281,10 @@ input[type='number'] {
 
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-8 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }
 

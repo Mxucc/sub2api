@@ -244,7 +244,7 @@ function mountPaymentElement(stripe: Stripe, clientSecret: string) {
   const isDark = document.documentElement.classList.contains('dark')
   const elements = stripe.elements({
     clientSecret,
-    appearance: { theme: isDark ? 'night' : 'stripe', variables: { borderRadius: '8px' } },
+    appearance: { theme: isDark ? 'night' : 'stripe', variables: { borderRadius: '0' } },
   })
   elementsInstance = elements
   const paymentElement = elements.create('payment', {

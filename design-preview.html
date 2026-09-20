@@ -20,7 +20,7 @@
             Sub2API 设计系统 · DeepSeek 主题
           </h1>
           <p class="mt-1 text-sm text-gray-500 dark:text-dark-400">
-            品牌蓝 #3964FE · 冷中性色阶 · 扁平描边层次 · 10px 控件圆角
+            品牌蓝 #3964FE · 冷中性色阶 · 扁平描边层次 · 全站直角（0 圆角）+ 直角端点线框图标
           </p>
         </div>
         <button class="btn btn-secondary" onclick="document.documentElement.classList.toggle('dark')">
@@ -397,6 +397,72 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- 图标样式（直角端点线框） -->
+      <section class="card p-6">
+        <h2 class="section-title mb-1">图标样式 · 直角端点线框（sharp line）</h2>
+        <p class="section-description mb-5">
+          stroke-linecap: square / stroke-linejoin: miter / stroke-width: 1.75 —— 与直角视觉体系一致
+        </p>
+        <div class="grid grid-cols-4 gap-3 sm:grid-cols-8">
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">play</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">refresh</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">edit</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">plus</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">search</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">x</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">chevronDown</span>
+          </div>
+          <div class="surface-flat flex flex-col items-center gap-2 p-3">
+            <svg class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+            <span class="text-[10px] text-gray-500 dark:text-dark-400">grid</span>
+          </div>
+        </div>
+        <div class="mt-5 flex flex-wrap items-center gap-4">
+          <span class="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-300">
+            <span class="spinner text-primary-500"></span> 加载指示器保留圆形（唯一例外）
+          </span>
+          <span class="text-sm text-gray-600 dark:text-dark-300">
+            圆角令牌：<span class="code">rounded-full / rounded-2xl / rounded-lg</span> 全部 = 0px
+          </span>
         </div>
       </section>
 

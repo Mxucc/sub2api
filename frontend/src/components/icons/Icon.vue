@@ -1,12 +1,19 @@
 <template>
+  <!--
+    图标设计样式：直角端点线框（sharp line）
+    - stroke-linecap/linejoin 由 round 改为 square/miter，配合全站直角视觉
+    - 默认线宽 1.75（原 1.5），让方正端点在小尺寸下依然清晰
+  -->
   <svg
     :class="sizeClass"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
+    stroke-linecap="square"
+    stroke-linejoin="miter"
     :stroke-width="strokeWidth"
   >
-    <path stroke-linecap="round" stroke-linejoin="round" :d="iconPath" />
+    <path :d="iconPath" />
   </svg>
 </template>
 
@@ -19,7 +26,7 @@ const props = withDefaults(defineProps<{
   strokeWidth?: number
 }>(), {
   size: 'md',
-  strokeWidth: 1.5
+  strokeWidth: 1.75
 })
 
 const icons = {

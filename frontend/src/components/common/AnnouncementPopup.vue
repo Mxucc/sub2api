@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background: rgba(207, 211, 214, 0.6);
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .dark .overflow-y-auto::-webkit-scrollbar-thumb {

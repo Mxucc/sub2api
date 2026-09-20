@@ -187,7 +187,7 @@ export function useSwipeSelect(
       position: 'fixed',
       background: isDark ? 'rgba(96, 165, 250, 0.15)' : 'rgba(59, 130, 246, 0.12)',
       border: isDark ? '1.5px solid rgba(96, 165, 250, 0.5)' : '1.5px solid rgba(59, 130, 246, 0.4)',
-      borderRadius: '4px',
+      borderRadius: '0',
       pointerEvents: 'none',
       zIndex: '9999',
       transition: 'none',
