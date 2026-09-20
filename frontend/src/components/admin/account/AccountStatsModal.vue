@@ -516,7 +516,7 @@ const trendChartData = computed(() => {
       {
         label: t('usage.accountBilled') + ' (USD)',
         data: stats.value.history.map((h) => h.actual_cost),
-        borderColor: '#0052d9',
+        borderColor: '#08699a',
         backgroundColor: 'rgba(57, 100, 254, 0.1)',
         fill: true,
         tension: 0.3,
@@ -525,8 +525,8 @@ const trendChartData = computed(() => {
       {
         label: t('usage.userBilled') + ' (USD)',
         data: stats.value.history.map((h) => h.user_cost),
-        borderColor: '#366ef4',
-        backgroundColor: 'rgba(54, 110, 244, 0.08)',
+        borderColor: '#0a80bb',
+        backgroundColor: 'rgba(10, 128, 187, 0.08)',
         fill: false,
         tension: 0.3,
         borderDash: [5, 5],
@@ -601,7 +601,7 @@ const lineChartOptions = computed(() => ({
         color: chartColors.value.grid
       },
       ticks: {
-        color: '#0052d9',
+        color: '#08699a',
         font: {
           size: 10
         },
@@ -610,7 +610,7 @@ const lineChartOptions = computed(() => ({
       title: {
         display: true,
         text: t('usage.accountBilled') + ' (USD)',
-        color: '#0052d9',
+        color: '#08699a',
         font: {
           size: 11
         }

@@ -237,12 +237,12 @@ Centered: Both horizontally and vertically
 > 本节的权威来源是 `frontend/tailwind.config.js` 与 `docs/UI_DESIGN.md`（企业级控制台规范）。
 > 下面列出登录/注册等认证页实际使用的令牌。
 
-### Brand（品牌蓝，交互色）
+### Brand（品牌青蓝，交互色）
 
-- **primary-500**: `#0052D9` - 主按钮、链接、选中态
-- **primary-400**: `#366EF4` - hover
-- **primary-600**: `#003CAB` - active
-- **primary-50**: `#F2F3FF` - 品牌浅底（选中背景、提示条）
+- **primary-500**: `#08699A` - 主按钮、链接、选中态
+- **primary-400**: `#0A80BB` - hover
+- **primary-600**: `#07567D` - active
+- **primary-50**: `#F4FAFD` - 品牌浅底（选中背景、提示条）
 
 ### Neutral（TDesign 灰阶）
 
@@ -256,12 +256,12 @@ Centered: Both horizontally and vertically
 
 ### Semantic（状态色）
 
-- **成功/正常/验证通过**: 品牌蓝 `primary` (#0052D9) — 文字 `primary-700`、浅底 `primary-50`、
+- **成功/正常/验证通过**: 品牌青蓝 `primary` (#08699A) — 文字 `primary-700`、浅底 `primary-50`、
   深色模式文字 `primary-400` / 浅底 `primary-500/10`；实底按钮 `primary-700`
 - **警告**: `amber` 系 — 文字 `amber-700`、浅底 `amber-50`
 - **错误**: `red` 系 — 文字 `red-700`、浅底 `red-50`、描边 `red-200`
 
-> 注意：本项目的状态色**不使用绿色**（emerald/green 已全部替换为品牌蓝 primary）。
+> 注意：本项目的状态色**不使用绿色**（emerald/green 已全部替换为品牌青蓝 primary）。
 
 ### Shape
 

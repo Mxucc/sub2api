@@ -84,7 +84,7 @@ const modelData = computed(() => !props.models?.length ? null : {
   labels: props.models.map((m: ModelStat) => m.model),
   datasets: [{
     data: props.models.map((m: ModelStat) => m.total_tokens),
-    backgroundColor: ['#0052d9', '#366ef4', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#22d3ee']
+    backgroundColor: ['#08699a', '#0a80bb', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#22d3ee']
   }]
 })
 

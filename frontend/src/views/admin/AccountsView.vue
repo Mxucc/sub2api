@@ -1747,7 +1747,7 @@ function getOpenAICompactMeta(row: any): { label: string; className: string; dot
       return {
         label: t('admin.accounts.openai.compactSupported'),
         className: 'text-primary-700 dark:text-primary-400',
-        dotClass: 'bg-primary-500 shadow-[0_0_0_2px_rgba(0,82,217,0.14)]'
+        dotClass: 'bg-primary-500 shadow-[0_0_0_2px_rgba(8,105,154,0.14)]'
       }
     case 'blocked':
       return {

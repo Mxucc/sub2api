@@ -8,9 +8,9 @@
  * 设计原则：
  *  1. 密度优先：控件高 32px、正文/表格 13px、说明文字 12px，一屏承载更多信息
  *  2. 结构优先：1px 描边 + 平面底色分层；投影只用于浮层（xs / card / popover / dialog）
- *  3. 冷中性灰阶 + 单一品牌蓝（#0052D9），彩色仅用于状态语义
+ *  3. 冷中性灰阶 + 单一品牌青蓝（#08699A），彩色仅用于状态语义
  *  4. 全站直角（tailwind.config.js 中 borderRadius 全部为 0）；唯一例外是加载指示器 .spinner
- *  5. 焦点可见：统一品牌蓝 focus ring
+ *  5. 焦点可见：统一品牌青蓝 focus ring
  *  6. 动效克制：150-200ms，位移 ≤ 4px
  *  7. 中文界面：不使用大写化 / 字距（no uppercase / no letter-spacing）
  */
@@ -1088,7 +1088,7 @@
 }
 
 @layer utilities {
-  /* 文字渐变（品牌蓝单色系，保持克制） */
+  /* 文字渐变（品牌青蓝单色系，保持克制） */
   .text-gradient {
     @apply bg-gradient-to-r from-primary-500 to-primary-400 bg-clip-text text-transparent;
     @apply dark:from-primary-400 dark:to-primary-300;

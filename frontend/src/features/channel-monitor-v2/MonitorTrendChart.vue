@@ -145,8 +145,8 @@ const chartData = computed(() => {
       {
         label: t('channelMonitorV2.chart.cacheDataset'),
         data: cacheRates,
-        borderColor: '#366ef4',
-        backgroundColor: 'rgba(54, 110, 244, 0.08)',
+        borderColor: '#0a80bb',
+        backgroundColor: 'rgba(10, 128, 187, 0.08)',
         yAxisID: 'yPct',
         tension: 0.4,
         cubicInterpolationMode: 'monotone' as const,
@@ -159,8 +159,8 @@ const chartData = computed(() => {
       {
         label: t('channelMonitorV2.chart.ttftDataset'),
         data: ttftP50,
-        borderColor: '#0052d9',
-        backgroundColor: 'rgba(0, 82, 217, 0.08)',
+        borderColor: '#08699a',
+        backgroundColor: 'rgba(8, 105, 154, 0.08)',
         yAxisID: 'yTtft',
         tension: 0.4,
         cubicInterpolationMode: 'monotone' as const,
@@ -260,12 +260,12 @@ const chartOptions = computed(() => {
         position: 'right' as const,
         min: 0,
         ticks: {
-          color: '#0052d9',
+          color: '#08699a',
           font: { size: 10 },
           callback: (v: string | number) => formatMonitorMs(Number(v)),
         },
         grid: { display: false },
-        title: { display: true, text: t('channelMonitorV2.metrics.ttftP50'), color: '#0052d9', font: { size: 11 } },
+        title: { display: true, text: t('channelMonitorV2.metrics.ttftP50'), color: '#08699a', font: { size: 11 } },
       },
     },
   }

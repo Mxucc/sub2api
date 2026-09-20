@@ -107,7 +107,7 @@ export function useChannelMonitorFormat() {
       case PROVIDER_GROK:
         return 'bg-zinc-100 text-zinc-700 dark:bg-zinc-500/15 dark:text-zinc-300'
       // 配色与 utils/platformColors.ts 的平台色对齐：antigravity=purple /
-      // kimi=pink / zhipu=indigo / deepseek=primary（品牌蓝）。
+      // kimi=pink / zhipu=indigo / deepseek=primary（品牌青蓝）。
       case PROVIDER_ANTIGRAVITY:
         return 'bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-300'
       case PROVIDER_KIMI:
@@ -143,7 +143,7 @@ export function useChannelMonitorFormat() {
 
   /**
    * Tailwind class for a provider radio-button-style picker (active/inactive state).
-   * Reuses the same per-provider palette as providerBadgeClass (brand blue primary
+   * Reuses the same per-provider palette as providerBadgeClass (brand cyan-blue primary
    * for openai/gemini/deepseek, plus the remaining provider identity hues) to keep
    * visual semantics consistent across badges and pickers.
    */

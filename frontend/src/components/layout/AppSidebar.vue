@@ -1110,7 +1110,7 @@ onBeforeUnmount(() => {
 .sidebar-link-active,
 .sidebar-link-active:hover {
   @apply bg-primary-50 text-primary-500;
-  box-shadow: inset 2px 0 0 0 #0052d9; /* primary-500 */
+  box-shadow: inset 2px 0 0 0 #08699a; /* primary-500 */
   @apply dark:bg-primary-500/10 dark:text-primary-300;
 }
 </style>
