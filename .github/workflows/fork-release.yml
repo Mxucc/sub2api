@@ -299,8 +299,10 @@ jobs:
           # /releases/latest（应用内「检查更新」依赖的接口）会跳过预发布版本 ——
           # 不提升的话，指向本仓库的更新检查永远拿不到我们的发布。
           gh release edit "$TAG" --repo "${{ github.repository }}" --prerelease=false --latest
+          # 校验：/releases/latest 必须指向本次发布（应用内检查更新用的就是它）
           gh release view "$TAG" --repo "${{ github.repository }}" \
-            --json tagName,isPrerelease,isLatest --jq '"release: \(.tagName) prerelease=\(.isPrerelease) latest=\(.isLatest)"'
+            --json tagName,isPrerelease --jq '"release: \(.tagName) prerelease=\(.isPrerelease)"'
+          gh api "repos/${{ github.repository }}/releases/latest" --jq '"api latest: \(.tag_name)"'
 
       - name: Publish summary
         if: success()
