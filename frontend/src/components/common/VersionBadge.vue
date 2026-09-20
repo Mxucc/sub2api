@@ -651,9 +651,12 @@ import {
 import { useClipboard } from '@/composables/useClipboard'
 import Icon from '@/components/icons/Icon.vue'
 
-const GITHUB_REPO = 'Wei-Shaw/sub2api'
-// Docker Hub image published by CI (tags carry no "v" prefix, e.g. weishaw/sub2api:0.1.146)
-const DOCKER_IMAGE = 'weishaw/sub2api'
+// 版本/回滚相关的仓库与镜像名。默认指向官方正式版；定制版（fork）构建时通过
+// VITE_UPDATE_REPO / VITE_DOCKER_IMAGE 指向自己的仓库，避免把定制版更新回官方版。
+const GITHUB_REPO = (import.meta.env.VITE_UPDATE_REPO as string | undefined) || 'Wei-Shaw/sub2api'
+// 镜像名（tag 不带 "v" 前缀，例如 weishaw/sub2api:0.1.146 或 ghcr.io/<owner>/sub2api:0.2.7-1a2b3c4d）
+const DOCKER_IMAGE =
+  (import.meta.env.VITE_DOCKER_IMAGE as string | undefined) || 'weishaw/sub2api'
 
 const { t } = useI18n()
 

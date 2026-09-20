@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'v*'
+      # 排除本 fork 的构建标签（v<上游版本>-<短SHA>），那些由 fork-release.yml 处理；
+      # 避免用 fork 的代码产出“看起来像上游正式版”的镜像。
+      - '!v*-*'
   workflow_dispatch:
     inputs:
       tag:

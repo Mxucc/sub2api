@@ -43,3 +43,20 @@ test-frontend:
 
 test-frontend-critical:
 	@pnpm --dir frontend exec vitest run $(FRONTEND_CRITICAL_VITEST)
+
+# ---------------------------------------------------------------------------
+# 定制版（fork）发布相关，详见 docs/FORK_RELEASE.md
+# ---------------------------------------------------------------------------
+.PHONY: fork-version fork-sync fork-image
+
+# 打印当前提交将要发布的版本号 / 标签 / 镜像
+fork-version:
+	@bash scripts/fork-version.sh
+
+# 拉取并合并上游正式版（Wei-Shaw/sub2api）
+fork-sync:
+	@bash scripts/fork-sync-upstream.sh
+
+# 本地构建镜像（不上传），标签 sub2api:local
+fork-image:
+	@docker build -t sub2api:local -f Dockerfile .

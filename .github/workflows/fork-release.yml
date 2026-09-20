@@ -1,0 +1,302 @@
+name: Fork Release
+
+# =============================================================================
+# 本 fork 的「每次提交都发版」流水线
+# -----------------------------------------------------------------------------
+# 触发：推送到 main（以及手动 workflow_dispatch）
+#
+# 版本号：<上游基线版本>-<短SHA>，例如 0.2.7-1a9d49e1
+#   * 上游基线 = backend/cmd/server/VERSION（跟随上游 Wei-Shaw/sub2api，本流程只读不改）
+#   * 短SHA    = 本次提交 => 每个 commit 一个不可变版本号
+#   详见 docs/FORK_RELEASE.md
+#
+# 产物：镜像推送到本仓库自己的命名空间 ghcr.io/<owner>/sub2api（以及可选的 Docker Hub），
+#       并创建对应的 annotated tag 与 GitHub Release。
+#
+# 注意：上游官方正式版（vX.Y.Z）由 release.yml 负责，本流程只处理 fork 构建标签
+#       （v<基线>-<短SHA>），两者互不干扰。
+# =============================================================================
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: '要发布的 commit / 标签（留空 = 触发分支的 HEAD）'
+        required: false
+        type: string
+      simple_release:
+        description: '简化发布：只构建 x86_64 GHCR 镜像，跳过其他产物'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: '该 commit 的 Release 已存在时，删除后强制重建'
+        required: false
+        type: boolean
+        default: false
+
+# 同一 ref 串行发布，且不取消进行中的发布（避免镜像推到一半被中断）
+concurrency:
+  group: fork-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write # 创建 tag / Release
+  packages: write # 推送 GHCR 镜像
+
+env:
+  SIMPLE_RELEASE: ${{ github.event.inputs.simple_release == 'true' || vars.SIMPLE_RELEASE == 'true' }}
+  FORCE_REBUILD: ${{ github.event.inputs.force == 'true' }}
+  # fork 部署时把「更新来源仓库 / 镜像名」指向自己的仓库，避免应用内更新拉回上游正式版
+  VITE_UPDATE_REPO: ${{ vars.UPDATE_REPO || 'Wei-Shaw/sub2api' }}
+  VITE_DOCKER_IMAGE: ${{ vars.DOCKER_IMAGE || 'weishaw/sub2api' }}
+
+jobs:
+  # ---------------------------------------------------------------- 版本 + 标签
+  prepare:
+    name: 计算版本并打标签
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      tag: ${{ steps.ver.outputs.tag }}
+      base: ${{ steps.ver.outputs.base }}
+      sha: ${{ steps.ver.outputs.sha }}
+      image: ${{ steps.ver.outputs.image }}
+      skip: ${{ steps.decide.outputs.skip }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Compute fork version
+        id: ver
+        run: |
+          bash scripts/fork-version.sh --owner "${{ github.repository_owner }}" --format env >> "$GITHUB_OUTPUT"
+
+      - name: Job summary
+        run: |
+          {
+            echo "### Fork build ${{ steps.ver.outputs.version }}"
+            echo ""
+            echo "| 项 | 值 |"
+            echo "| --- | --- |"
+            echo "| 上游基线版本 | ${{ steps.ver.outputs.base }} |"
+            echo "| 构建提交 | \`${{ steps.ver.outputs.sha }}\` |"
+            echo "| 发布标签 | \`${{ steps.ver.outputs.tag }}\` |"
+            echo "| 镜像仓库 | \`${{ steps.ver.outputs.image }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Ensure release tag
+        env:
+          TAG: ${{ steps.ver.outputs.tag }}
+          VERSION: ${{ steps.ver.outputs.version }}
+          BASE: ${{ steps.ver.outputs.base }}
+        run: |
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "标签 $TAG 已存在，跳过创建"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          SHA="$(git rev-parse HEAD)"
+          CHANGES="$(git log --no-merges --pretty='- %s' -20 HEAD)"
+          NOTES="$(printf '上游基线：%s\n构建提交：%s\n\n### 本构建包含的提交\n\n%s\n' "$BASE" "$SHA" "$CHANGES")"
+          git tag -a "$TAG" -m "Sub2API fork build $VERSION" -m "$NOTES"
+          git push origin "refs/tags/$TAG"
+          echo "已创建并推送标签 $TAG"
+
+      - name: Check existing release
+        id: rel
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.ver.outputs.tag }}
+        run: |
+          if gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Release $TAG 已存在"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Decide whether to build
+        id: decide
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.ver.outputs.tag }}
+          EXISTS: ${{ steps.rel.outputs.exists }}
+        run: |
+          if [ "$EXISTS" = "true" ] && [ "$FORCE_REBUILD" != "true" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::该 commit 的 Release $TAG 已存在，跳过构建（如需重建请用 workflow_dispatch 勾选 force）"
+            exit 0
+          fi
+          if [ "$EXISTS" = "true" ]; then
+            echo "强制重建：删除已存在的 Release（保留标签）"
+            gh release delete "$TAG" --repo "${{ github.repository }}" --yes
+          fi
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      # 把 fork 完整版本号写进构建产物（会被 go:embed 进二进制并显示在界面/接口里）。
+      # 注意：这一步只改工作区里的文件，不会提交回仓库，仓库中的 VERSION 始终是上游基线版本。
+      - name: Stamp build version
+        if: steps.decide.outputs.skip != 'true'
+        run: |
+          echo "${{ steps.ver.outputs.version }}" > backend/cmd/server/VERSION
+          echo "构建产物版本：$(cat backend/cmd/server/VERSION)"
+
+      - name: Upload VERSION artifact
+        if: steps.decide.outputs.skip != 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: version-file
+          path: backend/cmd/server/VERSION
+          retention-days: 1
+
+  # ---------------------------------------------------------------- 前端产物
+  build-frontend:
+    name: 构建前端
+    needs: prepare
+    if: needs.prepare.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: frontend
+
+      - name: Build frontend
+        run: pnpm run build
+        working-directory: frontend
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: frontend-dist
+          path: backend/internal/web/dist/
+          retention-days: 1
+
+  # ---------------------------------------------------------------- 发布镜像
+  release:
+    name: 发布镜像与 Release
+    needs: [prepare, build-frontend]
+    if: needs.prepare.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout released tag
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.prepare.outputs.tag }}
+
+      - name: Download VERSION artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: version-file
+          path: backend/cmd/server/
+
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend-dist
+          path: backend/internal/web/dist/
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: backend/go.mod
+          check-latest: false
+          cache-dependency-path: backend/go.sum
+
+      - name: Verify Go version
+        run: |
+          go version | grep -q 'go1.27.0'
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        if: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        uses: docker/login-action@v3
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch tags with annotations
+        run: |
+          git fetch --tags --force
+
+      - name: Get tag message
+        id: tag_message
+        env:
+          TAG_NAME: ${{ needs.prepare.outputs.tag }}
+        run: |
+          TAG_MESSAGE=$(git tag -l --format='%(contents:body)' "$TAG_NAME")
+          echo "Tag message length: ${#TAG_MESSAGE}"
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$TAG_MESSAGE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Set lowercase owner for GHCR
+        id: lowercase
+        run: echo "owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          version: '~> v2'
+          args: release --clean --skip=validate ${{ env.SIMPLE_RELEASE == 'true' && '--config=.goreleaser.simple.yaml' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 每个 commit 的版本号就是标签本身：显式告知 GoReleaser 当前标签
+          GORELEASER_CURRENT_TAG: ${{ needs.prepare.outputs.tag }}
+          TAG_MESSAGE: ${{ steps.tag_message.outputs.message }}
+          GITHUB_REPO_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPO_OWNER_LOWER: ${{ steps.lowercase.outputs.owner }}
+          GITHUB_REPO_NAME: ${{ github.event.repository.name }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME || 'skip' }}
+
+      - name: Publish summary
+        if: success()
+        run: |
+          {
+            echo "## 发布完成：${{ needs.prepare.outputs.version }}"
+            echo ""
+            echo "\`\`\`bash"
+            echo "docker pull ${{ needs.prepare.outputs.image }}:${{ needs.prepare.outputs.version }}"
+            echo "\`\`\`"
+            echo ""
+            echo "上游基线版本：\`${{ needs.prepare.outputs.base }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

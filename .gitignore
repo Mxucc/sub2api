@@ -124,6 +124,11 @@ CLAUDE.md
 scripts
 !backend/scripts/
 !backend/scripts/resolve-version.sh
+# 定制版（fork）发布脚本：见 docs/FORK_RELEASE.md（只放行这两个文件）
+!scripts/
+scripts/*
+!scripts/fork-version.sh
+!scripts/fork-sync-upstream.sh
 .code-review-state
 #openspec/
 code-reviews/
@@ -133,6 +138,7 @@ deploy/docker-compose.override.yml
 .gocache/
 vite.config.js
 docs/*
+!docs/FORK_RELEASE.md
 !docs/ANTIGRAVITY_ATTRIBUTION_429.md
 !docs/PAYMENT.md
 !docs/PAYMENT_CN.md
