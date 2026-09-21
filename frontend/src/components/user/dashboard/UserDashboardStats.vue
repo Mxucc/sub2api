@@ -291,7 +291,8 @@ const router = useRouter()
 const { canUseBatchImage, refreshBatchImageAccess } = useBatchImageAccess()
 
 // 「按平台拆分」折叠状态（参考用量概览：默认展开）
-const platformOpen = ref(true)
+// 「按平台拆分」默认折叠，需要时手动展开（避免首屏被平台卡片挤满）
+const platformOpen = ref(false)
 
 // 缓存 token = 创建 + 读取（今日 / 累计）
 const todayCacheTokens = computed(() =>

@@ -39,6 +39,13 @@ describe('dashboard metric density', () => {
 
 
 
+
+  // 平台拆分默认折叠：首屏优先给「今日/累计」指标，平台卡片按需展开
+  it('keeps the platform breakdown collapsed by default', () => {
+    expect(statsSource).toMatch(/const platformOpen = ref\(false\)/)
+    expect(statsSource).toContain(':aria-expanded="platformOpen"')
+    expect(statsSource).toContain('v-show="platformOpen"')
+  })
   it('keeps the shared dashboard layout blocks in style.css for reuse', () => {
     expect(styleSource).toContain('.action-grid {')
     expect(styleSource).toContain('.collapse-head {')

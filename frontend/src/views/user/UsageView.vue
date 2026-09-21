@@ -1,37 +1,77 @@
 <template>
   <AppLayout>
-    <div class="space-y-6">
-      <!-- 页面头部：仅在应用已安装路由时渲染（单测可脱离 router 挂载本页） -->
-      <PageHeader
-        v-if="$route"
-        :title="t('usage.title')"
-        :description="t('usage.description')"
-      />
+    <div class="space-y-5">
+      <!-- 编辑式页头：编号 + 衬线标题 + 说明 + 元信息，刷新操作收进右侧 -->
+      <!-- 仅在应用已安装路由时渲染（单测可脱离 router 挂载本页） -->
+      <header v-if="$route" class="page-header-bar">
+        <div class="page-header-main">
+          <div class="page-header-row flex-wrap">
+            <div class="min-w-0">
+              <span class="page-header-index">USAGE / LOGS</span>
+              <h1 class="page-title">{{ t('usage.title') }}</h1>
+              <p class="page-header-copy">{{ t('usage.description') }}</p>
+              <div class="page-header-meta">
+                <span>{{ startDate }} → {{ endDate }}</span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {{ granularity === 'day' ? t('admin.dashboard.day') : t('admin.dashboard.hour') }}
+                </span>
+                <template v-if="pagination.total > 0">
+                  <span aria-hidden="true">·</span>
+                  <span>{{ t('common.total') }} {{ pagination.total }}</span>
+                </template>
+              </div>
+            </div>
+            <div class="page-header-actions">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                :disabled="activeTab === 'errors' ? errorLoading : loading"
+                @click="refreshData"
+              >
+                <Icon name="refresh" size="sm" />
+                {{ t('common.refresh') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <UsageStatsCards :stats="usageStats" :show-account-cost="false" :strike-standard-cost="true" />
 
-      <div class="space-y-4">
-        <div class="card p-4">
-          <div class="flex flex-wrap items-center gap-4">
-            <div class="flex items-center gap-2">
-              <span class="filter-label">{{ t('admin.dashboard.timeRange') }}:</span>
-              <DateRangePicker
-                v-model:start-date="startDate"
-                v-model:end-date="endDate"
-                @change="onDateRangeChange"
-              />
-            </div>
-            <div class="ml-auto flex items-center gap-2">
-              <span class="filter-label">{{ t('admin.dashboard.granularity') }}:</span>
-              <div class="w-28">
-                <Select v-model="granularity" :options="granularityOptions" @change="loadChartData" />
-              </div>
+      <!-- 图表区：工具栏（日期范围左 / 粒度分段右）→ 通栏趋势 → 三张分布图 -->
+      <section class="space-y-4">
+        <div class="chart-hair">
+          <DateRangePicker
+            v-model:start-date="startDate"
+            v-model:end-date="endDate"
+            @change="onDateRangeChange"
+          />
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="segmented" role="group" :aria-label="t('admin.dashboard.granularity')">
+              <button
+                v-for="option in granularityOptions"
+                :key="option.value"
+                type="button"
+                class="segmented-item"
+                :class="{ 'is-active': granularity === option.value }"
+                :aria-pressed="granularity === option.value"
+                @click="granularity = option.value; loadChartData()"
+              >
+                {{ option.label }}
+              </button>
             </div>
           </div>
         </div>
 
+        <!-- Token 使用趋势（通栏） -->
+        <div class="chart-wide">
+          <TokenUsageTrend :trend-data="trendData" :loading="chartsLoading" />
+        </div>
+
+        <!-- 模型 / 分组 / 端点分布：两列 -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <ModelDistributionChart
-            framed
             v-model:metric="modelDistributionMetric"
             :model-stats="requestedModelStats"
             :loading="modelStatsLoading"
@@ -43,7 +83,6 @@
             :end-date="endDate"
           />
           <GroupDistributionChart
-            framed
             v-model:metric="groupDistributionMetric"
             :group-stats="groupStats"
             :loading="chartsLoading"
@@ -53,11 +92,7 @@
             :start-date="startDate"
             :end-date="endDate"
           />
-        </div>
-
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <EndpointDistributionChart
-            framed
             v-model:source="endpointDistributionSource"
             v-model:metric="endpointDistributionMetric"
             :endpoint-stats="inboundEndpointStats"
@@ -71,12 +106,12 @@
             :start-date="startDate"
             :end-date="endDate"
           />
-          <TokenUsageTrend framed :trend-data="trendData" :loading="chartsLoading" />
         </div>
-      </div>
+      </section>
 
-      <div class="card p-6">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <!-- 明细区：筛选栏（卡头）→ tabs → 表格 → 分页（卡尾），收在同一张 surface 内 -->
+      <div class="surface">
+        <div class="filter-bar">
           <div v-if="activeTab === 'errors'" class="flex flex-1 flex-wrap items-end gap-4">
             <div class="w-full sm:w-auto sm:min-w-[220px]">
               <label class="input-label">{{ t('usage.errors.keyName') }}</label>
@@ -174,57 +209,57 @@
             </button>
           </div>
         </div>
-      </div>
 
-      <div v-if="errorViewEnabled" class="flex gap-2 border-b border-gray-200 dark:border-dark-700">
-        <button class="tab" :class="{ 'tab-active': activeTab === 'usage' }" @click="activeTab = 'usage'">
-          {{ t('usage.tabs.usage') }}
-        </button>
-        <button class="tab" :class="{ 'tab-active': activeTab === 'errors' }" @click="switchToErrors">
-          {{ t('usage.tabs.errors') }}
-        </button>
-      </div>
+        <div v-if="errorViewEnabled" class="flex gap-2 border-b border-gray-200 px-4 pt-2 dark:border-dark-700">
+          <button class="tab" :class="{ 'tab-active': activeTab === 'usage' }" @click="activeTab = 'usage'">
+            {{ t('usage.tabs.usage') }}
+          </button>
+          <button class="tab" :class="{ 'tab-active': activeTab === 'errors' }" @click="switchToErrors">
+            {{ t('usage.tabs.errors') }}
+          </button>
+        </div>
 
-      <template v-if="activeTab === 'usage'">
-        <UsageTable
-          :data="usageLogs"
-          :loading="loading"
-          :columns="visibleColumns"
-          :server-side-sort="true"
-          :show-account-billing="false"
-          :show-upstream-endpoint="false"
-          default-sort-key="created_at"
-          default-sort-order="desc"
-          @sort="handleSort"
+        <template v-if="activeTab === 'usage'">
+          <UsageTable
+            :data="usageLogs"
+            :loading="loading"
+            :columns="visibleColumns"
+            :server-side-sort="true"
+            :show-account-billing="false"
+            :show-upstream-endpoint="false"
+            default-sort-key="created_at"
+            default-sort-order="desc"
+            @sort="handleSort"
+            @ipGeoBatchFailed="handleIpGeoBatchFailed"
+          />
+
+          <div v-if="pagination.total > 0" class="card-footer">
+            <Pagination
+              :page="pagination.page"
+              :total="pagination.total"
+              :page-size="pagination.page_size"
+              @update:page="handlePageChange"
+              @update:pageSize="handlePageSizeChange"
+            />
+          </div>
+        </template>
+
+        <UserErrorRequestsTable
+          v-else-if="errorViewEnabled"
+          :rows="errorRows"
+          :total="errorTotal"
+          :loading="errorLoading"
+          :page="errorPage"
+          :page-size="errorPageSize"
+          :visible-column-keys="errVisibleColumnKeys"
+          @sort="onErrorSort"
+          @update:page="onErrorPage"
+          @update:pageSize="onErrorPageSize"
           @ipGeoBatchFailed="handleIpGeoBatchFailed"
         />
-
-        <Pagination
-          v-if="pagination.total > 0"
-          :page="pagination.page"
-          :total="pagination.total"
-          :page-size="pagination.page_size"
-          @update:page="handlePageChange"
-          @update:pageSize="handlePageSizeChange"
-        />
-      </template>
-
-      <UserErrorRequestsTable
-        v-else-if="errorViewEnabled"
-        :rows="errorRows"
-        :total="errorTotal"
-        :loading="errorLoading"
-        :page="errorPage"
-        :page-size="errorPageSize"
-        :visible-column-keys="errVisibleColumnKeys"
-        @sort="onErrorSort"
-        @update:page="onErrorPage"
-        @update:pageSize="onErrorPageSize"
-        @ipGeoBatchFailed="handleIpGeoBatchFailed"
-      />
+      </div>
     </div>
   </AppLayout>
-
 </template>
 
 <script setup lang="ts">
@@ -234,7 +269,6 @@ import { useAppStore } from '@/stores/app'
 import { FeatureFlags, resolveFeatureFlag } from '@/utils/featureFlags'
 import { keysAPI, usageAPI, userGroupsAPI } from '@/api'
 import AppLayout from '@/components/layout/AppLayout.vue'
-import { PageHeader } from '@/components/layout'
 import Pagination from '@/components/common/Pagination.vue'
 import Select, { type SelectOption } from '@/components/common/Select.vue'
 import DateRangePicker from '@/components/common/DateRangePicker.vue'
@@ -387,7 +421,7 @@ const sortState = reactive({
   sort_order: 'desc' as 'asc' | 'desc',
 })
 
-const granularityOptions = computed<SelectOption[]>(() => [
+const granularityOptions = computed<{ value: 'day' | 'hour'; label: string }[]>(() => [
   { value: 'day', label: t('admin.dashboard.day') },
   { value: 'hour', label: t('admin.dashboard.hour') },
 ])
@@ -924,3 +958,16 @@ watch(endpointDistributionSource, () => {
   // Endpoint source switching is handled by the chart component using already loaded stats.
 })
 </script>
+
+<style scoped>
+/* 通栏趋势图借用 TokenUsageTrend 自带的画布，这里把它抬到通栏高度 */
+.chart-wide :deep(.chart-canvas) {
+  height: 320px;
+}
+
+@media (max-width: 639px) {
+  .chart-wide :deep(.chart-canvas) {
+    height: 220px;
+  }
+}
+</style>

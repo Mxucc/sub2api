@@ -57,7 +57,12 @@ describe('UsageStatsCards', () => {
     })
 
     const text = wrapper.text()
-    expect(text).toContain('Cache: 34')
+    // 页脚键值对改成分列布局：标签在上、数值在下，不再是「标签: 数值」连写
+    const cachePair = wrapper
+      .findAll('.stat-pair')
+      .find((pair) => pair.find('.stat-pair-label').exists() && pair.find('.stat-pair-label').text() === 'Cache')
+    expect(cachePair).toBeDefined()
+    expect(cachePair!.find('.stat-pair-value').text()).toBe('34')
     expect(text).toContain('Cache Token Breakdown')
     expect(text).toContain('Cache Creation')
     expect(text).toContain('12')
