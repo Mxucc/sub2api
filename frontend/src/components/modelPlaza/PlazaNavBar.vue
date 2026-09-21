@@ -1,6 +1,6 @@
 <template>
   <header
-    class="sticky top-14 z-30 border-b border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-900"
+    class="sticky top-0 z-30 border-b border-gray-200 bg-white dark:border-dark-700 dark:bg-dark-900"
   >
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
       <!-- 左:站点 logo + 名称 -->
