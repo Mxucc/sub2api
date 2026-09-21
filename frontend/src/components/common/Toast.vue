@@ -17,7 +17,7 @@
           v-for="toast in toasts"
           :key="toast.id"
           :class="[
-            'pointer-events-auto min-w-[300px] max-w-md overflow-hidden rounded-none',
+            'pointer-events-auto min-w-[300px] max-w-md overflow-hidden rounded-lg',
             'bg-white dark:bg-dark-800',
             'border border-y-gray-200/80 border-r-gray-200/80 dark:border-y-dark-600/80 dark:border-r-dark-600/80',
             'border-l-[3px] shadow-popover',
@@ -29,7 +29,7 @@
               <!-- Icon -->
               <div
                 :class="[
-                  'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-none',
+                  'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg',
                   getIconChipClass(toast.type)
                 ]"
               >

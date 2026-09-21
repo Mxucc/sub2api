@@ -82,7 +82,7 @@
                 <div
                   v-for="item in announcements"
                   :key="item.id"
-                  class="list-row group relative gap-4 rounded-none border-b border-gray-100 px-6 py-4 dark:border-dark-700"
+                  class="list-row group relative gap-4 rounded-lg border-b border-gray-100 px-6 py-4 dark:border-dark-700"
                   :class="{ 'bg-primary-50/70 dark:bg-primary-500/10': !item.read_at }"
                   style="min-height: 72px"
                   @click="openDetail(item)"

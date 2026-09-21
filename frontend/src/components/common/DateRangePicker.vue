@@ -323,7 +323,7 @@ onUnmounted(() => {
 <style scoped>
 .date-picker-trigger {
   @apply flex items-center gap-2;
-  @apply h-control rounded-none px-3 text-control;
+  @apply h-control rounded-lg px-3 text-control;
   @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
   @apply text-gray-900 dark:text-dark-300;
@@ -357,7 +357,7 @@ onUnmounted(() => {
 .date-picker-dropdown {
   @apply absolute left-0 z-[100] mt-1;
   @apply bg-white dark:bg-dark-800;
-  @apply rounded-none;
+  @apply rounded-lg;
   @apply border border-gray-200 dark:border-dark-600;
   @apply shadow-popover;
   @apply overflow-hidden;
@@ -369,7 +369,7 @@ onUnmounted(() => {
 }
 
 .date-picker-preset {
-  @apply flex h-8 items-center rounded-none px-3 text-control;
+  @apply flex h-8 items-center rounded-lg px-3 text-control;
   @apply text-gray-700 dark:text-dark-300;
   @apply hover:bg-gray-100 dark:hover:bg-dark-700;
   @apply transition-colors duration-150;
@@ -396,7 +396,7 @@ onUnmounted(() => {
 }
 
 .date-picker-input {
-  @apply h-control w-full rounded-none px-2.5 text-control;
+  @apply h-control w-full rounded-lg px-2.5 text-control;
   @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
   @apply text-gray-900 dark:text-dark-300;
@@ -428,7 +428,7 @@ onUnmounted(() => {
 }
 
 .date-picker-apply {
-  @apply h-control rounded-none px-4 text-control font-medium;
+  @apply h-control rounded-lg px-4 text-control font-medium;
   @apply bg-primary-500 text-white dark:bg-primary-500 dark:text-white;
   @apply hover:bg-primary-400 active:bg-primary-600 dark:hover:bg-primary-400 dark:active:bg-primary-600;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-500/30;

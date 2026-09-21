@@ -206,7 +206,7 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `frontend/tailwind.config.js` | 令牌唯一来源（色阶、阴影、控件高度、字号、圆角归零） |
+| `frontend/tailwind.config.js` | 令牌唯一来源（色阶、阴影、控件高度、字号、5px 圆角、`font-display` 衬线字族） |
 | `frontend/src/style.css` | 组件层（`.btn` / `.input` / `.table` / `.card` / `.data-card` / `.page-header-bar` / `.breadcrumb` / `.tag` …） |
 | `frontend/src/components/layout/AppHeader.vue` | 通栏顶栏（56px）：品牌 + 当前页面标题 + 全局操作 + 版本/更新入口 |
 | `frontend/src/components/layout/AppSidebar.vue` | 模块导航侧栏（240px ⇄ 64px），选中态品牌浅底 + 2px 左侧竖条 |
@@ -215,3 +215,31 @@
 | `frontend/src/components/icons/Icon.vue` + `iconMap.ts` | 图标（Lucide 映射，`name` 类型即契约） |
 | `design-preview.html` | 静态设计预览（不参与构建），改令牌后重新生成 `design-preview.css` |
 | `docs/TDESIGN_MIGRATION.md` | 若要真正替换组件框架（TDesign）的迁移方案与影响评估 |
+
+## 附录 B · 仪表盘 / editorial 层（5px 圆角之后新增）
+
+语言参考 kedaya.ai 的 signal 皮肤，拆解与取舍见 `docs/UI_REFERENCE_SIGNAL.md`。
+实现在 `frontend/src/style.css` 末尾的 `@layer components` 中，与既有 `.card` / `.filter-bar` / `.data-card` 体系并存：
+
+| 类 | 用途 |
+| --- | --- |
+| `.page-header-index` / `.page-header-copy` / `.page-header-meta` | 页头编号 / 说明文案（≤68ch，行高舒展）/ 元信息；`.page-title` 已改为衬线 22px |
+| `.section-heading` + `.section-heading-title` + `.section-heading-meta` | 区块标题（衬线 15px + 底部发丝线 + 右侧元信息） |
+| `.metric-grid` / `.metric-grid-lead` / `.metric-card` / `.metric-lead` / `.metric-card-hero` | 指标区；首行为 lead 卡（`min-height:164px`），`.metric-card-hero` 是反色英雄卡，一页最多一张 |
+| `.metric-label` / `.metric-value` / `.metric-unit` / `.metric-note` / `.metric-accent` / `.metric-foot` / `.metric-delta-up` / `.metric-delta-down` | 指标卡内部元素；`.metric-foot` 是**满出血页脚**（`-mx-[18px] -mb-[18px]`，发丝线 + 左标签 / 右数值） |
+| `.ledger` / `.ledger-head` / `.ledger-row` / `.ledger-row-hover` / `.ledger-num` / `.ledger-num-strong` | 台账式列表（3 列 grid `1.6fr 0.5fr 0.65fr`，发丝线分行，金额右对齐 `min-width:88px`；窄屏降为 2 列） |
+| `.chart-frame` / `.chart-hair` / `.chart-canvas` | 图表去卡片化：顶部发丝线 + 工具栏发丝线 + 260px（≤639px 时 220px）画布 |
+| `.segmented` / `.segmented-item` | 分段控件（选中态用 `.is-active` 或 `aria-pressed="true"`，槽 `p-[3px]` + 5px 圆角） |
+| `.chip` | 轻量小徽标（比 `.badge` 更克制） |
+| `.rise` / `.stagger` | 入场动效（0.46s `cubic-bezier(.16,1,.3,1)`，45/90/135ms 错峰，`prefers-reduced-motion` 下关闭） |
+| `.decor-grid` | 极淡蓝图网格装饰层（60×60，`mask-image` 渐隐；可选） |
+
+四条沿用原则：
+
+1. **投影几乎不可见**（`0 2px 4px rgba(32,36,38,.03)`），层与层之间优先用 1px 发丝线。
+2. **一页一个焦点**：反色英雄卡只用于最关键的数字（余额）。
+3. **数字一律 `tabular-nums`**，标签用 11px 级别的小字，正文 13px。
+4. **全站 5px 圆角**（`rounded-none` 与 `.spinner` 除外）。
+
+已落地的页面：用户 `/dashboard`（`views/user/DashboardView.vue` + `components/user/dashboard/*`）、
+管理员仪表盘（`views/admin/DashboardView.vue`）；其余内页通过 `PageHeader` 与全局令牌自动继承同一套语言。

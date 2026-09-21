@@ -506,7 +506,7 @@ onUnmounted(() => {
 <style scoped>
 .select-trigger {
   @apply flex h-control w-full items-center justify-between gap-2;
-  @apply rounded-none px-3 text-control;
+  @apply rounded-lg px-3 text-control;
   @apply bg-white dark:bg-dark-800;
   @apply border border-gray-200 dark:border-dark-600;
   @apply text-gray-900 dark:text-dark-300;
@@ -547,7 +547,7 @@ onUnmounted(() => {
 }
 
 .select-clear {
-  @apply flex h-6 w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-none;
+  @apply flex h-6 w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-lg;
   @apply text-gray-400 opacity-0 transition-[opacity,color,background-color] duration-150;
   @apply hover:bg-gray-100 hover:text-gray-600;
   @apply dark:text-dark-400 dark:hover:bg-dark-700 dark:hover:text-gray-200;
@@ -565,7 +565,7 @@ onUnmounted(() => {
 .select-dropdown-portal {
   @apply w-max min-w-[200px];
   @apply bg-white dark:bg-dark-800;
-  @apply rounded-none;
+  @apply rounded-lg;
   @apply border border-gray-200 dark:border-dark-600;
   @apply shadow-popover;
   @apply overflow-hidden;
@@ -590,7 +590,7 @@ onUnmounted(() => {
 
 .select-dropdown-portal .select-option {
   @apply flex h-8 items-center justify-between gap-2;
-  @apply rounded-none px-3 text-control;
+  @apply rounded-lg px-3 text-control;
   @apply text-gray-700 dark:text-dark-300;
   @apply cursor-pointer transition-colors duration-150;
   @apply hover:bg-gray-100 dark:hover:bg-dark-700;

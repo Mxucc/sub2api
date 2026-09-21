@@ -198,4 +198,25 @@ describe('ModelDistributionChart', () => {
     expect(rows[3].text()).toContain('400')
     expect(rows[3].text()).toContain('$10.00')
   })
+
+  it('renders a bare hairline header by default and adds card chrome only when framed', () => {
+    const bare = mount(ModelDistributionChart, {
+      props: { modelStats },
+      global: { stubs: { LoadingSpinner: true } },
+    })
+
+    expect(bare.find('.card').exists()).toBe(false)
+    expect(bare.find('.chart-hair .section-heading-title').text()).toBe('Model Distribution')
+    expect(bare.find('.chart-hair .section-heading-meta').text()).toBe('1.50K Tokens')
+    expect(bare.find('.chart-canvas').exists()).toBe(true)
+
+    const framed = mount(ModelDistributionChart, {
+      props: { modelStats, framed: true },
+      global: { stubs: { LoadingSpinner: true } },
+    })
+
+    expect(framed.find('.card').exists()).toBe(false)
+    expect(framed.classes()).toContain('p-4')
+    expect(framed.classes()).toContain('border')
+  })
 })

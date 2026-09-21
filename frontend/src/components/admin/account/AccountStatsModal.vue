@@ -409,15 +409,17 @@
         </div>
 
         <!-- Model Distribution -->
-        <ModelDistributionChart :model-stats="stats.models" :loading="false" />
+        <ModelDistributionChart framed :model-stats="stats.models" :loading="false" />
 
         <EndpointDistributionChart
+          framed
           :endpoint-stats="stats.endpoints || []"
           :loading="false"
           :title="t('usage.inboundEndpoint')"
         />
 
         <EndpointDistributionChart
+          framed
           :endpoint-stats="stats.upstream_endpoints || []"
           :loading="false"
           :title="t('usage.upstreamEndpoint')"

@@ -7,7 +7,7 @@
       <button
         @click="goToPage(page - 1)"
         :disabled="page === 1"
-        class="inline-flex h-control items-center rounded-none border border-gray-200 bg-white px-3 text-control font-medium text-gray-700 transition-colors duration-150 hover:bg-gray-50 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 dark:border-dark-600 dark:bg-dark-800 dark:text-dark-300 dark:hover:bg-dark-700 dark:hover:text-white"
+        class="inline-flex h-control items-center rounded-lg border border-gray-200 bg-white px-3 text-control font-medium text-gray-700 transition-colors duration-150 hover:bg-gray-50 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 dark:border-dark-600 dark:bg-dark-800 dark:text-dark-300 dark:hover:bg-dark-700 dark:hover:text-white"
       >
         {{ t('pagination.previous') }}
       </button>
@@ -17,7 +17,7 @@
       <button
         @click="goToPage(page + 1)"
         :disabled="page === totalPages"
-        class="ml-3 inline-flex h-control items-center rounded-none border border-gray-200 bg-white px-3 text-control font-medium text-gray-700 transition-colors duration-150 hover:bg-gray-50 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 dark:border-dark-600 dark:bg-dark-800 dark:text-dark-300 dark:hover:bg-dark-700 dark:hover:text-white"
+        class="ml-3 inline-flex h-control items-center rounded-lg border border-gray-200 bg-white px-3 text-control font-medium text-gray-700 transition-colors duration-150 hover:bg-gray-50 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 dark:border-dark-600 dark:bg-dark-800 dark:text-dark-300 dark:hover:bg-dark-700 dark:hover:text-white"
       >
         {{ t('pagination.next') }}
       </button>
@@ -73,7 +73,7 @@
         <button
           @click="goToPage(page - 1)"
           :disabled="page === 1"
-          class="inline-flex h-7 w-7 items-center justify-center rounded-none text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
+          class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
           :aria-label="t('pagination.previous')"
         >
           <Icon name="chevronLeft" size="md" />
@@ -86,7 +86,7 @@
           @click="typeof pageNum === 'number' && goToPage(pageNum)"
           :disabled="typeof pageNum !== 'number'"
           :class="[
-            'inline-flex h-7 min-w-7 items-center justify-center rounded-none border border-transparent px-2 text-control font-medium transition-colors duration-150',
+            'inline-flex h-7 min-w-7 items-center justify-center rounded-lg border border-transparent px-2 text-control font-medium transition-colors duration-150',
             typeof pageNum !== 'number'
               ? 'cursor-default text-gray-400 dark:text-dark-500'
               : pageNum === page
@@ -105,7 +105,7 @@
         <button
           @click="goToPage(page + 1)"
           :disabled="page === totalPages"
-          class="inline-flex h-7 w-7 items-center justify-center rounded-none text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
+          class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
           :aria-label="t('pagination.next')"
         >
           <Icon name="chevronRight" size="md" />
@@ -240,6 +240,6 @@ const submitJump = () => {
 
 <style scoped>
 .page-size-select :deep(.select-trigger) {
-  @apply h-control rounded-none px-2 py-0 text-control;
+  @apply h-control rounded-lg px-2 py-0 text-control;
 }
 </style>

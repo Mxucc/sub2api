@@ -1,17 +1,23 @@
 <template>
-  <div class="card p-4">
-    <h3 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
-      {{ t('admin.dashboard.tokenUsageTrend') }}
-    </h3>
-    <div v-if="loading" class="flex h-48 items-center justify-center">
+  <div :class="rootClass">
+    <div class="chart-hair">
+      <div class="min-w-0">
+        <h3 class="section-heading-title">{{ t('admin.dashboard.tokenUsageTrend') }}</h3>
+        <p v-if="rangeMeta" class="section-heading-meta">{{ rangeMeta }}</p>
+      </div>
+      <div v-if="$slots.actions" class="flex flex-wrap items-center gap-2">
+        <slot name="actions" />
+      </div>
+    </div>
+    <div v-if="loading" class="chart-canvas mt-3 flex items-center justify-center">
       <LoadingSpinner />
     </div>
-    <div v-else-if="trendData.length > 0 && chartData" class="h-48">
+    <div v-else-if="trendData.length > 0 && chartData" class="chart-canvas mt-3">
       <Line :data="chartData" :options="lineOptions" />
     </div>
     <div
       v-else
-      class="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
+      class="chart-canvas mt-3 flex items-center justify-center text-sm text-gray-500 dark:text-gray-400"
     >
       {{ t('admin.dashboard.noDataAvailable') }}
     </div>
@@ -49,10 +55,26 @@ ChartJS.register(
 
 const { t } = useI18n()
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   trendData: TrendDataPoint[]
   loading?: boolean
-}>()
+  framed?: boolean
+}>(), {
+  framed: false
+})
+
+const rootClass = computed(() => props.framed
+  ? 'rounded-lg border border-gray-200 bg-white p-4 shadow-[0_2px_4px_rgba(32,36,38,0.03)] dark:border-dark-700 dark:bg-dark-900'
+  : '')
+
+// 发丝线标题旁的元信息：当前展示的数据区间（无数据时不渲染）
+const rangeMeta = computed(() => {
+  const points = props.trendData ?? []
+  if (!points.length) return ''
+  const first = points[0].date
+  const last = points[points.length - 1].date
+  return first === last ? first : `${first} — ${last}`
+})
 
 const isDarkMode = computed(() => {
   return document.documentElement.classList.contains('dark')

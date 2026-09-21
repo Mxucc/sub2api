@@ -1,11 +1,10 @@
 <template>
-  <div class="card p-4">
-    <div class="mb-4 flex items-center justify-between gap-3">
-      <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-        {{ !enableRankingView || activeView === 'model_distribution'
-          ? t('admin.dashboard.modelDistribution')
-          : t('admin.dashboard.spendingRankingTitle') }}
-      </h3>
+  <div :class="rootClass">
+    <div class="chart-hair">
+      <div class="min-w-0">
+        <h3 class="section-heading-title">{{ headerTitle }}</h3>
+        <p v-if="headerMeta" class="section-heading-meta">{{ headerMeta }}</p>
+      </div>
       <div class="flex flex-wrap items-center justify-end gap-2">
         <div
           v-if="showSourceToggle"
@@ -93,20 +92,21 @@
             {{ t('admin.dashboard.viewSpendingRanking') }}
           </button>
         </div>
+        <slot name="actions" />
       </div>
     </div>
 
-    <div v-if="activeView === 'model_distribution' && loading" class="flex h-48 items-center justify-center">
+    <div v-if="activeView === 'model_distribution' && loading" class="chart-canvas mt-3 flex items-center justify-center">
       <LoadingSpinner />
     </div>
     <div
       v-else-if="activeView === 'model_distribution' && displayModelStats.length > 0 && chartData"
-      class="flex flex-col items-center gap-4 sm:flex-row sm:gap-6"
+      class="chart-canvas mt-3 flex h-auto flex-col items-center gap-4 sm:h-[260px] sm:flex-row sm:gap-6"
     >
-      <div class="h-48 w-48 shrink-0">
+      <div class="h-48 w-48 shrink-0 sm:h-[260px] sm:w-[260px]">
         <Doughnut :data="chartData" :options="doughnutOptions" />
       </div>
-      <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto">
+      <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto sm:max-h-full">
         <table class="w-full text-xs">
           <thead>
             <tr class="text-gray-500 dark:text-gray-400">
@@ -168,25 +168,25 @@
     </div>
     <div
       v-else-if="activeView === 'model_distribution'"
-      class="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
+      class="chart-canvas mt-3 flex items-center justify-center text-sm text-gray-500 dark:text-gray-400"
     >
       {{ t('admin.dashboard.noDataAvailable') }}
     </div>
 
-    <div v-else-if="rankingLoading" class="flex h-48 items-center justify-center">
+    <div v-else-if="rankingLoading" class="chart-canvas mt-3 flex items-center justify-center">
       <LoadingSpinner />
     </div>
     <div
       v-else-if="rankingError"
-      class="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
+      class="chart-canvas mt-3 flex items-center justify-center text-sm text-gray-500 dark:text-gray-400"
     >
       {{ t('admin.dashboard.failedToLoad') }}
     </div>
-    <div v-else-if="rankingDisplayItems.length > 0 && rankingChartData" class="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
-      <div class="h-48 w-48 shrink-0">
+    <div v-else-if="rankingDisplayItems.length > 0 && rankingChartData" class="chart-canvas mt-3 flex h-auto flex-col items-center gap-4 sm:h-[260px] sm:flex-row sm:gap-6">
+      <div class="h-48 w-48 shrink-0 sm:h-[260px] sm:w-[260px]">
         <Doughnut :data="rankingChartData" :options="rankingDoughnutOptions" />
       </div>
-      <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto">
+      <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto sm:max-h-full">
         <table class="w-full text-xs">
           <thead>
             <tr class="text-gray-500 dark:text-gray-400">
@@ -235,7 +235,7 @@
     </div>
     <div
       v-else
-      class="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
+      class="chart-canvas mt-3 flex items-center justify-center text-sm text-gray-500 dark:text-gray-400"
     >
       {{ t('admin.dashboard.noDataAvailable') }}
     </div>
@@ -280,6 +280,7 @@ const props = withDefaults(defineProps<{
   startDate?: string
   endDate?: string
   filters?: Record<string, any>
+  framed?: boolean
 }>(), {
   upstreamModelStats: () => [],
   mappingModelStats: () => [],
@@ -296,8 +297,19 @@ const props = withDefaults(defineProps<{
   enableBreakdown: true,
   showAccountCost: true,
   rankingLoading: false,
-  rankingError: false
+  rankingError: false,
+  framed: false
 })
+
+const rootClass = computed(() => props.framed
+  ? 'rounded-lg border border-gray-200 bg-white p-4 shadow-[0_2px_4px_rgba(32,36,38,0.03)] dark:border-dark-700 dark:bg-dark-900'
+  : '')
+
+const headerTitle = computed(() => (
+  !enableRankingView.value || activeView.value === 'model_distribution'
+    ? t('admin.dashboard.modelDistribution')
+    : t('admin.dashboard.spendingRankingTitle')
+))
 
 const expandedKey = ref<string | null>(null)
 const breakdownItems = ref<UserBreakdownItem[]>([])
@@ -364,6 +376,20 @@ const displayModelStats = computed(() => {
 
   const metricKey = props.metric === 'actual_cost' ? 'actual_cost' : 'total_tokens'
   return [...sourceStats].sort((a, b) => toFiniteNumber(b[metricKey]) - toFiniteNumber(a[metricKey]))
+})
+
+// 发丝线标题旁的元信息：当前视图的合计（无数据时不渲染）
+const headerMeta = computed(() => {
+  if (activeView.value === 'spending_ranking') {
+    if (!props.rankingItems?.length) return ''
+    return `${t('admin.dashboard.spendingRankingSpend')} $${formatCost(props.rankingTotalActualCost)}`
+  }
+  if (!displayModelStats.value.length) return ''
+  const metricKey = props.metric === 'actual_cost' ? 'actual_cost' : 'total_tokens'
+  const total = displayModelStats.value.reduce((sum, item) => sum + toFiniteNumber(item[metricKey]), 0)
+  return props.metric === 'actual_cost'
+    ? `${t('admin.dashboard.actual')} $${formatCost(total)}`
+    : `${formatTokens(total)} ${t('admin.dashboard.tokens')}`
 })
 
 const chartData = computed(() => {

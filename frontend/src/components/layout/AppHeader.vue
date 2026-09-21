@@ -61,7 +61,7 @@
           :href="docUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="hidden h-8 items-center gap-1.5 rounded-none px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white sm:flex"
+          class="hidden h-8 items-center gap-1.5 rounded-lg px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white sm:flex"
         >
           <Icon name="book" size="sm" />
           <span class="hidden sm:inline">{{ t('nav.docs') }}</span>
@@ -73,7 +73,7 @@
           :to="{ path: '/model-plaza', query: { embedded: '1' } }"
           :title="t('nav.modelPlaza')"
           :aria-label="t('nav.modelPlaza')"
-          class="flex h-8 items-center gap-1.5 rounded-none px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
+          class="flex h-8 items-center gap-1.5 rounded-lg px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
         >
           <Icon name="grid" size="sm" />
           <span class="hidden sm:inline">{{ t('nav.modelPlaza') }}</span>
@@ -136,7 +136,7 @@
         <div v-if="user" class="relative" ref="dropdownRef">
           <button
             @click="toggleDropdown"
-            class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-none bg-primary-500 text-[13px] font-medium text-white transition-colors hover:bg-primary-400 dark:hover:bg-primary-400"
+            class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary-500 text-[13px] font-medium text-white transition-colors hover:bg-primary-400 dark:hover:bg-primary-400"
             :aria-label="t('common.userMenu')"
             :title="displayName"
           >

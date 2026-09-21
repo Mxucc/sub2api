@@ -117,4 +117,51 @@ describe('TokenUsageTrend', () => {
     // Hit rate = 500 / (200 + 500 + 300) * 100 = 50%
     expect(hitRateDataset.data[0]).toBe(50)
   })
+
+  it('renders a bare hairline frame by default', () => {
+    const bare = mount(TokenUsageTrend, {
+      props: {
+        trendData: [
+          {
+            date: '2026-05-01',
+            requests: 1,
+            input_tokens: 10,
+            output_tokens: 5,
+            cache_creation_tokens: 0,
+            cache_read_tokens: 0,
+            cost: 0,
+            actual_cost: 0,
+          },
+          {
+            date: '2026-05-08',
+            requests: 1,
+            input_tokens: 10,
+            output_tokens: 5,
+            cache_creation_tokens: 0,
+            cache_read_tokens: 0,
+            cost: 0,
+            actual_cost: 0,
+          },
+        ],
+      },
+      global: { stubs: { LoadingSpinner: true } },
+    })
+
+    expect(bare.find('.card').exists()).toBe(false)
+    expect(bare.find('.chart-hair .section-heading-title').text()).toBe('Token Usage Trend')
+    expect(bare.find('.chart-hair .section-heading-meta').text()).toBe('2026-05-01 — 2026-05-08')
+    expect(bare.find('.chart-canvas').exists()).toBe(true)
+  })
+
+  it('adds card chrome only when framed', () => {
+    const framed = mount(TokenUsageTrend, {
+      props: { trendData: [], framed: true },
+      global: { stubs: { LoadingSpinner: true } },
+    })
+
+    expect(framed.find('.card').exists()).toBe(false)
+    expect(framed.classes()).toContain('p-4')
+    expect(framed.classes()).toContain('border')
+    expect(framed.find('.chart-canvas').exists()).toBe(true)
+  })
 })

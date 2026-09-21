@@ -130,4 +130,24 @@ describe('GroupDistributionChart', () => {
     expect(wrapper.findAll('thead th')).toHaveLength(5)
     expect(wrapper.findAll('tbody tr')[0].findAll('td')).toHaveLength(5)
   })
+
+  it('renders a bare hairline header by default and adds card chrome only when framed', () => {
+    const bare = mount(GroupDistributionChart, {
+      props: { groupStats },
+      global: { stubs: { LoadingSpinner: true } },
+    })
+
+    expect(bare.find('.card').exists()).toBe(false)
+    expect(bare.find('.chart-hair .section-heading-title').text()).toBe('Group Distribution')
+    expect(bare.find('.chart-canvas').exists()).toBe(true)
+
+    const framed = mount(GroupDistributionChart, {
+      props: { groupStats, framed: true },
+      global: { stubs: { LoadingSpinner: true } },
+    })
+
+    expect(framed.find('.card').exists()).toBe(false)
+    expect(framed.classes()).toContain('p-4')
+    expect(framed.classes()).toContain('border')
+  })
 })

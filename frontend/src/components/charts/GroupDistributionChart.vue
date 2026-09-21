@@ -1,43 +1,46 @@
 <template>
-  <div class="card p-4">
-    <div class="mb-4 flex items-center justify-between gap-3">
-      <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-        {{ t('admin.dashboard.groupDistribution') }}
-      </h3>
-      <div
-        v-if="showMetricToggle"
-        class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-dark-700 dark:bg-dark-800"
-      >
-        <button
-          type="button"
-          class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-          :class="metric === 'tokens'
-            ? 'bg-white text-gray-900 shadow-sm dark:bg-dark-700 dark:text-white'
-            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'"
-          @click="emit('update:metric', 'tokens')"
+  <div :class="rootClass">
+    <div class="chart-hair">
+      <div class="min-w-0">
+        <h3 class="section-heading-title">{{ t('admin.dashboard.groupDistribution') }}</h3>
+      </div>
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <div
+          v-if="showMetricToggle"
+          class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-dark-700 dark:bg-dark-800"
         >
-          {{ t('admin.dashboard.metricTokens') }}
-        </button>
-        <button
-          type="button"
-          class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-          :class="metric === 'actual_cost'
-            ? 'bg-white text-gray-900 shadow-sm dark:bg-dark-700 dark:text-white'
-            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'"
-          @click="emit('update:metric', 'actual_cost')"
-        >
-          {{ t('admin.dashboard.metricActualCost') }}
-        </button>
+          <button
+            type="button"
+            class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
+            :class="metric === 'tokens'
+              ? 'bg-white text-gray-900 shadow-sm dark:bg-dark-700 dark:text-white'
+              : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'"
+            @click="emit('update:metric', 'tokens')"
+          >
+            {{ t('admin.dashboard.metricTokens') }}
+          </button>
+          <button
+            type="button"
+            class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
+            :class="metric === 'actual_cost'
+              ? 'bg-white text-gray-900 shadow-sm dark:bg-dark-700 dark:text-white'
+              : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'"
+            @click="emit('update:metric', 'actual_cost')"
+          >
+            {{ t('admin.dashboard.metricActualCost') }}
+          </button>
+        </div>
+        <slot name="actions" />
       </div>
     </div>
-    <div v-if="loading" class="flex h-48 items-center justify-center">
+    <div v-if="loading" class="chart-canvas mt-3 flex items-center justify-center">
       <LoadingSpinner />
     </div>
-    <div v-else-if="displayGroupStats.length > 0 && chartData" class="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
-      <div class="h-48 w-48 shrink-0">
+    <div v-else-if="displayGroupStats.length > 0 && chartData" class="chart-canvas mt-3 flex h-auto flex-col items-center gap-4 sm:h-[260px] sm:flex-row sm:gap-6">
+      <div class="h-48 w-48 shrink-0 sm:h-[260px] sm:w-[260px]">
         <Doughnut :data="chartData" :options="doughnutOptions" />
       </div>
-      <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto">
+      <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto sm:max-h-full">
         <table class="w-full text-xs">
           <thead>
             <tr class="text-gray-500 dark:text-gray-400">
@@ -100,7 +103,7 @@
     </div>
     <div
       v-else
-      class="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
+      class="chart-canvas mt-3 flex items-center justify-center text-sm text-gray-500 dark:text-gray-400"
     >
       {{ t('admin.dashboard.noDataAvailable') }}
     </div>
@@ -133,13 +136,19 @@ const props = withDefaults(defineProps<{
   startDate?: string
   endDate?: string
   filters?: Record<string, any>
+  framed?: boolean
 }>(), {
   loading: false,
   metric: 'tokens',
   showMetricToggle: false,
   enableBreakdown: true,
   showAccountCost: true,
+  framed: false,
 })
+
+const rootClass = computed(() => props.framed
+  ? 'rounded-lg border border-gray-200 bg-white p-4 shadow-[0_2px_4px_rgba(32,36,38,0.03)] dark:border-dark-700 dark:bg-dark-900'
+  : '')
 
 const emit = defineEmits<{
   'update:metric': [value: DistributionMetric]

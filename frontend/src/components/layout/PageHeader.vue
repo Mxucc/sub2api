@@ -20,8 +20,9 @@
 
       <div class="page-header-row">
         <div class="min-w-0">
+          <span v-if="index" class="page-header-index">{{ index }}</span>
           <h1 class="page-title">{{ title }}</h1>
-          <p v-if="description" class="page-description">{{ description }}</p>
+          <p v-if="description" class="page-header-copy">{{ description }}</p>
         </div>
         <div v-if="$slots.actions" class="page-header-actions">
           <slot name="actions" />
@@ -46,11 +47,14 @@ const props = withDefaults(
   defineProps<{
     title: string
     description?: string
+    /** editorial 编号（如 "01"），页面可显式传入，缺省不渲染 */
+    index?: string
     /** 页头内联面包屑（可选）；labels 可以是 i18n key，也可以是已翻译文本 */
     breadcrumbs?: BreadcrumbItem[]
   }>(),
   {
     description: '',
+    index: '',
     breadcrumbs: undefined
   }
 )

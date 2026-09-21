@@ -3,6 +3,7 @@ export default {
     loading: '加载中...',
     submitting: '提交中...',
     justNow: '刚刚',
+    updatedAt: '更新于 {date}',
     breadcrumb: '面包屑导航',
     peakRateTooltip: '高峰倍率：{window}',
     peakRateImageNote: '；token 计费的图片 token 同样适用，图片按次计费不受高峰影响',

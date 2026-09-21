@@ -16,21 +16,21 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
-    // ===== 全站直角（sharp / square）=====
-    // 覆盖 Tailwind 默认圆角刻度，使 rounded / rounded-sm … rounded-3xl /
-    // rounded-full 全部解析为 0，因此 800+ 处既有类名无需改动即可整体变直角。
-    // 唯一例外：加载指示器 .spinner 在 style.css 里显式保留 50% 圆（否则转圈动画视觉上不可读）。
+    // ===== 全站圆角 5px（rounded-none 仍为 0）=====
+    // 全站圆角：统一 5px（参考站指标卡/分段控件用 6–8px，这里取更克制的 5px）
+    // rounded-none 仍为 0；rounded-full 一并收敛到 5px（头像/圆点变成小圆角矩形）。
+    // 唯一例外：加载指示器 .spinner 在 style.css 里显式保留 50% 圆。
     borderRadius: {
       none: '0px',
-      sm: '0px',
-      DEFAULT: '0px',
-      md: '0px',
-      lg: '0px',
-      xl: '0px',
-      '2xl': '0px',
-      '3xl': '0px',
-      '4xl': '0px',
-      full: '0px'
+      sm: '5px',
+      DEFAULT: '5px',
+      md: '5px',
+      lg: '5px',
+      xl: '5px',
+      '2xl': '5px',
+      '3xl': '5px',
+      '4xl': '5px',
+      full: '5px'
     },
     extend: {
       colors: {
@@ -122,7 +122,15 @@ export default {
           'Microsoft YaHei',
           'sans-serif'
         ],
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        display: [
+          'Georgia',
+          '"Noto Serif SC"',
+          '"Source Han Serif SC"',
+          '"Songti SC"',
+          'SimSun',
+          'serif'
+        ],
       },
       // 企业控制台阴影：极淡、中性，用于区分层级而不是装饰
       boxShadow: {

@@ -3,7 +3,7 @@
     <div class="space-y-6 pb-12">
       <!-- Ops-style elevated shell: title toolbar + filters (mirrors OpsDashboardHeader) -->
       <section
-        class="card sticky top-14 z-20 !rounded-none !border-0 p-0 shadow-xs ring-1 ring-gray-200 dark:!bg-dark-800 dark:ring-dark-700"
+        class="card sticky top-14 z-20 !rounded-lg !border-0 p-0 shadow-xs ring-1 ring-gray-200 dark:!bg-dark-800 dark:ring-dark-700"
       >
         <header class="page-header mb-0 flex flex-wrap items-start justify-between gap-4 border-b border-gray-100 px-5 py-4 dark:border-dark-700 sm:px-6">
           <div class="min-w-0">
