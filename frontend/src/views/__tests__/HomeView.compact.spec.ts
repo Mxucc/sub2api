@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, RouterLinkStub } from '@vue/test-utils'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
 import HomeView from '../HomeView.vue'
 
@@ -46,6 +47,13 @@ function mountHome(settings: Record<string, unknown> = {}) {
 
   return mount(HomeView, {
     global: {
+      // HomeView 现在把内容渲染进公开页外壳 PublicLayout，它内部使用 useRoute()。
+      plugins: [
+        createRouter({
+          history: createMemoryHistory(),
+          routes: [{ path: '/:pathMatch(.*)*', component: { template: '<div />' } }],
+        }),
+      ],
       stubs: {
         RouterLink: RouterLinkStub,
         LocaleSwitcher: { template: '<div data-testid="locale-switcher" />' },

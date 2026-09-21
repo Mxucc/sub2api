@@ -243,3 +243,20 @@
 
 已落地的页面：用户 `/dashboard`（`views/user/DashboardView.vue` + `components/user/dashboard/*`）、
 管理员仪表盘（`views/admin/DashboardView.vue`）；其余内页通过 `PageHeader` 与全局令牌自动继承同一套语言。
+
+## 附录 C · 公开页外壳（PublicLayout）与公开路由
+
+对外页面统一走 `frontend/src/components/layout/PublicLayout.vue`（参考 new-api 的一体化头部，用户 2026-09 口径）：
+
+- **头部 56px 吸顶**：站点 Logo + 站名 + 导航 **首页 / 控制台 / 模型广场 / 关于** + 语言切换 + 主题切换 + 「登录 / 控制台」按钮；窄屏折叠为菜单。
+- **底部**：版权 + 用量查询 + 文档 + 版本号。
+- **Props**：`wide`（内容容器 7xl，模型广场用）、`showFooter`、`showNav`。
+- 导航里的「模型广场」受站点开关 `model_plaza_enabled` 与 `model_plaza_require_auth` 约束，关闭时不渲染该标签；`/key-usage` 移到底部（不占导航位）。
+
+| 路由 | 页面 | 外壳 |
+| --- | --- | --- |
+| `/home`（`/` 重定向到这里） | `views/HomeView.vue` | `PublicLayout`；管理员自定义首页内容（iframe/HTML）模式仍为整页，不套外壳 |
+| `/model-plaza` | `views/ModelPlazaView.vue` | 独立形态用 `PublicLayout wide`；`?embedded=1`（后台内嵌）走 `AppLayout` |
+| `/about` | `views/AboutView.vue` | `PublicLayout` |
+| `/login`、`/register`、`/forgot-password`、`/reset-password` 及各类 OAuth 回调 | `views/auth/*` | `AuthLayout` → 内部包 `PublicLayout`（卡片居中，头部/底部由外壳提供） |
+| 控制台（`/dashboard`、`/admin/*` 等） | 各业务页 | 不使用本外壳：控制台是 `AppLayout`（通栏顶栏 + 模块侧栏 + 面包屑条） |

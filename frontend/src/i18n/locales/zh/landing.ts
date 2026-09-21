@@ -5,6 +5,28 @@ export default {
   },
   // Home Page
   home: {
+    // 公开页外壳导航（PublicLayout：首页 / 控制台 / 模型广场 / 关于）
+    nav: {
+      home: '首页',
+      console: '控制台',
+      plaza: '模型广场',
+      about: '关于',
+      keyUsage: '用量查询'
+    },
+    // 关于页
+    about: {
+      title: '关于本站',
+      lead: '{site} 是 AI 服务中转平台：一个密钥即可调用多个上游模型，按量计费、实时用量统计。',
+      accessTitle: '接入方式',
+      accessApiBase: 'API 地址',
+      accessFlow: '在控制台创建密钥后，把 API 地址与密钥填入任意兼容 OpenAI 接口的客户端即可开始调用。',
+      contactTitle: '联系方式',
+      docsTitle: '文档与条款',
+      consoleTitle: '控制台',
+      versionLabel: '版本',
+      notConfigured: '未配置',
+      backHome: '返回首页'
+    },
     viewOnGithub: '在 GitHub 上查看',
     viewDocs: '查看文档',
     docs: '文档',

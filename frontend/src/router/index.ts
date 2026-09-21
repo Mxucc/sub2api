@@ -185,6 +185,16 @@ const routes: RouteRecordRaw[] = [
       titleKey: 'modelPlaza.title'
     }
   },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('@/views/AboutView.vue'),
+    meta: {
+      requiresAuth: false,
+      title: 'About',
+      titleKey: 'home.about.title'
+    }
+  },
 
   // ==================== User Routes ====================
   {

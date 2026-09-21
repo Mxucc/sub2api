@@ -5,6 +5,28 @@ export default {
   },
   // Home Page
   home: {
+    // Public shell nav (PublicLayout: Home / Console / Model Plaza / About)
+    nav: {
+      home: 'Home',
+      console: 'Console',
+      plaza: 'Model Plaza',
+      about: 'About',
+      keyUsage: 'Usage'
+    },
+    // About page
+    about: {
+      title: 'About',
+      lead: '{site} is an AI API gateway: one key for multiple upstream models, metered billing and live usage stats.',
+      accessTitle: 'Getting started',
+      accessApiBase: 'API base URL',
+      accessFlow: 'Create a key in the console, then put the API base URL and the key into any OpenAI-compatible client.',
+      contactTitle: 'Contact',
+      docsTitle: 'Docs and terms',
+      consoleTitle: 'Console',
+      versionLabel: 'Version',
+      notConfigured: 'Not configured',
+      backHome: 'Back to home'
+    },
     viewOnGithub: 'View on GitHub',
     viewDocs: 'View Documentation',
     docs: 'Docs',
