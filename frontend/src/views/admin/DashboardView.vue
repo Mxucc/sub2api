@@ -1,14 +1,14 @@
 <template>
   <AppLayout>
-    <div class="space-y-4">
+    <div class="space-y-5">
       <!-- Loading State -->
       <div v-if="loading" class="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
 
       <template v-else-if="stats">
-        <div class="stagger space-y-4">
-          <!-- Editorial masthead -->
+        <div class="stagger space-y-5">
+          <!-- Editorial masthead：编号 + 衬线标题 + 说明 + 元信息，刷新操作收进右侧 -->
           <header class="page-header-bar">
             <div class="page-header-main">
               <div class="page-header-row flex-wrap">
@@ -29,34 +29,13 @@
                   </div>
                 </div>
                 <div class="page-header-actions flex-wrap justify-end">
-                  <DateRangePicker
-                    v-model:start-date="startDate"
-                    v-model:end-date="endDate"
-                    @change="onDateRangeChange"
-                  />
-                  <div
-                    class="segmented"
-                    role="group"
-                    :aria-label="t('admin.dashboard.granularity')"
-                  >
-                    <button
-                      v-for="option in granularityOptions"
-                      :key="option.value"
-                      type="button"
-                      class="segmented-item"
-                      :class="{ 'is-active': granularity === option.value }"
-                      :aria-pressed="granularity === option.value"
-                      @click="selectGranularity(option.value)"
-                    >
-                      {{ option.label }}
-                    </button>
-                  </div>
                   <button
                     type="button"
-                    class="btn btn-secondary"
+                    class="btn btn-secondary btn-sm"
                     :disabled="chartsLoading"
                     @click="loadDashboardStats"
                   >
+                    <Icon name="refresh" size="sm" :class="chartsLoading ? 'animate-spin' : ''" />
                     {{ t('common.refresh') }}
                   </button>
                 </div>
@@ -64,246 +43,254 @@
             </div>
           </header>
 
-          <!-- Metrics: headline row (the page's single inverted hero card) -->
-          <div class="metric-grid-lead stagger">
-            <!-- Today Tokens -->
-            <div class="metric-card metric-lead metric-card-hero">
+          <!-- 首行三格：今日 Token（焦点卡） / 累计 Token / 快捷操作 -->
+          <div class="metric-hero-row">
+            <div class="metric-card metric-card-hero">
               <div class="flex items-center gap-2">
                 <Icon name="cube" size="sm" class="metric-accent" :stroke-width="2" />
                 <span class="metric-label">{{ t('admin.dashboard.todayTokens') }}</span>
               </div>
               <div class="metric-value">{{ formatTokens(stats.today_tokens) }}</div>
-              <p class="metric-note">
-                <span :title="t('admin.dashboard.actual')">${{ formatCost(stats.today_actual_cost) }}</span>
-                <span class="opacity-60"> / </span>
-                <span :title="t('admin.dashboard.accountCost')"
-                  >${{ formatCost(stats.today_account_cost) }}</span
-                >
-                <span class="opacity-60"> / </span>
-                <span :title="t('admin.dashboard.standard')">${{ formatCost(stats.today_cost) }}</span>
-              </p>
-              <div class="metric-foot">
-                <span>{{ t('admin.dashboard.todayRequests') }}</span>
-                <span
-                  ><strong>{{ stats.today_requests }}</strong></span
-                >
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.todayRequests') }}</span>
+                  <span class="stat-pair-value">{{ stats.today_requests }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.actual') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.today_actual_cost) }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.accountCost') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.today_account_cost) }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.standard') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.today_cost) }}</span>
+                </div>
               </div>
             </div>
 
-            <!-- Today Requests -->
-            <div class="metric-card metric-lead">
-              <div class="flex items-center gap-2">
-                <Icon name="chart" size="sm" class="metric-accent" :stroke-width="2" />
-                <span class="metric-label">{{ t('admin.dashboard.todayRequests') }}</span>
-              </div>
-              <div class="metric-value">{{ stats.today_requests }}</div>
-              <p class="metric-note">
-                {{ t('common.total') }}: {{ formatNumber(stats.total_requests) }}
-              </p>
-              <div class="metric-foot">
-                <span>{{ t('admin.dashboard.todayTokens') }}</span>
-                <span
-                  ><strong>{{ formatTokens(stats.today_tokens) }}</strong></span
-                >
-              </div>
-            </div>
-
-            <!-- Total Tokens -->
-            <div class="metric-card metric-lead">
+            <div class="metric-card">
               <div class="flex items-center gap-2">
                 <Icon name="database" size="sm" class="metric-accent" :stroke-width="2" />
                 <span class="metric-label">{{ t('admin.dashboard.totalTokens') }}</span>
               </div>
               <div class="metric-value">{{ formatTokens(stats.total_tokens) }}</div>
-              <p class="metric-note">
-                <span class="metric-accent" :title="t('admin.dashboard.actual')"
-                  >${{ formatCost(stats.total_actual_cost) }}</span
-                >
-                <span class="text-gray-400 dark:text-dark-500"> / </span>
-                <span class="text-amber-500 dark:text-amber-400" :title="t('admin.dashboard.accountCost')"
-                  >${{ formatCost(stats.total_account_cost) }}</span
-                >
-                <span class="text-gray-400 dark:text-dark-500"> / </span>
-                <span class="text-gray-400 dark:text-dark-500" :title="t('admin.dashboard.standard')"
-                  >${{ formatCost(stats.total_cost) }}</span
-                >
-              </p>
-              <div class="metric-foot">
-                <span>{{ t('admin.dashboard.totalRequests') }}</span>
-                <span
-                  ><strong>{{ formatNumber(stats.total_requests) }}</strong></span
-                >
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.totalRequests') }}</span>
+                  <span class="stat-pair-value">{{ formatNumber(stats.total_requests) }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.actual') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.total_actual_cost) }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.accountCost') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.total_account_cost) }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.standard') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.total_cost) }}</span>
+                </div>
               </div>
+            </div>
+
+            <!-- 快捷操作：两列动作格 -->
+            <div class="metric-card">
+              <span class="metric-label">{{ t('admin.dashboard.quickActions') }}</span>
+              <div class="action-grid mt-1">
+                <button
+                  v-if="canUseBatchImage"
+                  type="button"
+                  class="action-item"
+                  @click="router.push('/batch-image')"
+                >
+                  <Icon
+                    name="sparkles"
+                    size="sm"
+                    class="shrink-0 text-gray-400 dark:text-dark-500"
+                    :stroke-width="2"
+                  />
+                  <span class="action-item-label">{{ t('admin.dashboard.batchImage') }}</span>
+                  <Icon name="arrowRight" size="xs" class="shrink-0 text-gray-300 dark:text-dark-600" />
+                </button>
+                <button type="button" class="action-item" @click="router.push('/admin/groups')">
+                  <Icon
+                    name="grid"
+                    size="sm"
+                    class="shrink-0 text-gray-400 dark:text-dark-500"
+                    :stroke-width="2"
+                  />
+                  <span class="action-item-label">{{ t('admin.dashboard.groupPricing') }}</span>
+                  <Icon name="arrowRight" size="xs" class="shrink-0 text-gray-300 dark:text-dark-600" />
+                </button>
+              </div>
+              <p class="metric-note mt-1">
+                {{ t('admin.dashboard.batchImageDesc') }} · {{ t('admin.dashboard.groupPricingDesc') }}
+              </p>
             </div>
           </div>
 
-          <!-- Metrics: inventory and throughput -->
-          <div class="metric-grid stagger">
-            <!-- Total API Keys -->
+          <!-- 紧凑指标条：今日请求 / 今日消费 / API 密钥 / 账号 -->
+          <div class="metric-strip">
+            <div class="metric-card">
+              <div class="flex items-center gap-2">
+                <Icon name="chart" size="sm" class="metric-accent" :stroke-width="2" />
+                <span class="metric-label">{{ t('admin.dashboard.todayRequests') }}</span>
+              </div>
+              <div class="metric-value">{{ stats.today_requests }}</div>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('common.total') }}</span>
+                  <span class="stat-pair-value">{{ formatNumber(stats.total_requests) }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="flex items-center gap-2">
+                <Icon name="bolt" size="sm" class="metric-accent" :stroke-width="2" />
+                <span class="metric-label">{{ t('admin.dashboard.todayCost') }}</span>
+              </div>
+              <div class="metric-value metric-accent">
+                ${{ formatCost(stats.today_actual_cost) }}
+              </div>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.accountCost') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.today_account_cost) }}</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('admin.dashboard.standard') }}</span>
+                  <span class="stat-pair-value">${{ formatCost(stats.today_cost) }}</span>
+                </div>
+              </div>
+            </div>
+
             <div class="metric-card">
               <div class="flex items-center gap-2">
                 <Icon name="key" size="sm" class="metric-accent" :stroke-width="2" />
                 <span class="metric-label">{{ t('admin.dashboard.apiKeys') }}</span>
               </div>
               <div class="metric-value">{{ stats.total_api_keys }}</div>
-              <div class="metric-foot">
-                <span>{{ t('common.active') }}</span>
-                <span
-                  ><strong>{{ stats.active_api_keys }}</strong></span
-                >
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('common.active') }}</span>
+                  <span class="stat-pair-value metric-accent">{{ stats.active_api_keys }}</span>
+                </div>
               </div>
             </div>
 
-            <!-- Service Accounts -->
             <div class="metric-card">
               <div class="flex items-center gap-2">
                 <Icon name="server" size="sm" class="metric-accent" :stroke-width="2" />
                 <span class="metric-label">{{ t('admin.dashboard.accounts') }}</span>
               </div>
               <div class="metric-value">{{ stats.total_accounts }}</div>
-              <p v-if="stats.error_accounts > 0" class="metric-note text-red-500">
-                {{ stats.error_accounts }} {{ t('common.error') }}
-              </p>
-              <div class="metric-foot">
-                <span>{{ t('common.active') }}</span>
-                <span
-                  ><strong>{{ stats.normal_accounts }}</strong></span
-                >
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">{{ t('common.active') }}</span>
+                  <span class="stat-pair-value">{{ stats.normal_accounts }}</span>
+                </div>
+                <div v-if="stats.error_accounts > 0" class="stat-pair">
+                  <span class="stat-pair-label">{{ t('common.error') }}</span>
+                  <span class="stat-pair-value text-red-600 dark:text-red-400">
+                    {{ stats.error_accounts }}
+                  </span>
+                </div>
               </div>
-            </div>
-
-            <!-- Users -->
-            <div class="metric-card">
-              <div class="flex items-center gap-2">
-                <Icon name="userPlus" size="sm" class="metric-accent" :stroke-width="2" />
-                <span class="metric-label">{{ t('admin.dashboard.users') }}</span>
-              </div>
-              <div class="metric-value">
-                <span class="metric-accent">+{{ stats.today_new_users }}</span>
-              </div>
-              <div class="metric-foot">
-                <span>{{ t('common.total') }}</span>
-                <span
-                  ><strong>{{ formatNumber(stats.total_users) }}</strong></span
-                >
-              </div>
-            </div>
-
-            <!-- Performance (RPM / TPM) -->
-            <div class="metric-card">
-              <div class="flex items-center gap-2">
-                <Icon name="bolt" size="sm" class="metric-accent" :stroke-width="2" />
-                <span class="metric-label">{{ t('admin.dashboard.performance') }}</span>
-              </div>
-              <div class="metric-value">
-                {{ formatTokens(stats.rpm) }}
-                <span class="metric-unit">RPM</span>
-              </div>
-              <p class="metric-note">
-                {{ formatTokens(stats.tpm) }}
-                <span class="metric-unit">TPM</span>
-              </p>
-            </div>
-
-            <!-- Avg Response Time -->
-            <div class="metric-card">
-              <div class="flex items-center gap-2">
-                <Icon name="clock" size="sm" class="metric-accent" :stroke-width="2" />
-                <span class="metric-label">{{ t('admin.dashboard.avgResponse') }}</span>
-              </div>
-              <div class="metric-value">{{ formatDuration(stats.average_duration_ms) }}</div>
-              <p class="metric-note">
-                {{ stats.active_users }} {{ t('admin.dashboard.activeUsers') }}
-              </p>
             </div>
           </div>
 
-          <!-- Quick Actions -->
+          <!-- 行内指标：性能 / 平均响应 / 活跃用户 / 用户，不占卡片位 -->
+          <div class="stat-line">
+            <span class="stat-line-item">
+              {{ t('admin.dashboard.performance') }}
+              <strong>{{ formatTokens(stats.rpm) }} RPM</strong>
+              <span class="text-gray-300 dark:text-dark-600">/</span>
+              <strong>{{ formatTokens(stats.tpm) }} TPM</strong>
+            </span>
+            <span class="stat-line-item">
+              {{ t('admin.dashboard.avgResponse') }}
+              <strong>{{ formatDuration(stats.average_duration_ms) }}</strong>
+            </span>
+            <span class="stat-line-item">
+              {{ t('admin.dashboard.activeUsers') }}
+              <strong>{{ stats.active_users }}</strong>
+            </span>
+            <span class="stat-line-item">
+              {{ t('admin.dashboard.users') }}
+              <strong>{{ formatNumber(stats.total_users) }}</strong>
+              <span class="text-gray-300 dark:text-dark-600">/</span>
+              <strong class="metric-accent">+{{ stats.today_new_users }}</strong>
+            </span>
+          </div>
+
+          <!-- 图表区：工具栏（日期范围左 / 粒度 + 刷新右） → 通栏趋势 → 模型分布 → 用户用量趋势 -->
           <section>
-            <div class="section-heading">
-              <h2 class="section-heading-title">{{ t('admin.dashboard.quickActions') }}</h2>
-            </div>
-            <div class="grid grid-cols-1 gap-x-8 md:grid-cols-2">
-              <button
-                v-if="canUseBatchImage"
-                type="button"
-                class="group flex w-full items-center gap-3 border-b border-gray-200 py-3.5 text-left transition-colors dark:border-dark-700"
-                @click="router.push('/batch-image')"
-              >
-                <Icon
-                  name="sparkles"
-                  size="sm"
-                  class="shrink-0 text-gray-400 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300"
-                  :stroke-width="2"
-                />
-                <span class="min-w-0 flex-1">
-                  <span class="block text-control text-gray-900 dark:text-white">
-                    {{ t('admin.dashboard.batchImage') }}
-                  </span>
-                  <span class="block text-2xs text-gray-500 dark:text-dark-400">
-                    {{ t('admin.dashboard.batchImageDesc') }}
-                  </span>
-                </span>
-                <Icon
-                  name="chevronRight"
-                  size="sm"
-                  class="shrink-0 text-gray-400 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300"
-                />
-              </button>
-              <button
-                type="button"
-                class="group flex w-full items-center gap-3 border-b border-gray-200 py-3.5 text-left transition-colors dark:border-dark-700"
-                @click="router.push('/admin/groups')"
-              >
-                <Icon
-                  name="grid"
-                  size="sm"
-                  class="shrink-0 text-gray-400 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300"
-                  :stroke-width="2"
-                />
-                <span class="min-w-0 flex-1">
-                  <span class="block text-control text-gray-900 dark:text-white">
-                    {{ t('admin.dashboard.groupPricing') }}
-                  </span>
-                  <span class="block text-2xs text-gray-500 dark:text-dark-400">
-                    {{ t('admin.dashboard.groupPricingDesc') }}
-                  </span>
-                </span>
-                <Icon
-                  name="chevronRight"
-                  size="sm"
-                  class="shrink-0 text-gray-400 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300"
-                />
-              </button>
-            </div>
-          </section>
-
-          <!-- Charts -->
-          <section class="space-y-4">
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div class="chart-frame">
-                <ModelDistributionChart
-                  :model-stats="modelStats"
-                  :enable-ranking-view="true"
-                  :ranking-items="rankingItems"
-                  :ranking-total-actual-cost="rankingTotalActualCost"
-                  :ranking-total-requests="rankingTotalRequests"
-                  :ranking-total-tokens="rankingTotalTokens"
-                  :loading="chartsLoading"
-                  :ranking-loading="rankingLoading"
-                  :ranking-error="rankingError"
-                  :start-date="startDate"
-                  :end-date="endDate"
-                  @ranking-click="goToUserUsage"
-                />
-              </div>
-              <div class="chart-frame">
-                <TokenUsageTrend :trend-data="trendData" :loading="chartsLoading" />
+            <div class="chart-hair">
+              <DateRangePicker
+                v-model:start-date="startDate"
+                v-model:end-date="endDate"
+                @change="onDateRangeChange"
+              />
+              <div class="flex flex-wrap items-center gap-2">
+                <div
+                  class="segmented"
+                  role="group"
+                  :aria-label="t('admin.dashboard.granularity')"
+                >
+                  <button
+                    v-for="option in granularityOptions"
+                    :key="option.value"
+                    type="button"
+                    class="segmented-item"
+                    :class="{ 'is-active': granularity === option.value }"
+                    :aria-pressed="granularity === option.value"
+                    @click="selectGranularity(option.value)"
+                  >
+                    {{ option.label }}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  :disabled="chartsLoading"
+                  @click="loadChartData"
+                >
+                  <Icon name="refresh" size="sm" :class="chartsLoading ? 'animate-spin' : ''" />
+                  {{ t('common.refresh') }}
+                </button>
               </div>
             </div>
 
-            <!-- User Usage Trend (full width) -->
-            <div class="chart-frame">
+            <!-- Token 使用趋势（通栏） -->
+            <div class="chart-wide mt-4">
+              <TokenUsageTrend :trend-data="trendData" :loading="chartsLoading" />
+            </div>
+
+            <!-- 模型分布 + 用户消费排行（通栏，组件自带台账表） -->
+            <div class="chart-frame mt-6">
+              <ModelDistributionChart
+                :model-stats="modelStats"
+                :enable-ranking-view="true"
+                :ranking-items="rankingItems"
+                :ranking-total-actual-cost="rankingTotalActualCost"
+                :ranking-total-requests="rankingTotalRequests"
+                :ranking-total-tokens="rankingTotalTokens"
+                :loading="chartsLoading"
+                :ranking-loading="rankingLoading"
+                :ranking-error="rankingError"
+                :start-date="startDate"
+                :end-date="endDate"
+                @ranking-click="goToUserUsage"
+              />
+            </div>
+
+            <!-- 用户用量趋势 Top 12（通栏） -->
+            <div class="chart-frame mt-6">
               <div class="chart-hair">
                 <div>
                   <h3 class="section-heading-title">
@@ -754,6 +741,15 @@ onMounted(() => {
   loadDashboardStats()
 })
 </script>
-
 <style scoped>
+/* 通栏趋势图借用 TokenUsageTrend 自带的画布，这里把它抬到 .chart-canvas-wide 的高度 */
+.chart-wide :deep(.chart-canvas) {
+  height: 320px;
+}
+
+@media (max-width: 639px) {
+  .chart-wide :deep(.chart-canvas) {
+    height: 220px;
+  }
+}
 </style>
