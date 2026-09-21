@@ -3075,48 +3075,85 @@ input[type='number'] {
   min-height: 164px;
 }
 
-/* 反色英雄卡：整页唯一的焦点（余额） */
+/* 品牌浅底焦点卡：参考站的反色板太深，改为浅色品牌底 + 2px 品牌顶线；深色模式用品牌 500/10 */
 
 .metric-card-hero {
-  border-color: transparent;
+  border-top-width: 2px;
+  border-color: rgb(181 199 255 / 0.7);
+  --tw-border-opacity: 1;
+  border-top-color: rgb(0 82 217 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
-  background-color: rgb(32 42 48 / var(--tw-bg-opacity, 1));
-  --tw-text-opacity: 1;
-  color: rgb(241 245 246 / var(--tw-text-opacity, 1));
+  background-color: rgb(242 243 255 / var(--tw-bg-opacity, 1));
+}
+
+.metric-card-hero:is(.dark *) {
+  border-color: rgb(0 82 217 / 0.25);
+  --tw-border-opacity: 1;
+  border-top-color: rgb(54 110 244 / var(--tw-border-opacity, 1));
+  background-color: rgb(0 82 217 / 0.1);
 }
 
 .metric-card-hero .metric-label {
-  --tw-text-opacity: 1;
-  color: rgb(193 213 224 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / 0.8);
+}
+
+.metric-card-hero .metric-label:is(.dark *) {
+  color: rgb(181 199 255 / 0.8);
 }
 
 .metric-card-hero .metric-value {
+  --tw-text-opacity: 1;
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
+}
+
+.metric-card-hero .metric-value:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .metric-card-hero .metric-unit {
-  --tw-text-opacity: 1;
-  color: rgb(193 213 224 / var(--tw-text-opacity, 1));
+  color: rgb(0 53 154 / 0.7);
+}
+
+.metric-card-hero .metric-unit:is(.dark *) {
+  color: rgb(181 199 255 / 0.7);
 }
 
 .metric-card-hero .metric-note {
-  color: rgb(193 213 224 / 0.8);
+  color: rgb(0 53 154 / 0.7);
+}
+
+.metric-card-hero .metric-note:is(.dark *) {
+  color: rgb(181 199 255 / 0.7);
 }
 
 .metric-card-hero .metric-accent {
   --tw-text-opacity: 1;
-  color: rgb(132 217 255 / var(--tw-text-opacity, 1));
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
+}
+
+.metric-card-hero .metric-accent:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
 }
 
 .metric-card-hero .metric-foot {
   border-top-width: 1px;
-  border-color: #ffffff26;
-  --tw-text-opacity: 1;
-  color: rgb(193 213 224 / var(--tw-text-opacity, 1));
+  border-color: rgb(181 199 255 / 0.6);
+  color: rgb(0 53 154 / 0.8);
+}
+
+.metric-card-hero .metric-foot:is(.dark *) {
+  border-color: rgb(0 82 217 / 0.25);
+  color: rgb(181 199 255 / 0.8);
 }
 
 .metric-card-hero .metric-foot strong {
+  --tw-text-opacity: 1;
+  color: rgb(0 53 154 / var(--tw-text-opacity, 1));
+}
+
+.metric-card-hero .metric-foot strong:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }

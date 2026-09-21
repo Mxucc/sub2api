@@ -1178,20 +1178,22 @@
     @apply min-h-[164px];
   }
 
-  /* 反色英雄卡：整页唯一的焦点（余额） */
+  /* 品牌浅底焦点卡：参考站的反色板太深，改为浅色品牌底 + 2px 品牌顶线；深色模式用品牌 500/10 */
   .metric-card-hero {
-    @apply border-transparent bg-[#202a30] text-[#f1f5f6];
+    @apply border-t-2 border-primary-200/70 border-t-primary-500 bg-primary-50;
+    @apply dark:border-t-primary-400 dark:border-primary-500/25 dark:bg-primary-500/10;
   }
 
-  .metric-card-hero .metric-label { @apply text-[#c1d5e0]; }
-  .metric-card-hero .metric-value { @apply text-white; }
-  .metric-card-hero .metric-unit { @apply text-[#c1d5e0]; }
-  .metric-card-hero .metric-note { @apply text-[#c1d5e0]/80; }
-  .metric-card-hero .metric-accent { @apply text-[#84d9ff]; }
+  .metric-card-hero .metric-label { @apply text-primary-700/80 dark:text-primary-200/80; }
+  .metric-card-hero .metric-value { @apply text-primary-700 dark:text-white; }
+  .metric-card-hero .metric-unit { @apply text-primary-700/70 dark:text-primary-200/70; }
+  .metric-card-hero .metric-note { @apply text-primary-700/70 dark:text-primary-200/70; }
+  .metric-card-hero .metric-accent { @apply text-primary-600 dark:text-primary-300; }
   .metric-card-hero .metric-foot {
-    @apply border-t border-[#ffffff26] text-[#c1d5e0];
+    @apply border-t border-primary-200/60 text-primary-700/80;
+    @apply dark:border-primary-500/25 dark:text-primary-200/80;
   }
-  .metric-card-hero .metric-foot strong { @apply text-white; }
+  .metric-card-hero .metric-foot strong { @apply text-primary-700 dark:text-white; }
 
   .metric-label {
     @apply text-2xs font-normal text-gray-500 dark:text-dark-400;
