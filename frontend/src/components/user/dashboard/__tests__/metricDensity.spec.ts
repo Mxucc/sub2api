@@ -32,9 +32,31 @@ describe('dashboard metric density', () => {
     )
   })
 
-  it('renders the balance focus card inside the metric grid instead of a full-width band', () => {
     expect(statsSource).toContain('metric-card metric-card-hero')
     expect(statsSource).not.toContain('lg:col-span-3')
     expect(statsSource).not.toContain('metric-grid-lead')
   })
-})
+
+
+
+  it('keeps the shared dashboard layout blocks in style.css for reuse', () => {
+    expect(styleSource).toContain('.action-grid {')
+    expect(styleSource).toContain('.collapse-head {')
+    expect(styleSource).toContain('.stat-pairs {')
+    expect(styleSource).toContain('.stat-line {')
+  })
+  // 布局对照 new-api 的用量概览：首行三格 → 紧凑指标条 → 行内指标
+  it('uses the reference layout blocks', () => {
+    expect(styleSource).toMatch(/\.metric-hero-row \{[^}]*lg:grid-cols-\[/)
+    expect(styleSource).toMatch(/\.metric-strip \{[^}]*lg:grid-cols-4/)
+    expect(statsSource).toContain('class="metric-hero-row"')
+    expect(statsSource).toContain('class="metric-strip"')
+    expect(statsSource).toContain('class="stat-pairs metric-foot"')
+    expect(statsSource).toContain('class="stat-line')
+  })
+
+  it('keeps the quick actions and the collapsible platform section in the stats block', () => {
+    expect(statsSource).toContain('class="action-grid mt-1"')
+    expect(statsSource).toContain('class="collapse-head"')
+    expect(statsSource).toContain('platformOpen')
+  })

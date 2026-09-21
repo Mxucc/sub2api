@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
 
 // t() 回显 key；带参数时附上 JSON，便于断言计数
 vi.mock('vue-i18n', async () => {
@@ -70,12 +71,13 @@ function quota(over: Partial<PlatformQuotaItem> & { platform: string }): Platfor
 }
 
 function mountStats(stats: UserStatsType, platformQuotas: PlatformQuotaItem[] | null = null, isSimple = false) {
+  // 组件挂载时会调 useBatchImageAccess（内部读 auth store），因此必须装 pinia
+  setActivePinia(createPinia())
   return mount(UserDashboardStats, {
     props: { stats, balance: 0, isSimple, platformQuotas },
     global: { stubs: { Icon: true } },
   })
 }
-
 /** 渲染出的平台卡片，按 DOM 顺序返回 data-platform */
 function cardPlatforms(w: VueWrapper): string[] {
   return w.findAll('[data-testid="platform-card"]').map((c) => c.attributes('data-platform') ?? '')

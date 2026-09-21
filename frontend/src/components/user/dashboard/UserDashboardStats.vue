@@ -1,170 +1,246 @@
 <template>
   <!--
-    指标网格：余额焦点卡（品牌浅底 + 顶线）与其余指标同一张网格。
-    格子紧凑（内边距 13px / 数值 22px），一屏尽量多列，避免整页看不到关键信息。
+    用量概览（参考 new-api 的排版，只取布局）：
+      首行三格：余额（品牌焦点卡） / 近期累计 Token（页脚拆输入·输出·缓存） / 快捷操作
+      第二行：紧凑指标条（今日 Token · 今日消费 · 今日请求 · API 密钥）
+      第三行：行内性能指标（RPM / TPM · 平均响应 · 累计 Token），不占卡片位
   -->
-  <div class="metric-grid">
+  <div class="metric-hero-row">
+    <!-- ① 余额：全页唯一焦点卡 -->
     <div v-if="!isSimple" class="metric-card metric-card-hero">
       <div class="metric-label">{{ t('dashboard.balance') }}</div>
       <div class="metric-value">
         ${{ formatBalance(balance) }}
         <span class="metric-unit">{{ t('common.available') }}</span>
       </div>
-      <p class="metric-note">
-        {{ t('usage.totalCost') }} ·
-        <span class="tabular-nums" :title="t('dashboard.actual')">${{ formatCost(stats?.total_actual_cost || 0) }}</span>
-        <span class="tabular-nums" :title="t('dashboard.standard')">/ ${{ formatCost(stats?.total_cost || 0) }}</span>
-      </p>
-      <div class="metric-foot">
-        <span>{{ t('dashboard.todayCost') }}</span>
-        <strong>
-          <span :title="t('dashboard.actual')">${{ formatCost(stats?.today_actual_cost || 0) }}</span>
-          <span :title="t('dashboard.standard')">/ ${{ formatCost(stats?.today_cost || 0) }}</span>
-        </strong>
+      <div class="stat-pairs metric-foot">
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.actual') }}</span>
+          <span class="stat-pair-value">${{ formatCost(stats?.total_actual_cost || 0) }}</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.standard') }}</span>
+          <span class="stat-pair-value">${{ formatCost(stats?.total_cost || 0) }}</span>
+        </div>
       </div>
     </div>
 
-    <!-- API 密钥 -->
-    <div class="metric-card">
-      <div class="metric-label">{{ t('dashboard.apiKeys') }}</div>
-      <div class="metric-value">{{ stats?.total_api_keys || 0 }}</div>
-      <p class="metric-note">
-        <span class="metric-accent tabular-nums">{{ stats?.active_api_keys || 0 }}</span> {{ t('common.active') }}
-      </p>
-    </div>
-
-    <!-- 今日请求 -->
-    <div class="metric-card">
-      <div class="metric-label">{{ t('dashboard.todayRequests') }}</div>
-      <div class="metric-value">{{ stats?.today_requests || 0 }}</div>
-      <p class="metric-note">
-        {{ t('common.total') }}: <span class="tabular-nums">{{ formatNumber(stats?.total_requests || 0) }}</span>
-      </p>
-    </div>
-
-    <!-- 今日消费 -->
-    <div class="metric-card">
-      <div class="metric-label">{{ t('dashboard.todayCost') }}</div>
-      <div class="metric-value">
-        <span :title="t('dashboard.actual')">${{ formatCost(stats?.today_actual_cost || 0) }}</span>
-        <span class="metric-unit" :title="t('dashboard.standard')">/ ${{ formatCost(stats?.today_cost || 0) }}</span>
-      </div>
-      <p class="metric-note">
-        {{ t('common.total') }}:
-        <span class="tabular-nums" :title="t('dashboard.actual')">${{ formatCost(stats?.total_actual_cost || 0) }}</span>
-        <span class="tabular-nums" :title="t('dashboard.standard')">/ ${{ formatCost(stats?.total_cost || 0) }}</span>
-      </p>
-    </div>
-
-    <!-- 今日 Token -->
-    <div class="metric-card">
-      <div class="metric-label">{{ t('dashboard.todayTokens') }}</div>
-      <div class="metric-value">{{ formatTokens(stats?.today_tokens || 0) }}</div>
-      <p class="metric-note">
-        {{ t('dashboard.input') }}: <span class="tabular-nums">{{ formatTokens(stats?.today_input_tokens || 0) }}</span>
-        / {{ t('dashboard.output') }}: <span class="tabular-nums">{{ formatTokens(stats?.today_output_tokens || 0) }}</span>
-        / {{ t('dashboard.cache') }}: <span class="tabular-nums">{{ formatTokens((stats?.today_cache_creation_tokens || 0) + (stats?.today_cache_read_tokens || 0)) }}</span>
-      </p>
-    </div>
-
-    <!-- 累计 Token -->
+    <!-- ② 近期累计 Token：页脚拆输入 / 输出 / 缓存 -->
     <div class="metric-card">
       <div class="metric-label">{{ t('dashboard.totalTokens') }}</div>
-      <div class="metric-value">{{ formatTokens(stats?.total_tokens || 0) }}</div>
-      <p class="metric-note">
-        {{ t('dashboard.input') }}: <span class="tabular-nums">{{ formatTokens(stats?.total_input_tokens || 0) }}</span>
-        / {{ t('dashboard.output') }}: <span class="tabular-nums">{{ formatTokens(stats?.total_output_tokens || 0) }}</span>
-        / {{ t('dashboard.cache') }}: <span class="tabular-nums">{{ formatTokens((stats?.total_cache_creation_tokens || 0) + (stats?.total_cache_read_tokens || 0)) }}</span>
-      </p>
-    </div>
-
-    <!-- 性能指标 -->
-    <div class="metric-card">
-      <div class="metric-label">{{ t('dashboard.performance') }}</div>
       <div class="metric-value">
-        {{ formatTokens(stats?.rpm || 0) }}
-        <span class="metric-unit">RPM</span>
+        {{ formatTokens(stats?.total_tokens || 0) }}
+        <span class="metric-unit">tokens</span>
       </div>
-      <p class="metric-note">
-        <span class="metric-accent tabular-nums">{{ formatTokens(stats?.tpm || 0) }}</span> TPM
-      </p>
+      <div class="stat-pairs metric-foot">
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.input') }}</span>
+          <span class="stat-pair-value">{{ formatTokens(stats?.total_input_tokens || 0) }}</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.output') }}</span>
+          <span class="stat-pair-value">{{ formatTokens(stats?.total_output_tokens || 0) }}</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.cache') }}</span>
+          <span class="stat-pair-value">{{ formatTokens(totalCacheTokens) }}</span>
+        </div>
+      </div>
     </div>
 
-    <!-- 平均响应 -->
+    <!-- ③ 快捷操作：两列动作格 -->
     <div class="metric-card">
-      <div class="metric-label">{{ t('dashboard.avgResponse') }}</div>
-      <div class="metric-value">{{ formatDuration(stats?.average_duration_ms || 0) }}</div>
-      <p class="metric-note">{{ t('dashboard.averageTime') }}</p>
+      <div class="metric-label">{{ t('dashboard.quickActions') }}</div>
+      <div class="action-grid mt-1">
+        <button class="action-item" @click="router.push('/keys')">
+          <Icon name="key" size="sm" class="shrink-0 text-gray-400 dark:text-dark-500" />
+          <span class="action-item-label">{{ t('dashboard.createApiKey') }}</span>
+          <Icon name="arrowRight" size="xs" class="shrink-0 text-gray-300 dark:text-dark-600" />
+        </button>
+        <button class="action-item" @click="router.push('/usage')">
+          <Icon name="chart" size="sm" class="shrink-0 text-gray-400 dark:text-dark-500" />
+          <span class="action-item-label">{{ t('dashboard.viewUsage') }}</span>
+          <Icon name="arrowRight" size="xs" class="shrink-0 text-gray-300 dark:text-dark-600" />
+        </button>
+        <button v-if="canUseBatchImage" class="action-item" @click="router.push('/batch-image')">
+          <Icon name="sparkles" size="sm" class="shrink-0 text-gray-400 dark:text-dark-500" />
+          <span class="action-item-label">{{ t('dashboard.batchImageAgent') }}</span>
+          <Icon name="arrowRight" size="xs" class="shrink-0 text-gray-300 dark:text-dark-600" />
+        </button>
+        <button class="action-item" @click="router.push('/redeem')">
+          <Icon name="gift" size="sm" class="shrink-0 text-gray-400 dark:text-dark-500" />
+          <span class="action-item-label">{{ t('dashboard.redeemCode') }}</span>
+          <Icon name="arrowRight" size="xs" class="shrink-0 text-gray-300 dark:text-dark-600" />
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- 平台台账：平台用量 + 配额窗口 -->
-  <template v-if="!isSimple && platformCards.length > 0">
-    <div class="section-heading">
-      <h2 class="section-heading-title">{{ t('dashboard.platformBreakdown') }}</h2>
-      <span class="section-heading-meta">{{ t('dashboard.platformCount', { count: platformCount }) }}</span>
+  <!-- 紧凑指标条：今日数据 -->
+  <div class="metric-strip">
+    <div class="metric-card">
+      <div class="metric-label">{{ t('dashboard.todayTokens') }}</div>
+      <div class="metric-value">{{ formatTokens(stats?.today_tokens || 0) }}</div>
+      <div class="stat-pairs metric-foot">
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.input') }}</span>
+          <span class="stat-pair-value">{{ formatTokens(stats?.today_input_tokens || 0) }}</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.output') }}</span>
+          <span class="stat-pair-value">{{ formatTokens(stats?.today_output_tokens || 0) }}</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.cache') }}</span>
+          <span class="stat-pair-value">{{ formatTokens(todayCacheTokens) }}</span>
+        </div>
+      </div>
     </div>
 
-    <div class="metric-grid">
-      <div
-        v-for="item in platformCards"
-        :key="item.platform"
-        data-testid="platform-card"
-        :data-platform="item.platform"
-        class="metric-card"
-        :class="item.isOther ? 'border-dashed' : ''"
+    <div class="metric-card">
+      <div class="metric-label">{{ t('dashboard.todayCost') }}</div>
+      <div class="metric-value metric-accent">${{ formatCost(stats?.today_actual_cost || 0) }}</div>
+      <div class="stat-pairs metric-foot">
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('dashboard.standard') }}</span>
+          <span class="stat-pair-value">${{ formatCost(stats?.today_cost || 0) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-label">{{ t('dashboard.todayRequests') }}</div>
+      <div class="metric-value">{{ stats?.today_requests || 0 }}</div>
+      <div class="stat-pairs metric-foot">
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('common.total') }}</span>
+          <span class="stat-pair-value">{{ formatNumber(stats?.total_requests || 0) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-label">{{ t('dashboard.apiKeys') }}</div>
+      <div class="metric-value">{{ stats?.total_api_keys || 0 }}</div>
+      <div class="stat-pairs metric-foot">
+        <div class="stat-pair">
+          <span class="stat-pair-label">{{ t('common.active') }}</span>
+          <span class="stat-pair-value metric-accent">{{ stats?.active_api_keys || 0 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 行内性能指标：不占卡片位 -->
+  <div class="stat-line justify-end sm:justify-start">
+    <span class="stat-line-item">
+      {{ t('dashboard.performance') }}
+      <strong>{{ formatTokens(stats?.rpm || 0) }} RPM</strong>
+      <span class="text-gray-300 dark:text-dark-600">/</span>
+      <strong>{{ formatTokens(stats?.tpm || 0) }} TPM</strong>
+    </span>
+    <span class="stat-line-item">
+      {{ t('dashboard.avgResponse') }}
+      <strong>{{ formatDuration(stats?.average_duration_ms || 0) }}</strong>
+    </span>
+  </div>
+
+  <!-- 平台拆分：折叠头 + 平台卡片（每张卡内是三行键值，参考用量概览的排版） -->
+  <template v-if="!isSimple && platformCards.length > 0">
+    <div>
+      <button
+        class="collapse-head"
+        :aria-expanded="platformOpen"
+        @click="platformOpen = !platformOpen"
       >
-        <div class="metric-label">
-          {{ item.isOther ? t('dashboard.platformOther') : platformLabel(item.platform) }}
-        </div>
-        <div class="metric-value" :title="t('dashboard.actual')">
-          ${{ formatCost(item.total_actual_cost) }}
-        </div>
-        <p class="metric-note">
-          {{ t('dashboard.requests') }}:
-          <span class="tabular-nums">{{ item.total_requests > 0 ? formatNumber(item.total_requests) : '-' }}</span>
-          · {{ t('dashboard.tokens') }}:
-          <span class="tabular-nums">{{ item.total_tokens > 0 ? formatTokens(item.total_tokens) : '-' }}</span>
-        </p>
+        <span class="collapse-head-title">
+          <Icon name="grid" size="sm" class="text-gray-400 dark:text-dark-500" />
+          {{ t('dashboard.platformBreakdown') }}
+        </span>
+        <span class="flex items-center gap-2">
+          <span class="section-heading-meta">
+            {{ t('dashboard.platformCount', { count: platformCount }) }}
+          </span>
+          <Icon
+            :name="platformOpen ? 'chevronUp' : 'chevronDown'"
+            size="sm"
+            class="text-gray-400 dark:text-dark-500"
+          />
+        </span>
+      </button>
 
-        <!-- 配额窗口：仅当 quota 配置存在、非 __other__ 且至少有一个窗口配了 limit 时显示 -->
-        <div v-if="hasAnyLimit(item.quota) && !item.isOther" class="mt-4 space-y-3">
-          <div class="metric-label">{{ t('dashboard.platformQuota.title') }}</div>
-          <template v-for="w in (['daily', 'weekly', 'monthly'] as const)" :key="w">
-            <div v-if="quotaVal(item.quota, `${w}_limit_usd`) != null" class="space-y-1.5">
-              <div class="flex items-baseline justify-between gap-2">
-                <span class="metric-note mt-0">{{ t(`dashboard.platformQuota.${w}`) }}</span>
-                <!-- limit=0：完全禁用 -->
-                <span v-if="(quotaVal(item.quota, `${w}_limit_usd`) as number) === 0" class="text-2xs font-medium text-red-600 dark:text-red-400">
-                  {{ t('dashboard.platformQuota.disabled') }}
-                </span>
-                <!-- limit>0：已用 / 限额 -->
-                <span v-else class="text-2xs tabular-nums text-gray-700 dark:text-gray-200">
-                  ${{ formatUsd((quotaVal(item.quota, `${w}_usage_usd`) as number) ?? 0) }} / ${{ formatUsd(quotaVal(item.quota, `${w}_limit_usd`) as number) }}
-                </span>
-              </div>
-              <div class="h-1.5 w-full overflow-hidden rounded bg-gray-200 dark:bg-dark-700">
-                <div
-                  v-if="(quotaVal(item.quota, `${w}_limit_usd`) as number) === 0"
-                  class="h-full w-full rounded bg-red-500"
-                />
-                <div
-                  v-else
-                  class="h-full rounded transition-all"
-                  :class="quotaBarClass(calcPercent((quotaVal(item.quota, `${w}_usage_usd`) as number) ?? 0, quotaVal(item.quota, `${w}_limit_usd`) as number))"
-                  :style="{ width: calcPercent((quotaVal(item.quota, `${w}_usage_usd`) as number) ?? 0, quotaVal(item.quota, `${w}_limit_usd`) as number) + '%' }"
-                />
-              </div>
-              <p v-if="quotaVal(item.quota, `${w}_window_resets_at`)" class="metric-note">
-                {{ t('dashboard.platformQuota.resetsAt', { time: formatResetTime(quotaVal(item.quota, `${w}_window_resets_at`) as string) }) }}
-              </p>
+      <div v-show="platformOpen" class="metric-strip mt-2.5">
+        <div
+          v-for="item in platformCards"
+          :key="item.platform"
+          data-testid="platform-card"
+          :data-platform="item.platform"
+          class="metric-card"
+          :class="item.isOther ? 'border-dashed' : ''"
+        >
+          <div class="flex items-baseline justify-between gap-2">
+            <span class="metric-label">
+              {{ item.isOther ? t('dashboard.platformOther') : platformLabel(item.platform) }}
+            </span>
+            <span class="metric-value metric-accent" :title="t('dashboard.actual')">
+              ${{ formatCost(item.total_actual_cost) }}
+            </span>
+          </div>
+
+          <!-- 三行键值：今日消费 / 请求 / Token -->
+          <div class="mt-2">
+            <div class="platform-stat-row">
+              <span class="stat-pair-label">{{ t('dashboard.todayCost') }}</span>
+              <span class="stat-pair-value">${{ formatCost(item.today_actual_cost) }}</span>
             </div>
-          </template>
-        </div>
+            <div class="platform-stat-row">
+              <span class="stat-pair-label">{{ t('dashboard.requests') }}</span>
+              <span class="stat-pair-value">
+                {{ item.total_requests > 0 ? formatNumber(item.total_requests) : '-' }}
+              </span>
+            </div>
+            <div class="platform-stat-row">
+              <span class="stat-pair-label">{{ t('dashboard.tokens') }}</span>
+              <span class="stat-pair-value">
+                {{ item.total_tokens > 0 ? formatTokens(item.total_tokens) : '-' }}
+              </span>
+            </div>
+          </div>
 
-        <div class="metric-foot">
-          <span>{{ t('dashboard.todayCost') }}</span>
-          <strong>${{ formatCost(item.today_actual_cost) }}</strong>
+          <!-- 配额窗口：仅当 quota 配置存在、非 __other__ 且至少有一个窗口配了 limit 时显示 -->
+          <div v-if="hasAnyLimit(item.quota) && !item.isOther" class="mt-3 space-y-2">
+            <div class="metric-label">{{ t('dashboard.platformQuota.title') }}</div>
+            <template v-for="w in (['daily', 'weekly', 'monthly'] as const)" :key="w">
+              <div v-if="quotaVal(item.quota, `${w}_limit_usd`) != null" class="space-y-1">
+                <div class="flex items-baseline justify-between gap-2">
+                  <span class="stat-pair-label">{{ t(`dashboard.platformQuota.${w}`) }}</span>
+                  <!-- limit=0：完全禁用 -->
+                  <span v-if="(quotaVal(item.quota, `${w}_limit_usd`) as number) === 0" class="text-2xs font-medium text-red-600 dark:text-red-400">
+                    {{ t('dashboard.platformQuota.disabled') }}
+                  </span>
+                  <!-- limit>0：已用 / 限额 -->
+                  <span v-else class="stat-pair-value">
+                    ${{ formatUsd((quotaVal(item.quota, `${w}_usage_usd`) as number) ?? 0) }} / ${{ formatUsd(quotaVal(item.quota, `${w}_limit_usd`) as number) }}
+                  </span>
+                </div>
+                <div class="h-1.5 w-full overflow-hidden rounded bg-gray-200 dark:bg-dark-700">
+                  <div
+                    v-if="(quotaVal(item.quota, `${w}_limit_usd`) as number) === 0"
+                    class="h-full w-full rounded bg-red-500"
+                  />
+                  <div
+                    v-else
+                    class="h-full rounded transition-all"
+                    :class="quotaBarClass(calcPercent((quotaVal(item.quota, `${w}_usage_usd`) as number) ?? 0, quotaVal(item.quota, `${w}_limit_usd`) as number))"
+                    :style="{ width: calcPercent((quotaVal(item.quota, `${w}_usage_usd`) as number) ?? 0, quotaVal(item.quota, `${w}_limit_usd`) as number) + '%' }"
+                  />
+                </div>
+                <p v-if="quotaVal(item.quota, `${w}_window_resets_at`)" class="stat-pair-label">
+                  {{ t('dashboard.platformQuota.resetsAt', { time: formatResetTime(quotaVal(item.quota, `${w}_window_resets_at`) as string) }) }}
+                </p>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -172,8 +248,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import Icon from '@/components/icons/Icon.vue'
+import { useBatchImageAccess } from '@/composables/useBatchImageAccess'
 import type { PlatformDashboardStats, UserDashboardStats as UserStatsType } from '@/api/usage'
 import type { PlatformQuotaItem } from '@/types'
 
@@ -208,6 +287,23 @@ const PLATFORM_LABELS: Record<string, string> = {
 }
 
 const platformLabel = (p: string) => PLATFORM_LABELS[p] ?? p
+const router = useRouter()
+const { canUseBatchImage, refreshBatchImageAccess } = useBatchImageAccess()
+
+// 「按平台拆分」折叠状态（参考用量概览：默认展开）
+const platformOpen = ref(true)
+
+// 缓存 token = 创建 + 读取（今日 / 累计）
+const todayCacheTokens = computed(() =>
+  (props.stats?.today_cache_creation_tokens || 0) + (props.stats?.today_cache_read_tokens || 0)
+)
+const totalCacheTokens = computed(() =>
+  (props.stats?.total_cache_creation_tokens || 0) + (props.stats?.total_cache_read_tokens || 0)
+)
+
+onMounted(() => {
+  void refreshBatchImageAccess()
+})
 
 // 处理"各平台之和 < 总值"的差值：后端按平台聚合时过滤了无法归属平台的行
 // （group 与 account 都缺 platform）。这里把差值作为"其他"卡片显式展示，

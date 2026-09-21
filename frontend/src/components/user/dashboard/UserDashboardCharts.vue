@@ -1,19 +1,16 @@
 <template>
   <!-- 图表区：去卡片化，工具栏 + 发丝线分层 -->
   <section class="chart-frame">
+    <!-- 工具栏：日期范围靠左，粒度 / 刷新靠右 -->
     <div class="chart-hair">
-      <div class="ml-auto flex flex-wrap items-center gap-2">
-        <DateRangePicker
-          :start-date="startDate"
-          :end-date="endDate"
-          @update:startDate="$emit('update:startDate', $event)"
-          @update:endDate="$emit('update:endDate', $event)"
-          @change="$emit('dateRangeChange', $event)"
-        />
-        <button class="btn btn-secondary btn-sm" :disabled="loading" @click="$emit('refresh')">
-          <Icon name="refresh" size="sm" />
-          {{ t('common.refresh') }}
-        </button>
+      <DateRangePicker
+        :start-date="startDate"
+        :end-date="endDate"
+        @update:startDate="$emit('update:startDate', $event)"
+        @update:endDate="$emit('update:endDate', $event)"
+        @change="$emit('dateRangeChange', $event)"
+      />
+      <div class="flex flex-wrap items-center gap-2">
         <div class="segmented" role="group" :aria-label="t('dashboard.granularity')">
           <button
             v-for="option in granularityOptions"
@@ -26,48 +23,58 @@
             {{ option.label }}
           </button>
         </div>
+        <button class="btn btn-secondary btn-sm" :disabled="loading" @click="$emit('refresh')">
+          <Icon name="refresh" size="sm" />
+          {{ t('common.refresh') }}
+        </button>
       </div>
     </div>
 
-    <div class="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2">
-      <!-- 模型分布 -->
-      <div class="relative">
-        <div v-if="loading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-dark-800/50">
-          <LoadingSpinner size="md" />
+    <!-- 通栏趋势图 -->
+    <div class="mt-4">
+      <TokenUsageTrend :trend-data="trend" :loading="loading" />
+    </div>
+
+    <!-- 模型分布：标题行 + 圆环 / 台账表 -->
+    <div class="section-heading mt-6">
+      <h3 class="section-heading-title">{{ t('dashboard.modelDistribution') }}</h3>
+      <span class="section-heading-meta">{{ dateRangeMeta }}</span>
+    </div>
+    <div class="relative mt-3 rounded border border-gray-200 p-3 dark:border-dark-700">
+      <div
+        v-if="loading"
+        class="absolute inset-0 z-10 flex items-center justify-center rounded bg-white/50 backdrop-blur-sm dark:bg-dark-800/50"
+      >
+        <LoadingSpinner size="md" />
+      </div>
+      <div class="flex flex-col items-center gap-5 md:flex-row md:items-start md:gap-6">
+        <div class="h-44 w-44 shrink-0 md:h-[220px] md:w-[220px]">
+          <Doughnut v-if="modelData" :data="modelData" :options="doughnutOptions" />
+          <div v-else class="flex h-full items-center justify-center text-caption text-gray-500 dark:text-dark-400">{{ t('dashboard.noDataAvailable') }}</div>
         </div>
-        <h3 class="section-heading-title">{{ t('dashboard.modelDistribution') }}</h3>
-        <div class="chart-canvas mt-3 flex h-auto flex-col items-center gap-4 sm:h-[260px] sm:flex-row sm:gap-6">
-          <div class="h-48 w-48 shrink-0 sm:h-[260px] sm:w-[260px]">
-            <Doughnut v-if="modelData" :data="modelData" :options="doughnutOptions" />
-            <div v-else class="flex h-full items-center justify-center text-caption text-gray-500 dark:text-dark-400">{{ t('dashboard.noDataAvailable') }}</div>
-          </div>
-          <div class="max-h-48 w-full min-w-0 flex-1 overflow-auto sm:max-h-full">
-            <table class="w-full text-2xs">
-              <thead>
-                <tr class="text-gray-500 dark:text-dark-400">
-                  <th class="pb-2 text-left font-normal">{{ t('dashboard.model') }}</th>
-                  <th class="pb-2 text-right font-normal">{{ t('dashboard.requests') }}</th>
-                  <th class="pb-2 text-right font-normal">{{ t('dashboard.tokens') }}</th>
-                  <th class="pb-2 text-right font-normal">{{ t('dashboard.actual') }}</th>
-                  <th class="pb-2 text-right font-normal">{{ t('dashboard.standard') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="model in models" :key="model.model" class="border-t border-gray-200/70 dark:border-dark-700">
-                  <td class="max-w-[100px] truncate py-1.5 font-medium text-gray-900 dark:text-white" :title="model.model">{{ model.model }}</td>
-                  <td class="py-1.5 text-right tabular-nums text-gray-600 dark:text-dark-400">{{ formatNumber(model.requests) }}</td>
-                  <td class="py-1.5 text-right tabular-nums text-gray-600 dark:text-dark-400">{{ formatTokens(model.total_tokens) }}</td>
-                  <td class="py-1.5 text-right tabular-nums metric-accent">${{ formatCost(model.actual_cost) }}</td>
-                  <td class="py-1.5 text-right tabular-nums text-gray-400 dark:text-dark-500">${{ formatCost(model.cost) }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="min-w-0 w-full flex-1">
+          <table class="w-full text-2xs">
+            <thead>
+              <tr class="border-b border-gray-200/70 text-gray-400 dark:border-dark-700 dark:text-dark-500">
+                <th class="pb-2 text-left font-normal">{{ t('dashboard.model') }}</th>
+                <th class="pb-2 text-right font-normal">{{ t('dashboard.requests') }}</th>
+                <th class="pb-2 text-right font-normal">{{ t('dashboard.tokens') }}</th>
+                <th class="pb-2 text-right font-normal">{{ t('dashboard.actual') }}</th>
+                <th class="pb-2 text-right font-normal">{{ t('dashboard.standard') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="model in models" :key="model.model" class="border-t border-gray-200/70 dark:border-dark-700">
+                <td class="max-w-[100px] truncate py-1.5 font-medium text-gray-900 dark:text-white" :title="model.model">{{ model.model }}</td>
+                <td class="py-1.5 text-right tabular-nums text-gray-600 dark:text-dark-400">{{ formatNumber(model.requests) }}</td>
+                <td class="py-1.5 text-right tabular-nums text-gray-600 dark:text-dark-400">{{ formatTokens(model.total_tokens) }}</td>
+                <td class="py-1.5 text-right tabular-nums metric-accent">${{ formatCost(model.actual_cost) }}</td>
+                <td class="py-1.5 text-right tabular-nums text-gray-400 dark:text-dark-500">${{ formatCost(model.cost) }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-
-      <!-- Token 使用趋势 -->
-      <TokenUsageTrend :trend-data="trend" :loading="loading" />
     </div>
   </section>
 </template>
@@ -101,6 +108,11 @@ function selectGranularity(value: string) {
   emit('granularityChange')
 }
 
+// 模型分布标题旁的元信息：当前展示的数据区间
+const dateRangeMeta = computed(() => (
+  props.startDate === props.endDate ? props.startDate : `${props.startDate} — ${props.endDate}`
+))
+
 const modelData = computed(() => !props.models?.length ? null : {
   labels: props.models.map((m: ModelStat) => m.model),
   datasets: [{
@@ -122,3 +134,16 @@ const doughnutOptions = {
   }
 }
 </script>
+
+<style scoped>
+/* 通栏趋势图借用 TokenUsageTrend 自带的画布，这里把它抬到 .chart-canvas-wide 的高度 */
+:deep(.chart-canvas) {
+  height: 320px;
+}
+
+@media (max-width: 639px) {
+  :deep(.chart-canvas) {
+    height: 220px;
+  }
+}
+</style>

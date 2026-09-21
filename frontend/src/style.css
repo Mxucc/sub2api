@@ -1312,6 +1312,91 @@
     .chart-canvas { height: 220px; }
   }
 
+  /* ======================================================================
+     仪表盘布局（参考 new-api / kedaya 的用量概览排版）：
+     首行三格「余额 + 累计 + 快捷操作」→ 紧凑指标条 → 行内性能指标 →
+     工具栏 + 通栏趋势图 → 平台拆分 → 最近使用台账。
+     ====================================================================== */
+
+  /* 首行：余额（焦点卡） / 累计 Token / 快捷操作 */
+  .metric-hero-row {
+    @apply grid grid-cols-1 gap-2.5 lg:grid-cols-[1.05fr_1.3fr_1.15fr];
+  }
+
+  /* 紧凑指标条：一行容纳 2–4 张小区，只放「今日」这类即时数字 */
+  .metric-strip {
+    @apply grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  /* 卡片页脚里的键值对（输入 / 输出 / 缓存 …） */
+  .stat-pairs {
+    @apply grid gap-x-3 gap-y-2;
+    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  }
+
+  .stat-pair {
+    @apply min-w-0;
+  }
+
+  .stat-pair-label {
+    @apply block text-2xs leading-4 text-gray-400 dark:text-dark-500;
+  }
+
+  .stat-pair-value {
+    @apply mt-0.5 block truncate text-control tabular-nums text-gray-700 dark:text-gray-200;
+  }
+
+  /* 行内指标（性能 / 平均响应等不需要卡片化的数字） */
+  .stat-line {
+    @apply flex flex-wrap items-center gap-x-4 gap-y-1 text-2xs text-gray-500 dark:text-dark-400;
+  }
+
+  .stat-line-item {
+    @apply inline-flex items-baseline gap-1;
+  }
+
+  .stat-line-item strong {
+    @apply font-medium tabular-nums text-gray-700 dark:text-gray-200;
+  }
+
+  /* 快捷操作：两列动作格，图标 + 文案 + 箭头 */
+  .action-grid {
+    @apply grid grid-cols-1 gap-x-3 sm:grid-cols-2;
+  }
+
+  .action-item {
+    @apply flex min-w-0 items-center gap-2.5 border-t border-gray-200/70 py-2.5 text-left;
+    @apply transition-colors duration-150 hover:text-primary-600 dark:border-dark-700 dark:hover:text-primary-300;
+  }
+
+  .action-item-label {
+    @apply min-w-0 flex-1 truncate text-control text-gray-900 dark:text-gray-100;
+  }
+
+  /* 区块折叠头（按平台拆分 / 最近使用） */
+  .collapse-head {
+    @apply flex w-full items-center justify-between gap-3 border-b border-gray-200 pb-2;
+    @apply text-left transition-colors duration-150 dark:border-dark-700;
+  }
+
+  .collapse-head-title {
+    @apply flex min-w-0 items-center gap-2 text-control font-medium text-gray-900 dark:text-white;
+  }
+
+  /* 平台卡片里的三行键值 */
+  .platform-stat-row {
+    @apply flex items-baseline justify-between gap-3 border-t border-gray-200/70 py-1.5 first:border-t-0 dark:border-dark-700;
+  }
+
+  /* 通栏趋势图比两列时更高一些 */
+  .chart-canvas-wide {
+    height: 320px;
+  }
+
+  @media (max-width: 639px) {
+    .chart-canvas-wide { height: 220px; }
+  }
+
   /* ===== 轻量小徽标（比 .badge 更克制） ===== */
   .chip {
     @apply inline-flex items-center gap-1 rounded border border-gray-200 px-1.5 py-0.5;

@@ -225,14 +225,23 @@
 | --- | --- |
 | `.page-header-index` / `.page-header-copy` / `.page-header-meta` | 页头编号 / 说明文案（≤68ch，行高舒展）/ 元信息；`.page-title` 已改为衬线 22px |
 | `.section-heading` + `.section-heading-title` + `.section-heading-meta` | 区块标题（衬线 15px + 底部发丝线 + 右侧元信息） |
-| `.metric-grid` / `.metric-grid-lead` / `.metric-card` / `.metric-lead` / `.metric-card-hero` | 指标区；**紧凑优先**：网格 1/2/3/4 列（`sm`/`lg`/`xl`）、间距 10px，卡片内边距 13px（`--metric-pad`，满出血页脚据此取负边距），`.metric-lead` 最小高度 104px；`.metric-card-hero` 是品牌浅底焦点卡（`primary-50` 底 + 2px 品牌顶线），与普通指标同网格、不占满整行 |
-| `.metric-label` / `.metric-value` / `.metric-unit` / `.metric-note` / `.metric-accent` / `.metric-foot` / `.metric-delta-up` / `.metric-delta-down` | 指标卡内部元素；`.metric-foot` 是**满出血页脚**（`-mx-[18px] -mb-[18px]`，发丝线 + 左标签 / 右数值） |
+| `.metric-hero-row` / `.metric-strip` | 仪表盘首行三格（`lg:grid-cols-[1.05fr_1.3fr_1.15fr]`：余额焦点卡 / 累计 Token / 快捷操作）与紧凑指标条（1/2/4 列）；对照 new-api「用量概览」的排版 |
 | `.metric-label` / `.metric-value` / `.metric-unit` / `.metric-note` / `.metric-accent` / `.metric-foot` / `.metric-delta-up` / `.metric-delta-down` | 指标卡内部元素；数值 22px（焦点卡 24px）、标签与说明 11px、页脚 12px 约 30px 高；`.metric-foot` 是**满出血页脚**（发丝线 + 左标签 / 右数值） |
 | `.chart-frame` / `.chart-hair` / `.chart-canvas` | 图表去卡片化：顶部发丝线 + 工具栏发丝线 + 260px（≤639px 时 220px）画布 |
-| `.segmented` / `.segmented-item` | 分段控件（选中态用 `.is-active` 或 `aria-pressed="true"`，槽 `p-[3px]` + 5px 圆角） |
+| `.stat-pairs` / `.stat-pair` / `.stat-pair-label` / `.stat-pair-value` | 卡片页脚里的键值对（输入 / 输出 / 缓存、实际 / 标准），`auto-fit minmax(72px,1fr)` 自动分列 |
+| `.stat-line` / `.stat-line-item` | 行内指标（性能 RPM/TPM、平均响应），不占卡片位 |
+| `.action-grid` / `.action-item` / `.action-item-label` | 快捷操作两列动作格（图标 + 文案 + 箭头，发丝线分行） |
+| `.collapse-head` / `.collapse-head-title` | 区块折叠头（按平台拆分 / 最近使用），标题左、元信息与箭头右 |
+| `.platform-stat-row` | 平台卡片内的三行键值（今日消费 / 请求 / Token） |
+| `.chart-canvas-wide` | 通栏趋势图画布高度（320px，≤639px 时 220px） |
 | `.chip` | 轻量小徽标（比 `.badge` 更克制） |
 | `.rise` / `.stagger` | 入场动效（0.46s `cubic-bezier(.16,1,.3,1)`，45/90/135ms 错峰，`prefers-reduced-motion` 下关闭） |
 | `.decor-grid` | 极淡蓝图网格装饰层（60×60，`mask-image` 渐隐；可选） |
+
+仪表盘排版顺序（用户 `/dashboard`，对照 new-api「用量概览」）：
+**首行三格**（余额焦点卡 / 近期累计 Token / 快捷操作）→ **紧凑指标条**（今日 Token · 消费 · 请求 · 密钥）→
+**行内指标**（性能 RPM/TPM · 平均响应）→ **图表**（工具栏：日期范围左、分段与刷新右 → 通栏趋势图 → 模型分布台账）→
+**按平台拆分**（折叠头 + 平台卡片三行键值）→ **最近使用**（折叠头 + 台账）。
 
 四条沿用原则：
 

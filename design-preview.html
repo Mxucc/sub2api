@@ -764,46 +764,125 @@
             </div>
           </div>
 
-          <!-- ② 指标：一张反色英雄卡 + 独立指标卡（满出血页脚） -->
-          <div class="metric-grid-lead stagger">
-            <div class="metric-card metric-lead metric-card-hero">
+          <!-- ② 首行三格（余额焦点卡 / 累计 Token / 快捷操作）+ 紧凑指标条 + 行内指标 -->
+          <div class="metric-hero-row stagger">
+            <div class="metric-card metric-card-hero">
               <span class="metric-label">账户余额</span>
-              <div class="mt-2">
+              <div class="mt-1">
                 <span class="metric-value">$248.60</span>
                 <span class="metric-unit">USD</span>
               </div>
-              <p class="metric-note">可用额度，低于 $10 会收到提醒</p>
-              <div class="metric-foot">
-                <span>今日消耗</span>
-                <span><strong>$4.128</strong> <span class="metric-accent">+12%</span></span>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">实际</span>
+                  <span class="stat-pair-value">$310.74</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">标准</span>
+                  <span class="stat-pair-value">$304.63</span>
+                </div>
               </div>
             </div>
 
-            <div class="metric-card metric-lead">
-              <span class="metric-label">近 7 天请求</span>
-              <div class="mt-2">
-                <span class="metric-value">1,284,902</span>
-                <span class="metric-unit">次</span>
+            <div class="metric-card">
+              <span class="metric-label">近期累计 Token</span>
+              <div class="mt-1">
+                <span class="metric-value">1.38B</span>
+                <span class="metric-unit">tokens</span>
               </div>
-              <p class="metric-note">峰值出现在 09-19 21:00</p>
-              <div class="metric-foot">
-                <span>成功 / 失败</span>
-                <span><strong>1,281,004</strong> / 3,898</span>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">输入</span>
+                  <span class="stat-pair-value">330.1M</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">输出</span>
+                  <span class="stat-pair-value">9.3M</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">缓存</span>
+                  <span class="stat-pair-value">1.04B</span>
+                </div>
               </div>
             </div>
 
-            <div class="metric-card metric-lead">
-              <span class="metric-label">近 7 天消耗</span>
-              <div class="mt-2">
-                <span class="metric-value">$128.44</span>
-                <span class="metric-unit">USD</span>
-              </div>
-              <p class="metric-note">其中缓存命中节省 $21.07</p>
-              <div class="metric-foot">
-                <span>日均</span>
-                <span><strong>$18.35</strong> <span class="text-gray-400">/ 天</span></span>
+            <div class="metric-card">
+              <span class="metric-label">快捷操作</span>
+              <div class="action-grid mt-1">
+                <button class="action-item">
+                  <span class="action-item-label">创建 API 密钥</span>
+                  <span class="text-gray-300 dark:text-dark-600">→</span>
+                </button>
+                <button class="action-item">
+                  <span class="action-item-label">查看使用记录</span>
+                  <span class="text-gray-300 dark:text-dark-600">→</span>
+                </button>
+                <button class="action-item">
+                  <span class="action-item-label">图片批量生成</span>
+                  <span class="text-gray-300 dark:text-dark-600">→</span>
+                </button>
+                <button class="action-item">
+                  <span class="action-item-label">兑换码</span>
+                  <span class="text-gray-300 dark:text-dark-600">→</span>
+                </button>
               </div>
             </div>
+          </div>
+
+          <div class="metric-strip stagger">
+            <div class="metric-card">
+              <span class="metric-label">今日 Token</span>
+              <div class="metric-value">2.5M</div>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">输入</span>
+                  <span class="stat-pair-value">2.1M</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">输出</span>
+                  <span class="stat-pair-value">55.4K</span>
+                </div>
+                <div class="stat-pair">
+                  <span class="stat-pair-label">缓存</span>
+                  <span class="stat-pair-value">308.4K</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">今日消费</span>
+              <div class="metric-value metric-accent">$0.3733</div>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">标准</span>
+                  <span class="stat-pair-value">$4.6661</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">今日请求</span>
+              <div class="metric-value">56</div>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">累计</span>
+                  <span class="stat-pair-value">12,739</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">API 密钥</span>
+              <div class="metric-value">13</div>
+              <div class="stat-pairs metric-foot">
+                <div class="stat-pair">
+                  <span class="stat-pair-label">启用</span>
+                  <span class="stat-pair-value metric-accent">13</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-line mt-2.5">
+            <span class="stat-line-item">性能指标 <strong>2 RPM</strong> / <strong>105.5K TPM</strong></span>
+            <span class="stat-line-item">平均响应 <strong>30.54s</strong></span>
           </div>
 
           <!-- ③ 平台配额台账 -->

@@ -3016,18 +3016,6 @@ input[type='number'] {
   }
 }
 
-.metric-grid-lead {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.625rem;
-}
-
-@media (min-width: 1024px) {
-  .metric-grid-lead {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 /* 卡片内边距集中在一个变量里，满出血页脚按它取负边距 */
 
 .metric-card {
@@ -3057,10 +3045,6 @@ input[type='number'] {
 }
 
 /* 领衔卡：只保留最小呼吸空间，不做大留白 */
-
-.metric-lead {
-  min-height: 104px;
-}
 
 .metric-label {
   font-size: 11px;
@@ -3467,6 +3451,200 @@ input[type='number'] {
   }
 }
 
+/* ======================================================================
+     仪表盘布局（参考 new-api / kedaya 的用量概览排版）：
+     首行三格「余额 + 累计 + 快捷操作」→ 紧凑指标条 → 行内性能指标 →
+     工具栏 + 通栏趋势图 → 平台拆分 → 最近使用台账。
+     ====================================================================== */
+
+/* 首行：余额（焦点卡） / 累计 Token / 快捷操作 */
+
+.metric-hero-row {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.625rem;
+}
+
+@media (min-width: 1024px) {
+  .metric-hero-row {
+    grid-template-columns: 1.05fr 1.3fr 1.15fr;
+  }
+}
+
+/* 紧凑指标条：一行容纳 2–4 张小区，只放「今日」这类即时数字 */
+
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.625rem;
+}
+
+@media (min-width: 640px) {
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .metric-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* 卡片页脚里的键值对（输入 / 输出 / 缓存 …） */
+
+.stat-pairs {
+  display: grid;
+  -moz-column-gap: 0.75rem;
+       column-gap: 0.75rem;
+  row-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+}
+
+.stat-pair {
+  min-width: 0px;
+}
+
+.stat-pair-label {
+  display: block;
+  font-size: 11px;
+  line-height: 16px;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(197 197 197 / var(--tw-text-opacity, 1));
+}
+
+.stat-pair-label:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(139 139 139 / var(--tw-text-opacity, 1));
+}
+
+.stat-pair-value {
+  margin-top: 0.125rem;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  line-height: 20px;
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+  --tw-text-opacity: 1;
+  color: rgb(75 75 75 / var(--tw-text-opacity, 1));
+}
+
+.stat-pair-value:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(231 231 231 / var(--tw-text-opacity, 1));
+}
+
+/* 行内指标（性能 / 平均响应等不需要卡片化的数字） */
+
+.stat-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  -moz-column-gap: 1rem;
+       column-gap: 1rem;
+  row-gap: 0.25rem;
+  font-size: 11px;
+  line-height: 16px;
+  --tw-text-opacity: 1;
+  color: rgb(119 119 119 / var(--tw-text-opacity, 1));
+}
+
+.stat-line:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(166 166 166 / var(--tw-text-opacity, 1));
+}
+
+.stat-line-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.stat-line-item strong {
+  font-weight: 500;
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+  --tw-text-opacity: 1;
+  color: rgb(75 75 75 / var(--tw-text-opacity, 1));
+}
+
+.stat-line-item strong:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(231 231 231 / var(--tw-text-opacity, 1));
+}
+
+/* 快捷操作：两列动作格，图标 + 文案 + 箭头 */
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  -moz-column-gap: 0.75rem;
+       column-gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.action-item {
+  display: flex;
+  min-width: 0px;
+  align-items: center;
+  gap: 0.625rem;
+  border-top-width: 1px;
+  border-color: rgb(231 231 231 / 0.7);
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  text-align: left;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.action-item:hover {
+  --tw-text-opacity: 1;
+  color: rgb(0 60 171 / var(--tw-text-opacity, 1));
+}
+
+.action-item:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(46 46 46 / var(--tw-border-opacity, 1));
+}
+
+.action-item:hover:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(138 164 255 / var(--tw-text-opacity, 1));
+}
+
+.action-item-label {
+  min-width: 0px;
+  flex: 1 1 0%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  line-height: 20px;
+  --tw-text-opacity: 1;
+  color: rgb(36 36 36 / var(--tw-text-opacity, 1));
+}
+
+.action-item-label:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(242 243 245 / var(--tw-text-opacity, 1));
+}
+
+/* 区块折叠头（按平台拆分 / 最近使用） */
+
+/* 平台卡片里的三行键值 */
+
+/* 通栏趋势图比两列时更高一些 */
+
 /* ===== 轻量小徽标（比 .badge 更克制） ===== */
 
 .chip {
@@ -3590,8 +3768,8 @@ input[type='number'] {
   margin-top: 0.25rem;
 }
 
-.mt-2 {
-  margin-top: 0.5rem;
+.mt-2\.5 {
+  margin-top: 0.625rem;
 }
 
 .mt-3 {
@@ -4333,6 +4511,11 @@ input[type='number'] {
 .dark\:text-dark-500:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(139 139 139 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-dark-600:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(61 61 61 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-dark-700:is(.dark *) {
