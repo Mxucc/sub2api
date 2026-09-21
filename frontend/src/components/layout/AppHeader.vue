@@ -35,6 +35,10 @@
           </span>
         </router-link>
 
+        <!-- 公开页导航标签：控制台内也保留，保证头部一致（首页 / 控制台 / 模型广场 / 关于） -->
+        <span class="hidden h-5 w-px shrink-0 bg-gray-200 lg:block dark:bg-dark-700" aria-hidden="true"></span>
+        <PublicNavTabs class="hidden lg:flex" embedded-plaza />
+
         <!-- 当前页面标题：仅在没有面包屑的页面显示（有面包屑的页面在内容区已有 crumb-strip + 页头） -->
         <template v-if="pageTitle">
           <span class="hidden h-5 w-px shrink-0 bg-gray-200 lg:block dark:bg-dark-700" aria-hidden="true"></span>
@@ -67,17 +71,7 @@
           <span class="hidden sm:inline">{{ t('nav.docs') }}</span>
         </a>
 
-        <!-- Model Plaza Entry (icon only below sm) -->
-        <router-link
-          v-if="user && modelPlazaEnabled"
-          :to="{ path: '/model-plaza', query: { embedded: '1' } }"
-          :title="t('nav.modelPlaza')"
-          :aria-label="t('nav.modelPlaza')"
-          class="flex h-8 items-center gap-1.5 rounded-lg px-2 text-[13px] font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-dark-400 dark:hover:bg-dark-800 dark:hover:text-white"
-        >
-          <Icon name="grid" size="sm" />
-          <span class="hidden sm:inline">{{ t('nav.modelPlaza') }}</span>
-        </router-link>
+        <!-- 模型广场已由头部标签（PublicNavTabs）提供，这里不再重复入口 -->
 
         <!-- Language Switcher -->
         <LocaleSwitcher />
@@ -275,6 +269,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore, useAuthStore, useOnboardingStore } from '@/stores'
+import PublicNavTabs from '@/components/layout/PublicNavTabs.vue'
 import LocaleSwitcher from '@/components/common/LocaleSwitcher.vue'
 import SubscriptionProgressMini from '@/components/common/SubscriptionProgressMini.vue'
 import AnnouncementBell from '@/components/common/AnnouncementBell.vue'
@@ -298,7 +293,6 @@ const dropdownOpen = ref(false)
 const dropdownRef = ref<HTMLElement | null>(null)
 const contactInfo = computed(() => appStore.contactInfo)
 const docUrl = computed(() => sanitizeUrl(appStore.docUrl))
-const modelPlazaEnabled = computed(() => isFeatureFlagEnabled(FeatureFlags.modelPlaza))
 const avatarUrl = computed(() => user.value?.avatar_url?.trim() || '')
 const siteName = computed(() => appStore.siteName)
 // 顶栏品牌 logo 与侧栏共用同一净化规则（允许相对路径与 data URL）

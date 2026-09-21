@@ -7,6 +7,7 @@ export default {
   home: {
     // Public shell nav (PublicLayout: Home / Console / Model Plaza / About)
     nav: {
+      label: 'Site navigation',
       home: 'Home',
       console: 'Console',
       plaza: 'Model Plaza',

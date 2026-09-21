@@ -161,6 +161,15 @@
       </template>
     </nav>
 
+    <!-- 公开页导航（仅移动端抽屉可见）：与 PublicLayout / AppHeader 同一份定义 -->
+    <div
+      v-if="mobileOpen"
+      class="mb-2 border-t border-gray-200 px-3 pt-2 lg:hidden dark:border-dark-700"
+    >
+      <p class="mb-1 px-3 text-2xs text-gray-400 dark:text-dark-500">{{ t('home.nav.label') }}</p>
+      <PublicNavTabs vertical embedded-plaza class="-mx-1" />
+    </div>
+
     <!-- Bottom Section -->
     <div class="mt-auto border-t border-gray-200 px-3 py-3 dark:border-dark-700">
       <!-- Theme Toggle -->
@@ -207,6 +216,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAdminSettingsStore, useAppStore, useAuthStore, useOnboardingStore } from '@/stores'
 import Icon from '@/components/icons/Icon.vue'
+import PublicNavTabs from '@/components/layout/PublicNavTabs.vue'
 import { sanitizeSvg } from '@/utils/sanitize'
 import { sanitizeUrl } from '@/utils/url'
 import { FeatureFlags, makeSidebarFlag } from '@/utils/featureFlags'

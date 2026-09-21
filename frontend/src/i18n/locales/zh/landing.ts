@@ -7,6 +7,7 @@ export default {
   home: {
     // 公开页外壳导航（PublicLayout：首页 / 控制台 / 模型广场 / 关于）
     nav: {
+      label: '站点导航',
       home: '首页',
       console: '控制台',
       plaza: '模型广场',
