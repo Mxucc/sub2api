@@ -770,7 +770,7 @@
 
   /* 页面头部条：编号 + 衬线标题 + 说明 + 右侧操作区，底部发丝线 */
   .page-header-bar {
-    @apply mb-5 border-b border-gray-200 pb-5 dark:border-dark-700;
+    @apply mb-4 border-b border-gray-200 pb-4 dark:border-dark-700;
   }
 
   .page-header-main {
@@ -819,7 +819,7 @@
 
   /* editorial 说明文案：限宽、舒展行高 */
   .page-description {
-    @apply mt-1.5 max-w-[68ch] text-control leading-6 text-gray-500 dark:text-dark-400;
+    @apply mt-1 max-w-[68ch] text-control leading-5 text-gray-500 dark:text-dark-400;
   }
 
   /* ============ 区块标题 ============ */
@@ -861,14 +861,6 @@
   .metric-row {
     @apply flex items-center justify-between gap-4;
     @apply border-b border-gray-200/70 py-2.5 last:border-b-0 dark:border-dark-700;
-  }
-
-  .metric-label {
-    @apply text-caption text-gray-500 dark:text-dark-400;
-  }
-
-  .metric-value {
-    @apply text-sm font-medium tabular-nums text-gray-900 dark:text-dark-100;
   }
 
   /* ============ 空状态 ============ */
@@ -1159,23 +1151,59 @@
     @apply text-2xs tabular-nums text-gray-400 dark:text-dark-500;
   }
 
-  /* ===== 指标区：每张卡独立，间距 14px，没有外框 ===== */
+  /* ===== 指标区：紧凑优先（一屏尽量多列），每张卡独立，间距 10px ===== */
   .metric-grid {
-    @apply grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-4;
+    @apply grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
   }
 
   .metric-grid-lead {
-    @apply grid grid-cols-1 gap-3.5 lg:grid-cols-3;
+    @apply grid grid-cols-1 gap-2.5 lg:grid-cols-3;
   }
 
+  /* 卡片内边距集中在一个变量里，满出血页脚按它取负边距 */
   .metric-card {
-    @apply relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white p-[18px];
-    box-shadow: 0 2px 4px rgba(32, 36, 38, 0.03);
+    --metric-pad: 13px;
+    @apply relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white;
     @apply dark:border-dark-700 dark:bg-dark-900;
+    padding: var(--metric-pad);
+    box-shadow: 0 2px 4px rgba(32, 36, 38, 0.03);
   }
 
+  /* 领衔卡：只保留最小呼吸空间，不做大留白 */
   .metric-lead {
-    @apply min-h-[164px];
+    @apply min-h-[104px];
+  }
+
+  .metric-label {
+    @apply text-2xs font-normal leading-4 text-gray-500 dark:text-dark-400;
+  }
+
+  /* 指标数值：22px（领衔 / 英雄卡 24px），行高收紧 */
+  .metric-value {
+    @apply mt-1 text-[22px] font-medium leading-7 tabular-nums text-gray-900 dark:text-white;
+  }
+
+  .metric-unit {
+    @apply ml-1 text-caption font-normal text-gray-400 dark:text-dark-500;
+  }
+
+  .metric-note {
+    @apply mt-0.5 text-2xs leading-4 text-gray-500 dark:text-dark-400;
+  }
+
+  .metric-accent {
+    @apply text-primary-600 dark:text-primary-300;
+  }
+
+  /* 满出血页脚：标签在发丝线上方 / 数值在下方，高度 30px 左右 */
+  .metric-foot {
+    @apply mt-auto flex items-center justify-between gap-3 pt-2;
+    @apply border-t border-gray-200 text-caption text-gray-500;
+    @apply dark:border-dark-700 dark:text-dark-400;
+    margin-inline: calc(var(--metric-pad) * -1);
+    margin-bottom: calc(var(--metric-pad) * -1);
+    padding-inline: var(--metric-pad);
+    padding-bottom: 9px;
   }
 
   /* 品牌浅底焦点卡：参考站的反色板太深，改为浅色品牌底 + 2px 品牌顶线；深色模式用品牌 500/10 */
@@ -1185,7 +1213,9 @@
   }
 
   .metric-card-hero .metric-label { @apply text-primary-700/80 dark:text-primary-200/80; }
-  .metric-card-hero .metric-value { @apply text-primary-700 dark:text-white; }
+  .metric-card-hero .metric-value {
+    @apply text-[24px] leading-8 text-primary-700 dark:text-white;
+  }
   .metric-card-hero .metric-unit { @apply text-primary-700/70 dark:text-primary-200/70; }
   .metric-card-hero .metric-note { @apply text-primary-700/70 dark:text-primary-200/70; }
   .metric-card-hero .metric-accent { @apply text-primary-600 dark:text-primary-300; }
@@ -1194,33 +1224,6 @@
     @apply dark:border-primary-500/25 dark:text-primary-200/80;
   }
   .metric-card-hero .metric-foot strong { @apply text-primary-700 dark:text-white; }
-
-  .metric-label {
-    @apply text-2xs font-normal text-gray-500 dark:text-dark-400;
-  }
-
-  .metric-value {
-    @apply mt-1.5 text-[26px] font-medium leading-8 tabular-nums text-gray-900 dark:text-white;
-  }
-
-  .metric-unit {
-    @apply ml-1 text-caption font-normal text-gray-400 dark:text-dark-500;
-  }
-
-  .metric-note {
-    @apply mt-1 text-2xs leading-5 text-gray-500 dark:text-dark-400;
-  }
-
-  .metric-accent {
-    @apply text-primary-600 dark:text-primary-300;
-  }
-
-  /* 满出血页脚：标签在发丝线上方，数值在下方 —— 参考站最值得抄的一条 */
-  .metric-foot {
-    @apply -mx-[18px] -mb-[18px] mt-auto flex items-center justify-between gap-3 pt-3;
-    @apply border-t border-gray-200 px-[18px] pb-[14px] text-caption text-gray-500;
-    @apply dark:border-dark-700 dark:text-dark-400;
-  }
 
   .metric-foot strong {
     @apply font-medium tabular-nums text-gray-700 dark:text-gray-200;

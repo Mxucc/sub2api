@@ -1,7 +1,10 @@
 <template>
-  <!-- 领衔行：余额英雄卡（全页唯一的反色焦点卡） -->
-  <div v-if="!isSimple" class="metric-grid-lead">
-    <div class="metric-card metric-lead metric-card-hero lg:col-span-3">
+  <!--
+    指标网格：余额焦点卡（品牌浅底 + 顶线）与其余指标同一张网格。
+    格子紧凑（内边距 13px / 数值 22px），一屏尽量多列，避免整页看不到关键信息。
+  -->
+  <div class="metric-grid">
+    <div v-if="!isSimple" class="metric-card metric-card-hero">
       <div class="metric-label">{{ t('dashboard.balance') }}</div>
       <div class="metric-value">
         ${{ formatBalance(balance) }}
@@ -20,10 +23,7 @@
         </strong>
       </div>
     </div>
-  </div>
 
-  <!-- 指标网格：密钥 / 请求 / 消费 / Token / 性能 / 响应 -->
-  <div class="metric-grid">
     <!-- API 密钥 -->
     <div class="metric-card">
       <div class="metric-label">{{ t('dashboard.apiKeys') }}</div>

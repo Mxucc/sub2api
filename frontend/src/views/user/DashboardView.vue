@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-    <div class="space-y-8">
+    <div class="space-y-5">
       <!-- 编辑式页头：编号 + 衬线标题 + 说明 + 元信息，刷新操作收进右侧 -->
       <section class="page-header-bar">
         <div class="page-header-main">
@@ -26,7 +26,7 @@
 
       <div v-if="loading" class="flex items-center justify-center py-12"><LoadingSpinner /></div>
 
-      <div v-else-if="stats" class="stagger space-y-8">
+      <div v-else-if="stats" class="stagger space-y-5">
         <UserDashboardStats :stats="stats" :balance="user?.balance || 0" :is-simple="authStore.isSimpleMode" :platform-quotas="platformQuotas" />
         <UserDashboardCharts v-model:startDate="startDate" v-model:endDate="endDate" v-model:granularity="granularity" :loading="loadingCharts" :trend="trendData" :models="modelStats" @dateRangeChange="loadCharts" @granularityChange="loadCharts" @refresh="refreshAll" />
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">

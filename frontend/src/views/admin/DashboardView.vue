@@ -1,13 +1,13 @@
 <template>
   <AppLayout>
-    <div class="space-y-6">
+    <div class="space-y-4">
       <!-- Loading State -->
       <div v-if="loading" class="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
 
       <template v-else-if="stats">
-        <div class="stagger space-y-6">
+        <div class="stagger space-y-4">
           <!-- Editorial masthead -->
           <header class="page-header-bar">
             <div class="page-header-main">
@@ -279,7 +279,7 @@
           </section>
 
           <!-- Charts -->
-          <section class="space-y-6">
+          <section class="space-y-4">
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div class="chart-frame">
                 <ModelDistributionChart

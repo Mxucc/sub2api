@@ -225,9 +225,9 @@
 | --- | --- |
 | `.page-header-index` / `.page-header-copy` / `.page-header-meta` | 页头编号 / 说明文案（≤68ch，行高舒展）/ 元信息；`.page-title` 已改为衬线 22px |
 | `.section-heading` + `.section-heading-title` + `.section-heading-meta` | 区块标题（衬线 15px + 底部发丝线 + 右侧元信息） |
-| `.metric-grid` / `.metric-grid-lead` / `.metric-card` / `.metric-lead` / `.metric-card-hero` | 指标区；首行为 lead 卡（`min-height:164px`），`.metric-card-hero` 是品牌浅底焦点卡（`primary-50` 底 + 2px 品牌顶线），一页最多一张 |
+| `.metric-grid` / `.metric-grid-lead` / `.metric-card` / `.metric-lead` / `.metric-card-hero` | 指标区；**紧凑优先**：网格 1/2/3/4 列（`sm`/`lg`/`xl`）、间距 10px，卡片内边距 13px（`--metric-pad`，满出血页脚据此取负边距），`.metric-lead` 最小高度 104px；`.metric-card-hero` 是品牌浅底焦点卡（`primary-50` 底 + 2px 品牌顶线），与普通指标同网格、不占满整行 |
 | `.metric-label` / `.metric-value` / `.metric-unit` / `.metric-note` / `.metric-accent` / `.metric-foot` / `.metric-delta-up` / `.metric-delta-down` | 指标卡内部元素；`.metric-foot` 是**满出血页脚**（`-mx-[18px] -mb-[18px]`，发丝线 + 左标签 / 右数值） |
-| `.ledger` / `.ledger-head` / `.ledger-row` / `.ledger-row-hover` / `.ledger-num` / `.ledger-num-strong` | 台账式列表（3 列 grid `1.6fr 0.5fr 0.65fr`，发丝线分行，金额右对齐 `min-width:88px`；窄屏降为 2 列） |
+| `.metric-label` / `.metric-value` / `.metric-unit` / `.metric-note` / `.metric-accent` / `.metric-foot` / `.metric-delta-up` / `.metric-delta-down` | 指标卡内部元素；数值 22px（焦点卡 24px）、标签与说明 11px、页脚 12px 约 30px 高；`.metric-foot` 是**满出血页脚**（发丝线 + 左标签 / 右数值） |
 | `.chart-frame` / `.chart-hair` / `.chart-canvas` | 图表去卡片化：顶部发丝线 + 工具栏发丝线 + 260px（≤639px 时 220px）画布 |
 | `.segmented` / `.segmented-item` | 分段控件（选中态用 `.is-active` 或 `aria-pressed="true"`，槽 `p-[3px]` + 5px 圆角） |
 | `.chip` | 轻量小徽标（比 `.badge` 更克制） |
@@ -239,7 +239,8 @@
 1. **投影几乎不可见**（`0 2px 4px rgba(32,36,38,.03)`），层与层之间优先用 1px 发丝线。
 2. **一页一个焦点**：`.metric-card-hero` 只用于最关键的数字（余额），用品牌浅底 + 顶线而不是深色反色板。
 3. **数字一律 `tabular-nums`**，标签用 11px 级别的小字，正文 13px。
-4. **全站 5px 圆角**（`rounded-none` 与 `.spinner` 除外）。
+4. **卡片紧凑**：内边距 13px、数值 22px（焦点卡 24px）、页脚约 30px，网格 `lg` 起 3 列 / `xl` 4 列 —— 一屏要能看到关键信息。
+5. **全站 5px 圆角**（`rounded-none` 与 `.spinner` 除外）。
 
 已落地的页面：用户 `/dashboard`（`views/user/DashboardView.vue` + `components/user/dashboard/*`）、
 管理员仪表盘（`views/admin/DashboardView.vue`）；其余内页通过 `PageHeader` 与全局令牌自动继承同一套语言。
