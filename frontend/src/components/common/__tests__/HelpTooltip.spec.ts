@@ -107,4 +107,42 @@ describe('HelpTooltip', () => {
 
     wrapper.unmount()
   })
+
+  // 回归：提示框是 position: fixed，必须用视口坐标。
+  // 之前叠加了 window.scrollY/scrollX，页面或表格滚动后提示框整体下移，
+  // 直接盖住触发元素 —— 账号管理里被盖住的 URL 就点不到了。
+  it('positions the tooltip with viewport coordinates, not page coordinates', async () => {
+    Object.defineProperty(window, 'scrollY', { value: 137, configurable: true })
+    Object.defineProperty(window, 'scrollX', { value: 42, configurable: true })
+
+    const wrapper = mount(HelpTooltip, {
+      attachTo: document.body,
+      props: { content: 'viewport metrics' },
+    })
+
+    const trigger = wrapper.get('.group')
+    trigger.element.getBoundingClientRect = () =>
+      ({ top: 200, left: 300, width: 100, height: 20, bottom: 220, right: 400, x: 300, y: 200, toJSON: () => ({}) }) as DOMRect
+
+    await trigger.trigger('mouseenter')
+    await nextTick()
+
+    const tooltip = getTooltipElement()
+    // 顶边 = 触发元素 top - 8px 间距；left 为触发元素水平中心（视口内未被夹取）
+    expect(tooltip.style.top).toBe('192px')
+    expect(tooltip.style.left).toBe('350px')
+
+    wrapper.unmount()
+  })
+
+  it('keeps the hover bridge exactly as tall as the gap so it never covers the trigger', () => {
+    const wrapper = mount(HelpTooltip, { attachTo: document.body, props: { content: 'gap' } })
+    const tooltip = getTooltipElement()
+
+    // 空隙是 8px：桥接层只能是 h-2，h-3(12px) 会压到触发元素上、挡掉点击
+    expect(tooltip.className).toContain('before:h-2')
+    expect(tooltip.className).not.toContain('before:h-3')
+
+    wrapper.unmount()
+  })
 })

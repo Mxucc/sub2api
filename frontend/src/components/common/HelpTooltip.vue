@@ -10,10 +10,15 @@ const props = withDefaults(defineProps<{
   widthClass: 'w-64',
 })
 
+/** 触发元素与提示框之间的间距（与模板里的 before:h-2 / -bottom-1 保持一致） */
+const GAP = 8
+
 const show = ref(false)
 const triggerRef = useTemplateRef<HTMLElement>('trigger')
 const tooltipRef = useTemplateRef<HTMLElement>('tooltip')
 const tooltipStyle = ref({ top: '0px', left: '0px' })
+/** 空间不足时翻到触发元素下方 */
+const placement = ref<'top' | 'bottom'>('top')
 
 function openTooltip() {
   show.value = true
@@ -76,14 +81,33 @@ function onViewportChange() {
   updatePosition()
 }
 
+/**
+ * 提示框是 `position: fixed`（Teleport 到 body 躲开表格/弹窗的 overflow 裁剪），
+ * 因此必须使用**视口坐标**：rect.top/left 本身就是视口坐标，不能再叠加 window.scrollY/scrollX，
+ * 否则页面或表格滚动后提示框会整体下移，直接盖住触发元素（表格里被盖住的 URL 就点不到了）。
+ */
 function updatePosition() {
   const el = triggerRef.value
   if (!el) return
   const rect = el.getBoundingClientRect()
-  tooltipStyle.value = {
-    top: `${rect.top + window.scrollY}px`,
-    left: `${rect.left + rect.width / 2 + window.scrollX}px`,
-  }
+  const tip = tooltipRef.value
+  const tipHeight = tip?.offsetHeight ?? 0
+  const tipWidth = tip?.offsetWidth ?? 0
+
+  // 上方放不下就翻到下方（下方也放不下时仍留在上方，尽量不遮住触发元素）
+  const fitsAbove = rect.top - GAP >= tipHeight
+  const fitsBelow = rect.bottom + GAP + tipHeight <= window.innerHeight
+  placement.value = !fitsAbove && fitsBelow ? 'bottom' : 'top'
+
+  const top = placement.value === 'top' ? rect.top - GAP : rect.bottom + GAP
+
+  // 水平夹取到视口内（提示框以中心对齐，所以按半宽夹取）
+  const half = tipWidth / 2
+  const minLeft = half + GAP
+  const maxLeft = Math.max(minLeft, window.innerWidth - half - GAP)
+  const left = Math.min(Math.max(rect.left + rect.width / 2, minLeft), maxLeft)
+
+  tooltipStyle.value = { top: `${top}px`, left: `${left}px` }
 }
 
 onMounted(() => {
@@ -128,16 +152,23 @@ onBeforeUnmount(() => {
 
     <!-- Teleport to body to escape modal overflow clipping -->
     <Teleport to="body">
-      <!-- before: 伪元素向下延伸一段透明区域，盖住提示框与触发图标之间的空隙，让指针能连续移入提示框。 -->
+      <!--
+        before: 伪元素只盖住触发元素与提示框之间那 8px 空隙（同 GAP），让指针能连续移入提示框；
+        高度必须等于空隙，否则会压到触发元素上，表格里的链接/按钮就点不到了。
+      -->
       <div
         ref="tooltip"
         v-show="show"
         role="tooltip"
         :class="[
-          'fixed z-[99999] -translate-x-1/2 -translate-y-full rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white shadow-popover ring-1 ring-white/10 selection:bg-primary-200 selection:text-gray-900 before:absolute before:inset-x-0 before:top-full before:h-3 dark:bg-dark-800 dark:ring-dark-600 dark:selection:bg-primary-200 dark:selection:text-gray-900',
+          'fixed z-[99999] -translate-x-1/2 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white shadow-popover ring-1 ring-white/10 selection:bg-primary-200 selection:text-gray-900 dark:bg-dark-800 dark:ring-dark-600 dark:selection:bg-primary-200 dark:selection:text-gray-900',
+          placement === 'top'
+            ? '-translate-y-full before:absolute before:inset-x-0 before:top-full before:h-2'
+            : 'before:absolute before:inset-x-0 before:bottom-full before:h-2',
           props.widthClass,
         ]"
-        :style="{ top: `calc(${tooltipStyle.top} - 8px)`, left: tooltipStyle.left }"
+        :style="{ top: tooltipStyle.top, left: tooltipStyle.left }"
+        :data-placement="placement"
         @mouseleave="onTooltipLeave"
       >
         <button
@@ -152,7 +183,12 @@ onBeforeUnmount(() => {
           </svg>
         </button>
         <slot>{{ content }}</slot>
-        <div class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900 dark:bg-dark-800"></div>
+        <div
+          :class="[
+            'absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900 dark:bg-dark-800',
+            placement === 'top' ? '-bottom-1' : '-top-1',
+          ]"
+        ></div>
       </div>
     </Teleport>
   </div>
