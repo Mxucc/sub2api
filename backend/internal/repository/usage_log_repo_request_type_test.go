@@ -94,6 +94,8 @@ func TestUsageLogRepositoryCreateSyncRequestTypeAndLegacyFields(t *testing.T) {
 			sqlmock.AnyArg(), // upstream_endpoint
 			log.CacheTTLOverridden,
 			log.LongContextBillingApplied,
+			log.MatchedTier,
+			log.BillingExprApplied,
 			sqlmock.AnyArg(), // channel_id
 			sqlmock.AnyArg(), // model_mapping_chain
 			sqlmock.AnyArg(), // billing_tier
@@ -189,6 +191,8 @@ func TestUsageLogRepositoryCreate_PersistsServiceTier(t *testing.T) {
 			sqlmock.AnyArg(), // upstream_endpoint
 			log.CacheTTLOverridden,
 			log.LongContextBillingApplied,
+			log.MatchedTier,
+			log.BillingExprApplied,
 			sqlmock.AnyArg(), // channel_id
 			sqlmock.AnyArg(), // model_mapping_chain
 			sqlmock.AnyArg(), // billing_tier
@@ -952,6 +956,8 @@ func TestScanUsageLogRequestTypeAndLegacyFallback(t *testing.T) {
 			sql.NullString{},
 			false,
 			false,
+			"",    // matched_tier
+			false, // billing_expr_applied
 			sql.NullInt64{},
 			sql.NullString{},
 			sql.NullString{},
@@ -1032,6 +1038,8 @@ func TestScanUsageLogRequestTypeAndLegacyFallback(t *testing.T) {
 			sql.NullString{},
 			false,
 			false,
+			"",                // matched_tier
+			false,             // billing_expr_applied
 			sql.NullInt64{},   // channel_id
 			sql.NullString{},  // model_mapping_chain
 			sql.NullString{},  // billing_tier
@@ -1095,6 +1103,8 @@ func TestScanUsageLogRequestTypeAndLegacyFallback(t *testing.T) {
 			sql.NullString{},
 			false,
 			false,
+			"",                // matched_tier
+			false,             // billing_expr_applied
 			sql.NullInt64{},   // channel_id
 			sql.NullString{},  // model_mapping_chain
 			sql.NullString{},  // billing_tier
@@ -1159,6 +1169,8 @@ func TestScanUsageLogRequestTypeAndLegacyFallback(t *testing.T) {
 			sql.NullString{},
 			false,
 			false,
+			"",                // matched_tier
+			false,             // billing_expr_applied
 			sql.NullInt64{},   // channel_id
 			sql.NullString{},  // model_mapping_chain
 			sql.NullString{},  // billing_tier

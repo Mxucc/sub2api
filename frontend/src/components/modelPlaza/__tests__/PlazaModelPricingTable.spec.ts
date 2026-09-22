@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PlazaModelPricingTable from '../PlazaModelPricingTable.vue'
-import type { PlazaModel } from '@/api/modelPlaza'
+import type { PlazaBillingExpr, PlazaModel } from '@/api/modelPlaza'
 
 vi.mock('vue-i18n', async () => {
   const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n')
@@ -696,5 +696,205 @@ describe('PlazaModelPricingTable 分时计价', () => {
     const wrapper = mountTable([tokenModel()], 1)
     expect(wrapper.findAll('tbody tr')).toHaveLength(1)
     expect(wrapper.find('[title*="modelPlaza.table.timePricingRowHint"]').exists()).toBe(false)
+  })
+})
+
+describe('PlazaModelPricingTable 计费表达式分档价', () => {
+  /** 带峰谷价表达式的模型:官方基线价(低谷) + 解析出的分档。 */
+  function exprModel(
+    overrides: Partial<PlazaModel> = {},
+    exprOverrides: Partial<PlazaBillingExpr> = {}
+  ): PlazaModel {
+    return tokenModel({
+      name: 'deepseek-chat',
+      platform: 'deepseek',
+      official_pricing: {
+        input_price: 1.5e-7,
+        output_price: 6e-7,
+        cache_write_price: 0,
+        cache_read_price: 3e-9,
+        billing_expr: {
+          expression:
+            'v1:weekday("Asia/Shanghai") >= 1 ? tier("peak", p * 0.30 + cr * 0.006 + c * 1.20) : tier("off_peak", p * 0.15 + cr * 0.003 + c * 0.60)',
+          source: 'builtin',
+          recognized: true,
+          time_dependent: true,
+          variables: ['p', 'c', 'cr'],
+          tiers: [
+            {
+              name: 'peak',
+              condition: 'weekday("Asia/Shanghai") >= 1',
+              coefficients: { p: 0.3, cr: 0.006, c: 1.2 },
+              unit: 'per_million_tokens',
+              variables: ['p', 'c', 'cr'],
+              time_windows: ['周一至周五 09:00-12:00, 14:00-18:00'],
+              timezone: 'Asia/Shanghai'
+            },
+            {
+              name: 'off_peak',
+              coefficients: { p: 0.15, cr: 0.003, c: 0.6 },
+              unit: 'per_million_tokens',
+              variables: ['p', 'c', 'cr']
+            }
+          ],
+          ...exprOverrides
+        }
+      },
+      ...overrides
+    })
+  }
+
+  it('带 tiers 时渲染分档表:档名 + 各变量单价,表头按表达式实际变量生成', () => {
+    const wrapper = mountTable([exprModel()], 1)
+    const tables = wrapper.findAll('table')
+    expect(tables).toHaveLength(2)
+    const table = tables[1]
+
+    const headers = table.findAll('thead th').map((th) => th.text())
+    expect(headers[0]).toContain('modelPlaza.table.timeTierTierColumn')
+    expect(headers[1]).toContain('modelPlaza.table.timeTierConditionColumn')
+    // 表头 = billing_expr.variables 并集(p/c/cr),不写死列
+    expect(headers[2]).toContain('modelPlaza.table.varInput')
+    expect(headers[3]).toContain('modelPlaza.table.varOutput')
+    expect(headers[4]).toContain('modelPlaza.table.varCacheRead')
+    expect(table.text()).not.toContain('modelPlaza.table.varCacheWrite')
+
+    const rows = table.findAll('tbody tr')
+    expect(rows).toHaveLength(2)
+    expect(rows[0].find('th').text()).toBe('modelPlaza.table.timeTierNamePeak')
+    expect(rows[1].find('th').text()).toBe('modelPlaza.table.timeTierNameOffPeak')
+    // coefficients 即 USD / 1M token:不乘倍率、不换算、保留 0.006 这类小数位
+    expect(rows[0].findAll('td').slice(1).map((td) => td.text().trim())).toEqual([
+      '$0.30',
+      '$1.20',
+      '$0.006'
+    ])
+    expect(rows[1].findAll('td').slice(1).map((td) => td.text().trim())).toEqual([
+      '$0.15',
+      '$0.60',
+      '$0.003'
+    ])
+
+    const text = wrapper.text()
+    expect(text).toContain('modelPlaza.table.timeTierTitleTime')
+    expect(text).toContain('modelPlaza.table.timeTierSourceBuiltin')
+    expect(text).toContain('modelPlaza.table.timeTierUnitNote')
+    expect(text).toContain('modelPlaza.table.timeTierBaselineNote')
+
+    // 官方价格列标注「基线」,避免基线价被当成全部
+    const officialInput = tables[0].findAll('tbody tr')[0].findAll('td')[4]
+    expect(officialInput.text()).toContain('modelPlaza.table.timeTierBaselineBadge')
+  })
+
+  it('有时段文案时优先展示人读时段(含时区),不展示 condition 原文', () => {
+    const wrapper = mountTable([exprModel()], 1)
+    const rows = wrapper.findAll('table')[1].findAll('tbody tr')
+
+    expect(rows[0].findAll('td')[0].text()).toContain('周一至周五 09:00-12:00, 14:00-18:00')
+    expect(rows[0].findAll('td')[0].text()).toContain('Asia/Shanghai')
+    expect(rows[0].text()).not.toContain('weekday(')
+
+    // 无 time_windows 也无 condition(else 分支) → 其余情况
+    expect(rows[1].findAll('td')[0].text().trim()).toBe('modelPlaza.table.timeTierUnconditional')
+  })
+
+  it('没有 time_windows 时回退展示 condition 原文', () => {
+    const wrapper = mountTable(
+      [
+        exprModel(
+          {},
+          {
+            time_dependent: false,
+            variables: ['p'],
+            tiers: [
+              {
+                name: 'long_context',
+                condition: 'len > 128000',
+                coefficients: { p: 0.5 },
+                unit: 'per_million_tokens',
+                variables: ['p']
+              }
+            ]
+          }
+        )
+      ],
+      1
+    )
+    const table = wrapper.findAll('table')[1]
+    expect(table.find('tbody td').text()).toBe('len > 128000')
+    expect(wrapper.text()).toContain('modelPlaza.table.timeTierTitleTiers')
+  })
+
+  it('recognized=false 时展示表达式原文,不渲染分档表', () => {
+    const wrapper = mountTable(
+      [exprModel({}, { recognized: false, time_dependent: false, tiers: [], variables: [] })],
+      1
+    )
+    expect(wrapper.findAll('table')).toHaveLength(1)
+    expect(wrapper.text()).toContain('modelPlaza.table.timeTierRawNote')
+    expect(wrapper.text()).toContain('tier("peak", p * 0.30 + cr * 0.006 + c * 1.20)')
+  })
+
+  it('recognized=true 但 tiers 为空数组时同样回退原文', () => {
+    const wrapper = mountTable([exprModel({}, { tiers: [], variables: [] })], 1)
+    expect(wrapper.findAll('table')).toHaveLength(1)
+    expect(wrapper.text()).toContain('modelPlaza.table.timeTierRawNote')
+  })
+
+  it('没有 billing_expr 时(原有行为)不出现分档区块,也不标注基线', () => {
+    const wrapper = mountTable([tokenModel()], 1)
+    expect(wrapper.findAll('table')).toHaveLength(1)
+    expect(wrapper.text()).not.toContain('timeTier')
+    expect(wrapper.find('button').exists()).toBe(false)
+  })
+
+  it('per_request 档只渲染「每次请求」列,未知档名原样展示', () => {
+    const wrapper = mountTable(
+      [
+        exprModel(
+          {},
+          {
+            time_dependent: false,
+            variables: [],
+            tiers: [{ name: 'per_call', unit: 'per_request', constant: 0.02 }]
+          }
+        )
+      ],
+      1
+    )
+    const table = wrapper.findAll('table')[1]
+    const headers = table.findAll('thead th')
+    expect(headers).toHaveLength(3)
+    expect(headers[2].text()).toContain('modelPlaza.table.timeTierFlatColumn')
+    expect(table.text()).not.toContain('modelPlaza.table.varInput')
+
+    const row = table.find('tbody tr')
+    expect(row.find('th').text()).toBe('per_call')
+    expect(row.findAll('td')[1].text().trim()).toBe('$0.02')
+  })
+
+  it('分档表默认展开,可收起再展开,并同步 aria-expanded', async () => {
+    const wrapper = mountTable([exprModel()], 1)
+    const toggle = wrapper.find('button')
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+    expect(wrapper.findAll('table')).toHaveLength(2)
+
+    await toggle.trigger('click')
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(wrapper.findAll('table')).toHaveLength(1)
+    expect(toggle.text()).toContain('modelPlaza.table.timeTierExpand')
+
+    await toggle.trigger('click')
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+    expect(wrapper.findAll('table')).toHaveLength(2)
+  })
+
+  it('分组内多个模型带表达式时各有一个分档区块与开关', () => {
+    const wrapper = mountTable(
+      [exprModel({ name: 'deepseek-chat' }), exprModel({ name: 'deepseek-reasoner' })],
+      1
+    )
+    expect(wrapper.findAll('table')).toHaveLength(3)
+    expect(wrapper.findAll('button')).toHaveLength(2)
   })
 })

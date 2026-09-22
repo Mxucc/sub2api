@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/Wei-Shaw/sub2api/internal/service"
+	"github.com/Wei-Shaw/sub2api/pkg/billingexpr"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
@@ -151,6 +152,71 @@ func TestToModelPlazaGroupDTO_UserRateAndFieldWhitelist(t *testing.T) {
 
 func TestToModelPlazaOfficialPricing_NilPassthrough(t *testing.T) {
 	require.Nil(t, toModelPlazaOfficialPricing(nil))
+}
+
+// TestToModelPlazaOfficialPricing_BillingExprPassthrough pins the field the plaza
+// needs to show a real price for a time-of-day model: the base rates are only a
+// baseline for those models, so the parsed tiers have to reach the client.
+func TestToModelPlazaOfficialPricing_BillingExprPassthrough(t *testing.T) {
+	const expression = `hour("Asia/Shanghai") < 12 ? tier("morning", p * 2) : tier("evening", p * 4)`
+	parsed, err := billingexpr.ParseTiers(expression)
+	require.NoError(t, err)
+
+	dto := toModelPlazaOfficialPricing(&service.PlazaOfficialPricing{
+		InputPrice: testPtr(1.5e-7),
+		BillingExpr: &service.PlazaBillingExpr{
+			Expression: expression,
+			Source:     "builtin",
+			Parsed:     parsed,
+		},
+	})
+	require.NotNil(t, dto)
+	require.NotNil(t, dto.BillingExpr)
+	require.Equal(t, "builtin", dto.BillingExpr.Source)
+	require.Equal(t, expression, dto.BillingExpr.Expression)
+	require.True(t, dto.BillingExpr.Recognized)
+	require.True(t, dto.BillingExpr.TimeDependent)
+	require.Len(t, dto.BillingExpr.Tiers, 2)
+	require.Equal(t, "morning", dto.BillingExpr.Tiers[0].Name)
+	require.InDelta(t, 2.0, dto.BillingExpr.Tiers[0].Coefficients["p"], 1e-15)
+	// A one-sided bound renders as its full span, so `hour < 12` reads as
+	// 00:00-12:00 rather than as nothing.
+	require.Equal(t, []string{"00:00-12:00"}, dto.BillingExpr.Tiers[0].TimeWindows)
+	require.Equal(t, "Asia/Shanghai", dto.BillingExpr.Tiers[0].Timezone)
+	require.Equal(t, "evening", dto.BillingExpr.Tiers[1].Name)
+	require.InDelta(t, 4.0, dto.BillingExpr.Tiers[1].Coefficients["p"], 1e-15)
+}
+
+// TestToUserBillingExpr_UnrecognizedFallsBackToRawText keeps the raw expression on
+// the wire when the display parser cannot read it, so the UI shows the text rather
+// than an empty price block.
+func TestToUserBillingExpr_UnrecognizedFallsBackToRawText(t *testing.T) {
+	require.Nil(t, toUserBillingExpr(nil))
+	require.Nil(t, toUserBillingExpr(&service.PlazaBillingExpr{Expression: "   "}))
+
+	parsed, err := billingexpr.ParseTiers("p * 5 + c * 10")
+	require.NoError(t, err)
+	require.False(t, parsed.Recognized)
+
+	dto := toUserBillingExpr(&service.PlazaBillingExpr{
+		Expression: "p * 5 + c * 10",
+		Source:     "catalog",
+		Parsed:     parsed,
+	})
+	require.NotNil(t, dto)
+	require.Equal(t, "p * 5 + c * 10", dto.Expression)
+	require.False(t, dto.Recognized)
+	require.Empty(t, dto.Tiers)
+}
+
+// TestToUserBillingExpr_NilParsedStillCarriesTheString covers a compile failure on
+// the server side: the string is still the truth, so it must not be dropped.
+func TestToUserBillingExpr_NilParsedStillCarriesTheString(t *testing.T) {
+	dto := toUserBillingExpr(&service.PlazaBillingExpr{Expression: "tier(", Source: "catalog"})
+	require.NotNil(t, dto)
+	require.Equal(t, "tier(", dto.Expression)
+	require.False(t, dto.Recognized)
+	require.Empty(t, dto.Tiers)
 }
 
 func TestToModelPlazaGroupDTO_LongContextTiersAndBasis(t *testing.T) {

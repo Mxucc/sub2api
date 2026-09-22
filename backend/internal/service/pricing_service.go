@@ -157,6 +157,20 @@ type LiteLLMModelPricing struct {
 	InputCostPerImageToken              float64 `json:"input_cost_per_image_token"`  // 图片输入 token 价格（如 gpt-image-2 图片编辑）
 	CacheReadInputImageTokenCost        float64 `json:"cache_read_input_image_token_cost"`
 
+	// BillingExpr is an optional declarative billing expression. When present it
+	// replaces the token rates above as the complete pricing truth for this
+	// model at the default price-card layer, so the catalog's own numbers are
+	// not also applied. Empty means "price from the token rates".
+	BillingExpr string `json:"billing_expr"`
+
+	// BillingExprExplicit 表示源数据里**显式**出现了 billing_expr 键（**含空串**），
+	// 即「这个模型的价由价格数据（目录 / pricing.override_file）声明，代码内置规则
+	// 不得接管」。判定条件是 JSON 指针非 nil：`"billing_expr": ""` 是显式声明
+	// 「用这里的单价，别套内置表达式」，与「没有这个键」（允许内置规则兜底）必须区分。
+	// 用途见 applyModelSpecificPricingPolicyEx（强制 DeepSeek 官方价的豁免）与
+	// resolveBillingExpr（显式空串压掉内置表兜底）。不是 JSON 字段：只由解析器写入。
+	BillingExprExplicit bool `json:"-"`
+
 	// TokenPricingAbsent 表示源数据中 input/output token 价格均缺失（仅有图片价）。
 	// 此类条目只可用于图片计费，token 计费必须回退到 fallback 或 fail-closed，
 	// 否则 token 流量会被按 $0 计费。零值（false）表示条目具备 token 价格。
@@ -191,6 +205,7 @@ type LiteLLMRawEntry struct {
 	OutputCostPerImageToken             *float64 `json:"output_cost_per_image_token"`
 	InputCostPerImageToken              *float64 `json:"input_cost_per_image_token"`
 	CacheReadInputImageTokenCost        *float64 `json:"cache_read_input_image_token_cost"`
+	BillingExpr                         *string  `json:"billing_expr"`
 }
 
 // PricingService 动态价格服务
@@ -204,6 +219,16 @@ type PricingService struct {
 	// fallback/override 文件在最近一次成功重建时的内容指纹，定时器据此判断是否
 	// 需要从本地目录缓存重建叠加层。
 	customFilesHash string
+
+	// 覆盖文件（__defaults__ 全局默认价 + 每模型微调字段）的读取缓存。用独立的互斥锁：
+	// 这条路径由计费函数每请求调用，与目录重载的 s.mu 没有锁序关系，混用会引入死锁风险。
+	// 指纹是覆盖文件的「大小 + mtime」，一次读取同时构建两份快照；快照里的 map 一旦发布
+	// 就不再原地修改，因此调用方在锁外读取是安全的。
+	defaultsMu         sync.Mutex
+	defaultsCache      map[string]float64
+	defaultsModelCache map[string]map[string]float64
+	defaultsCacheKey   string
+	defaultsWarned     bool
 
 	// 停止信号
 	stopCh chan struct{}
@@ -601,9 +626,12 @@ func (s *PricingService) parsePricingData(body []byte) (map[string]*LiteLLMModel
 			continue
 		}
 
-		// 只保留有有效价格的条目
-		if entry.InputCostPerToken == nil && entry.OutputCostPerToken == nil && entry.OutputCostPerImage == nil && entry.OutputCostPerImageToken == nil && entry.InputCostPerImageToken == nil {
-			continue
+		// 只保留有有效价格的条目。声明了 billing_expr 的条目即使没有 token 单价
+		// 也保留：表达式本身就是该模型的计费依据。
+		if entry.BillingExpr == nil || strings.TrimSpace(*entry.BillingExpr) == "" {
+			if entry.InputCostPerToken == nil && entry.OutputCostPerToken == nil && entry.OutputCostPerImage == nil && entry.OutputCostPerImageToken == nil && entry.InputCostPerImageToken == nil {
+				continue
+			}
 		}
 
 		pricing := &LiteLLMModelPricing{
@@ -612,6 +640,13 @@ func (s *PricingService) parsePricingData(body []byte) (map[string]*LiteLLMModel
 			SupportsPromptCaching: entry.SupportsPromptCaching,
 			SupportsServiceTier:   entry.SupportsServiceTier,
 			TokenPricingAbsent:    entry.InputCostPerToken == nil && entry.OutputCostPerToken == nil,
+		}
+		// 指针非 nil 即「显式声明」，空串也算：`"billing_expr": ""` 是「用本条目的
+		// 单价、别套内置规则」，与「没有这个键」语义不同。TrimSpace 结果仍照旧写进
+		// BillingExpr（空串表示不走表达式计费）。
+		if entry.BillingExpr != nil {
+			pricing.BillingExpr = strings.TrimSpace(*entry.BillingExpr)
+			pricing.BillingExprExplicit = true
 		}
 
 		if entry.InputCostPerToken != nil {
@@ -883,6 +918,10 @@ func (s *PricingService) loadPricingOverrideEntries() map[string]json.RawMessage
 		logger.LegacyPrintf("service.pricing", "[Pricing] Warning: override merge skipped: %v", err)
 		return nil
 	}
+	// __defaults__ 是全局默认价段而不是模型条目，绝不参与目录条目的合并（它是被计费
+	// 函数按字段名查询的，合并进目录只会得到一个读不出价的幽灵模型）。目录里也不可能
+	// 出现这个键，这里同样加一道保护。
+	delete(entries, OverrideDefaultsKey)
 	return entries
 }
 
@@ -929,9 +968,16 @@ func (s *PricingService) mergeOverrideOnlyModels(data map[string]*LiteLLMModelPr
 	}
 	leftover := make(map[string]json.RawMessage)
 	for name, patch := range overrides {
-		if _, ok := data[name]; !ok {
-			leftover[name] = patch
+		if _, ok := data[name]; ok {
+			continue
 		}
+		// 只有 _tuned/_updated_at 的条目（管理端标了「已微调」但价格字段全被删除）
+		// 不含任何价格，解析时必被有效性过滤丢弃；那是设计如此，不是「改价没生效」，
+		// 跳过以免打无意义的哨兵 WARN。
+		if overridePatchIsMetadataOnly(patch) {
+			continue
+		}
+		leftover[name] = patch
 	}
 	if len(leftover) == 0 {
 		return data
@@ -1626,6 +1672,31 @@ func (s *PricingService) ListModelNamesByProvider(provider string) []string {
 	}
 	sort.Strings(names)
 	return names
+}
+
+// ListModelNames returns every model name in the loaded catalog, sorted.
+// It is the enumeration used by the admin price catalog, which needs all models
+// rather than one provider's.
+func (s *PricingService) ListModelNames() []string {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	names := make([]string, 0, len(s.pricingData))
+	for name := range s.pricingData {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	return names
+}
+
+// GetCatalogEntry returns the catalog entry for an exact model name, or nil.
+// Unlike BillingService.GetModelPricing it applies no fuzzy matching and no
+// model-specific policy, so callers see the raw catalog data.
+func (s *PricingService) GetCatalogEntry(model string) *LiteLLMModelPricing {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	return s.pricingData[strings.ToLower(strings.TrimSpace(model))]
 }
 
 // isNumeric 检查字符串是否为纯数字

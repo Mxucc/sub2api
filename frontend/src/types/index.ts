@@ -1779,6 +1779,11 @@ export interface AdminUsageLog extends UsageLog {
   channel_id?: number | null
   billing_tier?: string | null
 
+  // 声明式计费表达式命中的档位（如 "peak" / "off_peak"），空串表示未分档
+  matched_tier?: string | null
+  // 是否由计费表达式定价（仅管理员可见）
+  billing_expr_applied?: boolean | null
+
   // 最小账号信息（仅管理员接口返回）
   account?: UsageLogAccountSummary
 }

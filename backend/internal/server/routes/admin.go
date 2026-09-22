@@ -772,6 +772,21 @@ func registerChannelRoutes(admin *gin.RouterGroup, h *handler.Handlers) {
 		channels.GET("", h.Admin.Channel.List)
 		channels.GET("/model-pricing", h.Admin.Channel.GetModelDefaultPricing)
 		channels.GET("/pricing/sync-models", h.Admin.Channel.SyncPricingModels)
+		// 模型价格总览（只读）：展示系统对各模型的价格定义，不依赖是否存在对应渠道。
+		channels.GET("/pricing/catalog", h.Admin.Channel.ListModelPricingCatalog)
+		// 模型价格手动微调：读写覆盖补丁文件、按最新目录刷新、导入导出。
+		// 模型名走 query/body（含点、斜杠），不进 path。
+		channels.GET("/pricing/overrides", h.Admin.Channel.ListModelPricingOverrides)
+		channels.PUT("/pricing/overrides", h.Admin.Channel.SetModelPricingOverride)
+		channels.DELETE("/pricing/overrides", h.Admin.Channel.DeleteModelPricingOverride)
+		channels.POST("/pricing/overrides/refresh", h.Admin.Channel.RefreshModelPricingOverrides)
+		channels.GET("/pricing/overrides/export", h.Admin.Channel.ExportModelPricingOverrides)
+		channels.POST("/pricing/overrides/import", h.Admin.Channel.ImportModelPricingOverrides)
+		// 全局默认价（按张 / 按秒 / 按次 / 搜索 / 音频）：存在覆盖文件的保留键
+		// __defaults__ 下，接口形状与每模型微调一致，只是不带模型名。
+		channels.GET("/pricing/overrides/defaults", h.Admin.Channel.GetModelPricingOverrideDefaults)
+		channels.PUT("/pricing/overrides/defaults", h.Admin.Channel.SetModelPricingOverrideDefaults)
+		channels.DELETE("/pricing/overrides/defaults", h.Admin.Channel.DeleteModelPricingOverrideDefaults)
 		channels.GET("/:id", h.Admin.Channel.GetByID)
 		channels.POST("", h.Admin.Channel.Create)
 		channels.PUT("/:id", h.Admin.Channel.Update)

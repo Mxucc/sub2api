@@ -2288,12 +2288,14 @@ func setDefaults() {
 	viper.SetDefault("rate_limit.overload_cooldown_minutes", 10)
 	viper.SetDefault("rate_limit.oauth_401_cooldown_minutes", 10)
 
-	// Pricing - 从 model-price-repo main 分支同步模型定价和上下文窗口数据
-	viper.SetDefault("pricing.remote_url", "https://raw.githubusercontent.com/Wei-Shaw/model-price-repo/main/model_prices_and_context_window.json")
-	viper.SetDefault("pricing.hash_url", "https://raw.githubusercontent.com/Wei-Shaw/model-price-repo/main/model_prices_and_context_window.sha256")
+	// Pricing - 从自维护价格仓库 Mxucc/model-price-repo 的 main 分支同步模型定价和上下文窗口数据。
+	// 该仓库由 GitHub Actions 从 litellm 上游过滤同步，并通过 config.json 的 custom_models 注入自定价。
+	viper.SetDefault("pricing.remote_url", "https://raw.githubusercontent.com/Mxucc/model-price-repo/main/model_prices_and_context_window.json")
+	viper.SetDefault("pricing.hash_url", "https://raw.githubusercontent.com/Mxucc/model-price-repo/main/model_prices_and_context_window.sha256")
 	viper.SetDefault("pricing.data_dir", "./data")
 	viper.SetDefault("pricing.fallback_file", "./resources/model-pricing/model_prices_and_context_window.json")
-	viper.SetDefault("pricing.override_file", "")
+	// 覆盖补丁文件：管理端「模型价格」页面把手动微调写在这里，按内容哈希热重载。
+	viper.SetDefault("pricing.override_file", "./data/model_pricing_overrides.json")
 	viper.SetDefault("pricing.update_interval_hours", 24)
 	viper.SetDefault("pricing.hash_check_interval_minutes", 10)
 

@@ -145,6 +145,23 @@
           </span>
         </template>
 
+        <template #cell-matched_tier="{ row }">
+          <span
+            v-if="matchedTierLabel(row)"
+            data-testid="matched-tier-badge"
+            class="inline-flex items-center rounded px-2 py-0.5 text-xs font-medium"
+            :class="matchedTierBadgeClass(row)"
+          >
+            {{ matchedTierLabel(row) }}
+          </span>
+          <span
+            v-else
+            data-testid="matched-tier-empty"
+            class="text-sm text-gray-400 dark:text-gray-500"
+            :title="matchedTierEmptyTitle(row)"
+          >—</span>
+        </template>
+
         <template #cell-tokens="{ row }">
           <!-- 图片生成请求（仅按次计费时显示图片格式） -->
           <div v-if="isImageUsage(row)" class="flex items-center gap-1.5">
@@ -718,7 +735,27 @@ const getRequestTypeBadgeClass = (row: AdminUsageLog): string => {
   return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
 }
 
+// 计费档：表达式 tier() 命中的档位。空值显示 —，表达式已定价但未分档时补 tooltip。
+const matchedTierRaw = (row: AdminUsageLog): string => (row.matched_tier ?? '').trim()
 
+const matchedTierLabel = (row: AdminUsageLog): string => {
+  const tier = matchedTierRaw(row)
+  if (tier === 'off_peak') return t('admin.usage.matchedTierOffPeak')
+  if (tier === 'peak') return t('admin.usage.matchedTierPeak')
+  return tier
+}
+
+const matchedTierBadgeClass = (row: AdminUsageLog): string => {
+  const tier = matchedTierRaw(row)
+  if (tier === 'peak') return 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300'
+  if (tier === 'off_peak') return 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
+  return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+}
+
+const matchedTierEmptyTitle = (row: AdminUsageLog): string | undefined =>
+  matchedTierRaw(row) === '' && row.billing_expr_applied === true
+    ? t('admin.usage.matchedTierExprNoTier')
+    : undefined
 
 const formatUserAgent = (ua: string): string => {
   return ua

@@ -621,6 +621,12 @@ type UsageLog struct {
 	ActualCost                float64 `json:"actual_cost"`
 	RateMultiplier            float64 `json:"rate_multiplier"`
 	LongContextBillingApplied bool    `json:"long_context_billing_applied"`
+	// MatchedTier is the declarative billing-expression tier() name this request
+	// hit; omitted when the request was not priced by an expression.
+	MatchedTier string `json:"matched_tier,omitempty"`
+	// BillingExprApplied is true when a declarative billing expression priced
+	// this request; omitted (false) for the common per-token paths.
+	BillingExprApplied bool `json:"billing_expr_applied,omitempty"`
 
 	BillingType  int8   `json:"billing_type"`
 	RequestType  string `json:"request_type"`

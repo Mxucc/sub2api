@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
+
+	"github.com/Wei-Shaw/sub2api/pkg/billingexpr"
 )
 
 // PlazaOfficialPricing 模型广场展示用的官方参考价（USD per token），与计费同源：
@@ -17,6 +20,17 @@ type PlazaOfficialPricing struct {
 	CacheReadPrice    *float64
 	// Intervals 官方长上下文阶梯（多档时给出），不受分组开关影响。
 	Intervals []PricingInterval
+	// BillingExpr 该模型在默认价卡层的声明式计费表达式及其解析结果，仅存在表达式时给出。
+	// 费用随时刻变化的模型（如 DeepSeek 峰谷价）只能靠它展示真实价格：上面的
+	// InputPrice/OutputPrice 只是基线，高峰时段会翻倍。
+	BillingExpr *PlazaBillingExpr
+}
+
+// PlazaBillingExpr 是计费表达式的展示形态：原始字符串 + 解析出的分档价格。
+type PlazaBillingExpr struct {
+	Expression string
+	Source     string
+	Parsed     *billingexpr.ParsedExpression
 }
 
 // PlazaModel 模型广场中单个模型条目：按实收口径合成的展示定价 + 官方参考价。
@@ -360,6 +374,9 @@ func (s *ModelPlazaService) lookupOfficialPricing(ctx context.Context, modelName
 			CacheWritePrice: nonZeroPtr(mp.CacheCreationPricePerToken),
 			CacheReadPrice:  nonZeroPtr(mp.CacheReadPricePerToken),
 		}
+		// 费用随时刻变化的模型（DeepSeek 峰谷价）只有表达式能表示真实价格；
+		// 上面的基线价仍是低谷口径，与表达式分档并列展示。
+		result.BillingExpr = s.billingService.DescribeModelBillingExpr(modelName, time.Time{})
 		// 计费只在支持 5m/1h 分档时使用 1h 价，其余情况 1h 价对用户无意义。
 		if mp.SupportsCacheBreakdown {
 			result.CacheWrite1hPrice = nonZeroPtr(mp.CacheCreation1hPrice)

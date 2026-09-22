@@ -200,6 +200,16 @@ func LongContextBillingApplied(v bool) predicate.UsageLog {
 	return predicate.UsageLog(sql.FieldEQ(FieldLongContextBillingApplied, v))
 }
 
+// MatchedTier applies equality check predicate on the "matched_tier" field. It's identical to MatchedTierEQ.
+func MatchedTier(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldEQ(FieldMatchedTier, v))
+}
+
+// BillingExprApplied applies equality check predicate on the "billing_expr_applied" field. It's identical to BillingExprAppliedEQ.
+func BillingExprApplied(v bool) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldEQ(FieldBillingExprApplied, v))
+}
+
 // AccountRateMultiplier applies equality check predicate on the "account_rate_multiplier" field. It's identical to AccountRateMultiplierEQ.
 func AccountRateMultiplier(v float64) predicate.UsageLog {
 	return predicate.UsageLog(sql.FieldEQ(FieldAccountRateMultiplier, v))
@@ -1583,6 +1593,81 @@ func LongContextBillingAppliedEQ(v bool) predicate.UsageLog {
 // LongContextBillingAppliedNEQ applies the NEQ predicate on the "long_context_billing_applied" field.
 func LongContextBillingAppliedNEQ(v bool) predicate.UsageLog {
 	return predicate.UsageLog(sql.FieldNEQ(FieldLongContextBillingApplied, v))
+}
+
+// MatchedTierEQ applies the EQ predicate on the "matched_tier" field.
+func MatchedTierEQ(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldEQ(FieldMatchedTier, v))
+}
+
+// MatchedTierNEQ applies the NEQ predicate on the "matched_tier" field.
+func MatchedTierNEQ(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldNEQ(FieldMatchedTier, v))
+}
+
+// MatchedTierIn applies the In predicate on the "matched_tier" field.
+func MatchedTierIn(vs ...string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldIn(FieldMatchedTier, vs...))
+}
+
+// MatchedTierNotIn applies the NotIn predicate on the "matched_tier" field.
+func MatchedTierNotIn(vs ...string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldNotIn(FieldMatchedTier, vs...))
+}
+
+// MatchedTierGT applies the GT predicate on the "matched_tier" field.
+func MatchedTierGT(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldGT(FieldMatchedTier, v))
+}
+
+// MatchedTierGTE applies the GTE predicate on the "matched_tier" field.
+func MatchedTierGTE(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldGTE(FieldMatchedTier, v))
+}
+
+// MatchedTierLT applies the LT predicate on the "matched_tier" field.
+func MatchedTierLT(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldLT(FieldMatchedTier, v))
+}
+
+// MatchedTierLTE applies the LTE predicate on the "matched_tier" field.
+func MatchedTierLTE(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldLTE(FieldMatchedTier, v))
+}
+
+// MatchedTierContains applies the Contains predicate on the "matched_tier" field.
+func MatchedTierContains(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldContains(FieldMatchedTier, v))
+}
+
+// MatchedTierHasPrefix applies the HasPrefix predicate on the "matched_tier" field.
+func MatchedTierHasPrefix(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldHasPrefix(FieldMatchedTier, v))
+}
+
+// MatchedTierHasSuffix applies the HasSuffix predicate on the "matched_tier" field.
+func MatchedTierHasSuffix(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldHasSuffix(FieldMatchedTier, v))
+}
+
+// MatchedTierEqualFold applies the EqualFold predicate on the "matched_tier" field.
+func MatchedTierEqualFold(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldEqualFold(FieldMatchedTier, v))
+}
+
+// MatchedTierContainsFold applies the ContainsFold predicate on the "matched_tier" field.
+func MatchedTierContainsFold(v string) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldContainsFold(FieldMatchedTier, v))
+}
+
+// BillingExprAppliedEQ applies the EQ predicate on the "billing_expr_applied" field.
+func BillingExprAppliedEQ(v bool) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldEQ(FieldBillingExprApplied, v))
+}
+
+// BillingExprAppliedNEQ applies the NEQ predicate on the "billing_expr_applied" field.
+func BillingExprAppliedNEQ(v bool) predicate.UsageLog {
+	return predicate.UsageLog(sql.FieldNEQ(FieldBillingExprApplied, v))
 }
 
 // AccountRateMultiplierEQ applies the EQ predicate on the "account_rate_multiplier" field.

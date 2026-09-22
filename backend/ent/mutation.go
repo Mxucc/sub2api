@@ -44568,6 +44568,8 @@ type UsageLogMutation struct {
 	rate_multiplier              *float64
 	addrate_multiplier           *float64
 	long_context_billing_applied *bool
+	matched_tier                 *string
+	billing_expr_applied         *bool
 	account_rate_multiplier      *float64
 	addaccount_rate_multiplier   *float64
 	billing_type                 *int8
@@ -46162,6 +46164,78 @@ func (m *UsageLogMutation) ResetLongContextBillingApplied() {
 	m.long_context_billing_applied = nil
 }
 
+// SetMatchedTier sets the "matched_tier" field.
+func (m *UsageLogMutation) SetMatchedTier(s string) {
+	m.matched_tier = &s
+}
+
+// MatchedTier returns the value of the "matched_tier" field in the mutation.
+func (m *UsageLogMutation) MatchedTier() (r string, exists bool) {
+	v := m.matched_tier
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMatchedTier returns the old "matched_tier" field's value of the UsageLog entity.
+// If the UsageLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UsageLogMutation) OldMatchedTier(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMatchedTier is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMatchedTier requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMatchedTier: %w", err)
+	}
+	return oldValue.MatchedTier, nil
+}
+
+// ResetMatchedTier resets all changes to the "matched_tier" field.
+func (m *UsageLogMutation) ResetMatchedTier() {
+	m.matched_tier = nil
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (m *UsageLogMutation) SetBillingExprApplied(b bool) {
+	m.billing_expr_applied = &b
+}
+
+// BillingExprApplied returns the value of the "billing_expr_applied" field in the mutation.
+func (m *UsageLogMutation) BillingExprApplied() (r bool, exists bool) {
+	v := m.billing_expr_applied
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBillingExprApplied returns the old "billing_expr_applied" field's value of the UsageLog entity.
+// If the UsageLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UsageLogMutation) OldBillingExprApplied(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBillingExprApplied is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBillingExprApplied requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBillingExprApplied: %w", err)
+	}
+	return oldValue.BillingExprApplied, nil
+}
+
+// ResetBillingExprApplied resets all changes to the "billing_expr_applied" field.
+func (m *UsageLogMutation) ResetBillingExprApplied() {
+	m.billing_expr_applied = nil
+}
+
 // SetAccountRateMultiplier sets the "account_rate_multiplier" field.
 func (m *UsageLogMutation) SetAccountRateMultiplier(f float64) {
 	m.account_rate_multiplier = &f
@@ -47279,7 +47353,7 @@ func (m *UsageLogMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UsageLogMutation) Fields() []string {
-	fields := make([]string, 0, 47)
+	fields := make([]string, 0, 49)
 	if m.user != nil {
 		fields = append(fields, usagelog.FieldUserID)
 	}
@@ -47366,6 +47440,12 @@ func (m *UsageLogMutation) Fields() []string {
 	}
 	if m.long_context_billing_applied != nil {
 		fields = append(fields, usagelog.FieldLongContextBillingApplied)
+	}
+	if m.matched_tier != nil {
+		fields = append(fields, usagelog.FieldMatchedTier)
+	}
+	if m.billing_expr_applied != nil {
+		fields = append(fields, usagelog.FieldBillingExprApplied)
 	}
 	if m.account_rate_multiplier != nil {
 		fields = append(fields, usagelog.FieldAccountRateMultiplier)
@@ -47487,6 +47567,10 @@ func (m *UsageLogMutation) Field(name string) (ent.Value, bool) {
 		return m.RateMultiplier()
 	case usagelog.FieldLongContextBillingApplied:
 		return m.LongContextBillingApplied()
+	case usagelog.FieldMatchedTier:
+		return m.MatchedTier()
+	case usagelog.FieldBillingExprApplied:
+		return m.BillingExprApplied()
 	case usagelog.FieldAccountRateMultiplier:
 		return m.AccountRateMultiplier()
 	case usagelog.FieldBillingType:
@@ -47590,6 +47674,10 @@ func (m *UsageLogMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldRateMultiplier(ctx)
 	case usagelog.FieldLongContextBillingApplied:
 		return m.OldLongContextBillingApplied(ctx)
+	case usagelog.FieldMatchedTier:
+		return m.OldMatchedTier(ctx)
+	case usagelog.FieldBillingExprApplied:
+		return m.OldBillingExprApplied(ctx)
 	case usagelog.FieldAccountRateMultiplier:
 		return m.OldAccountRateMultiplier(ctx)
 	case usagelog.FieldBillingType:
@@ -47837,6 +47925,20 @@ func (m *UsageLogMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLongContextBillingApplied(v)
+		return nil
+	case usagelog.FieldMatchedTier:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMatchedTier(v)
+		return nil
+	case usagelog.FieldBillingExprApplied:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBillingExprApplied(v)
 		return nil
 	case usagelog.FieldAccountRateMultiplier:
 		v, ok := value.(float64)
@@ -48489,6 +48591,12 @@ func (m *UsageLogMutation) ResetField(name string) error {
 		return nil
 	case usagelog.FieldLongContextBillingApplied:
 		m.ResetLongContextBillingApplied()
+		return nil
+	case usagelog.FieldMatchedTier:
+		m.ResetMatchedTier()
+		return nil
+	case usagelog.FieldBillingExprApplied:
+		m.ResetBillingExprApplied()
 		return nil
 	case usagelog.FieldAccountRateMultiplier:
 		m.ResetAccountRateMultiplier()

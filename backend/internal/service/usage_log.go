@@ -168,6 +168,11 @@ type UsageLog struct {
 	ActualCost                float64
 	RateMultiplier            float64
 	LongContextBillingApplied bool
+	// MatchedTier 是声明式计费表达式 tier() 选中的档名（"peak"/"off_peak" 等）；
+	// 未走表达式或表达式没有 tier() 时为空串。
+	MatchedTier string
+	// BillingExprApplied 表示本次计费由声明式计费表达式给出，而非 per-token 单价。
+	BillingExprApplied bool
 	// AccountRateMultiplier 账号计费倍率快照（nil 表示历史数据，按 1.0 处理）
 	AccountRateMultiplier *float64
 	// AccountStatsCost 账号统计定价预计算费用（nil = 使用默认公式 total_cost × account_rate_multiplier）

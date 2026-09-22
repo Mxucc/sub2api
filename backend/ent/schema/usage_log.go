@@ -114,6 +114,13 @@ func (UsageLog) Fields() []ent.Field {
 		field.Bool("long_context_billing_applied").
 			Default(false).
 			Comment("Whether long-context pricing changed token prices for this request"),
+		field.String("matched_tier").
+			Default("").
+			SchemaType(map[string]string{dialect.Postgres: "varchar(32)"}).
+			Comment("Billing-expression tier() name matched for this request; empty when not expression-billed"),
+		field.Bool("billing_expr_applied").
+			Default(false).
+			Comment("Whether this request was priced by a declarative billing expression"),
 
 		// account_rate_multiplier: 账号计费倍率快照（NULL 表示按 1.0 处理）
 		field.Float("account_rate_multiplier").

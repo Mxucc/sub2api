@@ -72,6 +72,10 @@ const (
 	FieldRateMultiplier = "rate_multiplier"
 	// FieldLongContextBillingApplied holds the string denoting the long_context_billing_applied field in the database.
 	FieldLongContextBillingApplied = "long_context_billing_applied"
+	// FieldMatchedTier holds the string denoting the matched_tier field in the database.
+	FieldMatchedTier = "matched_tier"
+	// FieldBillingExprApplied holds the string denoting the billing_expr_applied field in the database.
+	FieldBillingExprApplied = "billing_expr_applied"
 	// FieldAccountRateMultiplier holds the string denoting the account_rate_multiplier field in the database.
 	FieldAccountRateMultiplier = "account_rate_multiplier"
 	// FieldBillingType holds the string denoting the billing_type field in the database.
@@ -189,6 +193,8 @@ var Columns = []string{
 	FieldActualCost,
 	FieldRateMultiplier,
 	FieldLongContextBillingApplied,
+	FieldMatchedTier,
+	FieldBillingExprApplied,
 	FieldAccountRateMultiplier,
 	FieldBillingType,
 	FieldStream,
@@ -264,6 +270,10 @@ var (
 	DefaultRateMultiplier float64
 	// DefaultLongContextBillingApplied holds the default value on creation for the "long_context_billing_applied" field.
 	DefaultLongContextBillingApplied bool
+	// DefaultMatchedTier holds the default value on creation for the "matched_tier" field.
+	DefaultMatchedTier string
+	// DefaultBillingExprApplied holds the default value on creation for the "billing_expr_applied" field.
+	DefaultBillingExprApplied bool
 	// DefaultBillingType holds the default value on creation for the "billing_type" field.
 	DefaultBillingType int8
 	// DefaultStream holds the default value on creation for the "stream" field.
@@ -443,6 +453,16 @@ func ByRateMultiplier(opts ...sql.OrderTermOption) OrderOption {
 // ByLongContextBillingApplied orders the results by the long_context_billing_applied field.
 func ByLongContextBillingApplied(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLongContextBillingApplied, opts...).ToFunc()
+}
+
+// ByMatchedTier orders the results by the matched_tier field.
+func ByMatchedTier(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMatchedTier, opts...).ToFunc()
+}
+
+// ByBillingExprApplied orders the results by the billing_expr_applied field.
+func ByBillingExprApplied(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBillingExprApplied, opts...).ToFunc()
 }
 
 // ByAccountRateMultiplier orders the results by the account_rate_multiplier field.

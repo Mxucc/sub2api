@@ -226,7 +226,7 @@ func (s *BillingService) contextPricingBreakpoints(resolver *ModelPricingResolve
 	}
 	// 该路径无既有计费时点（ContextPricingScheduleInput 无时间字段），显式传
 	// 当前时刻；此处 pricing 仅取 LongContextInputThreshold 等时间无关字段，
-	// DeepSeek pro→Flash 切换不影响断点结果。
+	// DeepSeek 的基准价也已是按模型档位给出、与时刻无关。
 	pricing = s.applyModelSpecificPricingPolicyEx(model, pricing, true, timezone.Now())
 	if pricing.LongContextInputThreshold <= 0 {
 		return plan

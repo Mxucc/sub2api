@@ -1061,12 +1061,12 @@ plugins:
 # 定价数据源（可选）
 # =============================================================================
 pricing:
-  # URL to fetch model pricing data (default: model-price-repo main branch)
-  # 获取模型定价数据的 URL（默认：model-price-repo main 分支）
-  remote_url: "https://raw.githubusercontent.com/Wei-Shaw/model-price-repo/refs/heads/main//model_prices_and_context_window.json"
+  # URL to fetch model pricing data (default: our own model-price-repo main branch)
+  # 获取模型定价数据的 URL（默认：自维护的 model-price-repo main 分支）
+  remote_url: "https://raw.githubusercontent.com/Mxucc/model-price-repo/main/model_prices_and_context_window.json"
   # Hash verification URL (optional)
   # 哈希校验 URL（可选）
-  hash_url: "https://raw.githubusercontent.com/Wei-Shaw/model-price-repo/refs/heads/main//model_prices_and_context_window.sha256"
+  hash_url: "https://raw.githubusercontent.com/Mxucc/model-price-repo/main/model_prices_and_context_window.sha256"
   # Local data directory for caching
   # 本地数据缓存目录
   data_dir: "./data"
@@ -1074,14 +1074,30 @@ pricing:
   # detected by content hash at the next hash check and reloaded without restart.
   # 备用定价文件：只补目录缺失的模型。修改后在下一次哈希检查时按内容哈希自动重载，无需重启。
   fallback_file: "./resources/model-pricing/model_prices_and_context_window.json"
-  # Override patch file (optional, highest priority): entries are shallow-merged
-  # field-by-field over catalog/fallback data; a null field value removes that field.
-  # Model names must match catalog keys exactly. Edits are detected by content hash
-  # at the next hash check and reloaded without restart.
-  # 覆盖补丁文件（可选，优先级最高）：条目按字段浅合并覆盖目录/回退数据，
-  # 字段值为 null 表示删除该字段。模型名须与目录键完全一致。
+  # Override patch file (highest priority): entries are shallow-merged field-by-field
+  # over catalog/fallback data; a null field value removes that field. Model names
+  # must match catalog keys exactly.
+  #
+  # This file is maintained by the admin UI ("Model Pricing" page: manual price
+  # tuning, "Fetch latest prices", import/export). Hand editing still works: besides
+  # price fields an entry may carry "_tuned": true|false and
+  # "_updated_at": "<RFC3339>", which the billing parsers ignore.
+  # 覆盖补丁文件（优先级最高）：条目按字段浅合并覆盖目录/回退数据，字段值为 null 表示
+  # 删除该字段。模型名须与目录键完全一致。
+  #
+  # 该文件由管理端「模型价格」页面维护（手动微调 / 获取最新价格 / 导入导出）；也仍可手工
+  # 编辑：条目除价格字段外可带 "_tuned": true|false 与 "_updated_at": "<RFC3339>"，
+  # 这两个元数据键不参与计费解析。
   # 修改后在下一次哈希检查时按内容哈希自动重载，无需重启。
-  # override_file: "./data/model_pricing_overrides.json"
+  #
+  # Catalog entries may also carry a "billing_expr" field: a declarative pricing
+  # expression that replaces the per-token rates for that model at the default
+  # price-card layer (used for time-of-day and long-context pricing). Group and
+  # channel pricing still wins over it. See docs/MODEL_BILLING_EXPRESSIONS.md.
+  # 目录条目还可携带 "billing_expr" 字段：声明式计费表达式，在该模型上取代
+  # per-token 单价，用于峰谷时段价、长上下文分档等。分组/渠道显式定价仍优先于它。
+  # 详见 docs/MODEL_BILLING_EXPRESSIONS.md。
+  override_file: "./data/model_pricing_overrides.json"
   # Update interval in hours
   # 更新间隔（小时）
   update_interval_hours: 24

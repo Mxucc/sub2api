@@ -708,6 +708,8 @@ func usageLogFromServiceUser(l *service.UsageLog) UsageLog {
 		ActualCost:                l.ActualCost,
 		RateMultiplier:            l.RateMultiplier,
 		LongContextBillingApplied: l.LongContextBillingApplied,
+		MatchedTier:               l.MatchedTier,
+		BillingExprApplied:        l.BillingExprApplied,
 		BillingType:               l.BillingType,
 		RequestType:               requestType.String(),
 		Stream:                    stream,

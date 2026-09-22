@@ -693,6 +693,30 @@ const PriceTagIcon = {
       ]
     )
 }
+const CalculatorIcon = {
+  render: () =>
+    h(
+      'svg',
+      { fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.5' },
+      [
+        h('path', {
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          d: 'M6 3.75h12A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75z'
+        }),
+        h('path', {
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          d: 'M8.25 7.5h7.5'
+        }),
+        h('path', {
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          d: 'M8.25 12h.008M12 12h.008M15.75 12h.008M8.25 16.5h.008M12 16.5h.008M15.75 16.5h.008'
+        })
+      ]
+    )
+}
 
 const ChevronDownIcon = {
   render: () =>
@@ -813,6 +837,8 @@ const adminNavItems = computed((): NavItem[] => {
         { path: '/admin/channels/monitor', label: t('nav.channelMonitor'), icon: SignalIcon, featureFlag: flagChannelMonitor },
       ],
     },
+    // 模型价格总览（只读）：紧邻渠道管理，因为它是「渠道定价」的全局对照视图。
+    { path: '/admin/model-pricing', label: t('nav.modelPricing'), icon: CalculatorIcon, hideInSimpleMode: true },
     // 「仅充值」站点连管理端的「订阅管理」入口也一并收起（路由本身不拦截）。
     { path: '/admin/subscriptions', label: t('nav.subscriptions'), icon: CreditCardIcon, hideInSimpleMode: true, featureFlag: flagSubscription },
     { path: '/admin/accounts', label: t('nav.accounts'), icon: GlobeIcon },

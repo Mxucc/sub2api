@@ -18,6 +18,71 @@ export interface PlazaOfficialPricing {
   cache_read_price: number | null
   /** 官方长上下文阶梯（多档模型才有），不受分组开关影响。 */
   intervals?: UserPricingInterval[]
+  /**
+   * 声明式计费表达式的展示形态，仅该模型带表达式时给出。
+   * 存在时上面的 input_price / output_price 只是**基线价**：峰谷价模型（如 DeepSeek）
+   * 高峰时段实际单价比基线高，真实价格以 billing_expr.tiers 为准。
+   */
+  billing_expr?: PlazaBillingExpr
+}
+
+/**
+ * 计价变量：表达式中带价格的 token 维度，与后端 billingexpr.PricedVars 同源。
+ * p=输入 / c=输出 / cr=缓存命中 / cc=缓存写入 / cc1h=1h 缓存写入 /
+ * img=图片输入 / img_cr=图片缓存命中 / ai=音频输入 / ao=音频输出。
+ */
+export type PlazaBillingVariable =
+  | 'p'
+  | 'c'
+  | 'cr'
+  | 'cc'
+  | 'cc1h'
+  | 'img'
+  | 'img_cr'
+  | 'ai'
+  | 'ao'
+
+/** 分档计价单位：按百万 token / 按次 / 两者相加。 */
+export type PlazaBillingUnit =
+  | 'per_million_tokens'
+  | 'per_request'
+  | 'per_million_tokens_plus_request'
+
+/** 表达式中的一档价格。 */
+export interface PlazaBillingTier {
+  /** tier() 的标签，如 peak / off_peak / base。 */
+  name: string
+  /** 该档的条件原文；表达式最后的分支（else）没有条件。 */
+  condition?: string
+  /**
+   * 计价变量 → **USD / 百万 token**（即展示单位，不需要再乘除换算）。
+   * 该档不按 token 计价（per_request）时为空。
+   */
+  coefficients?: Partial<Record<PlazaBillingVariable, number>>
+  /** 该档的按次固定费用（USD），与 token 费相加；为 0 时后端省略该字段。 */
+  constant?: number
+  unit: PlazaBillingUnit
+  /** 该档引用到的计价变量（后端按固定顺序给出），用于动态生成表头列。 */
+  variables?: PlazaBillingVariable[]
+  /** 人读中文时段，如「周一至周五 09:00-12:00, 14:00-18:00」；条件不是可识别的时间谓词时省略。 */
+  time_windows?: string[]
+  /** 时间窗所用时区（IANA 名），如 Asia/Shanghai。 */
+  timezone?: string
+}
+
+/** 计费表达式的展示形态。 */
+export interface PlazaBillingExpr {
+  /** 原始表达式，recognized 为 false 时按原文展示。 */
+  expression: string
+  /** 表达式来源：'catalog'（价格表 / override 文件）| 'builtin'（内置）。 */
+  source: 'catalog' | 'builtin'
+  /** false 表示不是可识别的条件分档形态，此时 tiers 为空，应展示原文而非分档表。 */
+  recognized: boolean
+  /** true 表示价格随时刻变化（存在时段条件）。 */
+  time_dependent: boolean
+  /** 所有档引用到的计价变量并集（后端按固定顺序给出）。 */
+  variables?: PlazaBillingVariable[]
+  tiers: PlazaBillingTier[]
 }
 
 /**

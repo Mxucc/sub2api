@@ -116,6 +116,16 @@ type ModelPricing struct {
 	LongContextOutputMultiplier        float64  // 长上下文整次会话输出倍率
 	ImageOutputPricePerToken           float64  // 图片输出 token 价格 (USD)
 	ImageOutputPriceExplicit           bool     // 是否由渠道定价显式设定（为 true 时即使 == 0 也不回退）
+	// BillingExpr 是价格表为该模型声明的计费表达式。非空且走默认价卡层时，它是该
+	// 模型的完整计费依据，上面的 per-token 单价不再参与计算；分组/渠道显式定价优先，
+	// 不会套用表达式（闸门看的是 ResolvedPricing.Source，见 calculateTokenCost）。
+	BillingExpr string
+	// BillingExprExplicit 表示价格数据（目录 / pricing.override_file）里**显式**给
+	// 这个模型声明过 billing_expr（含空串）。目录条目带该键时，本模型的价与计费
+	// 规则由价格数据说了算：代码内置的 DeepSeek 强制官方价不再改写单价
+	// （见 applyModelSpecificPricingPolicyEx），内置表达式兜底也被显式空串压掉
+	// （见 resolveBillingExpr）。零值 = 数据里没有这个键，内置规则照旧兜底。
+	BillingExprExplicit bool
 }
 
 func normalizeBillingServiceTier(serviceTier string) string {
@@ -201,6 +211,12 @@ type CostBreakdown struct {
 	ActualCost                float64 // 应用倍率后的实际费用
 	BillingMode               string  // 计费模式（"token"/"per_request"/"image"），由 CalculateCostUnified 填充
 	LongContextBillingApplied bool
+
+	// BillingExprApplied 表示本次计费由声明式计费表达式给出，而非 per-token 单价。
+	BillingExprApplied bool
+	// MatchedTier 是表达式 tier() 选中的档名（"peak"/"off_peak" 等）；未走表达式
+	// 或表达式没有 tier() 时为空。
+	MatchedTier string
 }
 
 func applyCostBreakdownMultiplier(cost *CostBreakdown, multiplier float64) {
@@ -264,17 +280,19 @@ func resolvedChannelTimeMultiplier(resolved *ResolvedPricing, at time.Time) floa
 // sources can price the requested model.
 var ErrModelPricingUnavailable = errors.New("pricing not found")
 
-// ---- DeepSeek 官方低谷价（$/token）----
-// 2026-09-10 官方公告：DeepSeek-V4.1-Flash（新名 deepseek-flash）大幅降价，
-// Flash 低谷价降为 $0.15/$0.60/$0.003 per MTok（输入缓存未命中/输出/缓存命中）；
-// deepseek-v4-pro 名义价格暂不变，但自北京时间 2026-09-14 12:00（04:00 UTC）起
-// 其请求被上游路由到 V4.1-Flash 并按 Flash 价计费（见 deepseekProBilledAsFlash）。
-// Source: https://api-docs.deepseek.com/news/news260910
+// ---- DeepSeek 官方低谷价（$/token，用于价卡展示与基线）----
+// DeepSeek 现行两个模型：deepseek-flash（DeepSeek-V4.1-Flash）与
+// deepseek-v4-pro（DeepSeek-V4-Pro-0813），各有自己的峰谷价卡；旧名
+// deepseek-v4-flash / deepseek-v4-flash-vision-exp 由 V4.1-Flash 承接，按 Flash 价计费。
+// Flash 低谷价 $0.15/$0.60/$0.003 per MTok（输入缓存未命中/输出/缓存命中），
+// Pro 低谷价 $0.66/$1.98/$0.022 per MTok，均为官方人民币挂牌价（空闲 = 高峰的一半）
+// 折算后的 USD 口径。Source: https://api-docs.deepseek.com/zh-cn/quick_start/pricing
+// （2026-09-22 核实）
 //
-//	https://api-docs.deepseek.com/quick_start/pricing
-//
-// 高峰价 = 2× 低谷价；高峰时段 01:00–04:00 与 06:00–10:00 UTC（仅工作日），
-// 北京时间周六/周日全天低谷。时段判定见 deepseekPeakMultiplierAt。
+// 这些常量是低谷价，仅作为价卡基线与展示口径。实际计费（含高峰 2× 与峰谷时段）
+// 由声明式计费表达式给出，见 model_billing_expression.go 的 deepseek*BillingExpr：
+// 峰值倍率不再由 Go 代码叠加，改由表达式按 Asia/Shanghai 时段显式写出，改价无需发版；
+// 基准价本身按模型档位给出，与时刻无关。
 const (
 	deepseekFlashOffPeakInputPrice  = 1.5e-7  // $0.15 per MTok (cache miss)
 	deepseekFlashOffPeakOutputPrice = 6.0e-7  // $0.60 per MTok
@@ -292,38 +310,6 @@ const (
 // 运营者据此更新价卡。
 func isDeepSeekModel(model string) bool {
 	return strings.HasPrefix(strings.ToLower(strings.TrimSpace(model)), "deepseek-")
-}
-
-// deepseekPeakMultiplierAt 返回指定时刻的 DeepSeek 官方峰谷定价因子。
-// 官方口径（2026-08-23 起生效）：高峰价 = 2× 低谷价；高峰时段为
-// 01:00–04:00 与 06:00–10:00 UTC（半开区间），仅工作日；
-// 周末（北京时间周六/周日）全天低谷。北京时间用固定 +8 偏移（无夏令时）。
-func deepseekPeakMultiplierAt(now time.Time) float64 {
-	beijing := now.In(time.FixedZone("Asia/Shanghai", 8*3600))
-	switch beijing.Weekday() {
-	case time.Saturday, time.Sunday:
-		return 1.0
-	}
-	switch h := now.UTC().Hour(); {
-	case h >= 1 && h < 4, h >= 6 && h < 10:
-		return 2.0
-	}
-	return 1.0
-}
-
-// deepseekProRoutesToFlashAt：官方公告自北京时间 2026-09-14 12:00（04:00 UTC）起，
-// 所有 deepseek-v4-pro 请求被上游路由到 V4.1-Flash 并按 Flash 价计费（直至未来
-// V4.1 Pro 上线）。Source: https://api-docs.deepseek.com/news/news260910
-var deepseekProRoutesToFlashAt = time.Date(2026, 9, 14, 4, 0, 0, 0, time.UTC)
-
-// deepseekProBilledAsFlash 报告指定计费时点 deepseek-v4-pro 是否已按 Flash 价
-// 计费：计费时点到达或晚于切换时点返回 true；零值时点回退当前时刻（与峰谷
-// 倍率的取时点方式一致，见 calculateTokenCost）。
-func deepseekProBilledAsFlash(pricingAt time.Time) bool {
-	if pricingAt.IsZero() {
-		pricingAt = timezone.Now()
-	}
-	return !pricingAt.Before(deepseekProRoutesToFlashAt)
 }
 
 // isDeepSeekProModel 判断模型名是否归入 deepseek-v4-pro 档（含版本化名称，
@@ -610,14 +596,14 @@ func (s *BillingService) initFallbackPricing() {
 	// ============================================================
 
 	// ---- DeepSeek 系列 ----
-	// Source: https://api-docs.deepseek.com/quick_start/pricing
-	// 官方口径（2026-09-10 公告降价后）：现行模型为 deepseek-flash（=
-	// DeepSeek-V4.1-Flash，旧名 deepseek-v4-flash 兼容路由）/ deepseek-v4-pro /
-	// deepseek-v4-flash-vision-exp；deepseek-chat / deepseek-reasoner 已停止服务，
-	// 其余 deepseek-*（含未知型号）统一按 flash 价兜底（见 getFallbackPricing），
-	// 避免计费中断。
-	// 以下均为官方低谷价；高峰价 = 2× 低谷价（高峰时段 01:00–04:00
-	// 与 06:00–10:00 UTC，仅工作日；北京时间周六/周日全天低谷），见 deepseekPeakMultiplierAt。
+	// Source: https://api-docs.deepseek.com/zh-cn/quick_start/pricing
+	// 官方口径（2026-09-22 核实）：现行模型为 deepseek-flash（= DeepSeek-V4.1-Flash）与
+	// deepseek-v4-pro（= DeepSeek-V4-Pro-0813），两者各用各的峰谷表达式；旧名
+	// deepseek-v4-flash / deepseek-v4-flash-vision-exp（模型已下线，请求由 V4.1-Flash
+	// 服务）与已停服的 deepseek-chat / deepseek-reasoner 统一按 flash 价计费，其余
+	// 未知 deepseek-* 同样按 flash 价兜底（见 getFallbackPricing），避免计费中断。
+	// 以下均为官方空闲（低谷）价基准；高峰价 = 2× 低谷价，峰谷时段由表达式
+	// （见 model_billing_expression.go 的 deepseek*BillingExpr）给出。
 	s.fallbackPrices["deepseek-v4-pro"] = &ModelPricing{
 		InputPricePerToken:     deepseekProOffPeakInputPrice,  // $0.66 per MTok (cache miss, off-peak)
 		OutputPricePerToken:    deepseekProOffPeakOutputPrice, // $1.98 per MTok
@@ -1228,13 +1214,12 @@ func (s *BillingService) HasIdentifiedTokenPricing(model string) bool {
 
 // GetModelPricing 获取模型价格配置
 func (s *BillingService) GetModelPricing(model string) (*ModelPricing, error) {
-	// 无显式计费时点，DeepSeek pro→Flash 切换按当前时刻判定。
 	return s.getModelPricingAt(model, timezone.Now())
 }
 
-// getModelPricingAt 是 GetModelPricing 的带计费时点内部变体：pricingAt 显式
-// 驱动 DeepSeek pro→Flash 切换判定（切换点前 Pro 价、之后 Flash 价），使
-// 展示/估算路径可与历史补账同刻复算，测试也能用固定时点钉住断言。
+// getModelPricingAt 是 GetModelPricing 的带计费时点内部变体，供展示/估算路径与
+// 测试显式传入时刻。DeepSeek 的基准价按模型档位给出、与时刻无关（峰谷时段由表达式
+// 在求值时判定），时点参数不再参与任何价卡选择，仅为调用点签名稳定保留。
 func (s *BillingService) getModelPricingAt(model string, pricingAt time.Time) (*ModelPricing, error) {
 	// 标准化模型名称（转小写）
 	model = strings.ToLower(model)
@@ -1247,7 +1232,10 @@ func (s *BillingService) getModelPricingAt(model string, pricingAt time.Time) (*
 		// 无 fallback 则 fail-closed（ErrModelPricingUnavailable）。
 		// 图片计费路径（getDefaultImagePrice / getImageUnitPrice）直接读
 		// PricingService，不受影响。
-		if litellmPricing != nil && litellmPricing.TokenPricingAbsent {
+		//
+		// 例外：声明了 billing_expr 的条目本身就是有意不用 per-token 单价计价，
+		// 表达式即其完整计费依据，因此不能按「无 token 价」丢弃。
+		if litellmPricing != nil && litellmPricing.TokenPricingAbsent && catalogBillingExprFromCatalog(litellmPricing) == "" {
 			litellmPricing = nil
 		}
 		if litellmPricing != nil {
@@ -1277,6 +1265,10 @@ func (s *BillingService) getModelPricingAt(model string, pricingAt time.Time) (*
 				ImageInputPricePerToken:       litellmPricing.InputCostPerImageToken,
 				ImageCacheReadPricePerToken:   litellmPricing.CacheReadInputImageTokenCost,
 				ImageOutputPricePerToken:      litellmPricing.OutputCostPerImageToken,
+				BillingExpr:                   litellmPricing.BillingExpr,
+				// 目录/覆盖层显式声明过 billing_expr 时（含空串）强制价豁免，
+				// 该标志必须随价卡一起带下去。
+				BillingExprExplicit: litellmPricing.BillingExprExplicit,
 			}, true, pricingAt), nil
 		}
 	}
@@ -1308,6 +1300,13 @@ func (s *BillingService) GetModelPricingWithChannel(model string, channelPricing
 	// 防止修改 fallbackPrices 中的共享指针
 	cloned := *pricing
 	pricing = &cloned
+	// 渠道显式定价与目录表达式不能混用：一旦本函数返回了一份价，调用方看到的就是
+	// 「渠道售价」。计费闸门靠 ResolvedPricing.Source 排除了这条路径，这里再清空
+	// 表达式，避免将来任何直接消费该返回值的调用方拿到混合体。
+	pricing.BillingExpr = ""
+	// 「显式声明」标记只描述目录层。返回的是渠道价，标记一并清掉，免得下游把它
+	// 当成「这份价由目录声明」而豁免内置修正。
+	pricing.BillingExprExplicit = false
 	applyChannelTokenPriceOverrides(pricing, channelPricing)
 	pricing.FastMultiplier = channelPricing.FastMultiplier
 	pricing.FlexMultiplier = channelPricing.FlexMultiplier
@@ -1468,28 +1467,40 @@ func (s *BillingService) calculateTokenCost(resolved *ResolvedPricing, input Cos
 		return nil, fmt.Errorf("no pricing available for model: %s: %w", input.Model, ErrModelPricingUnavailable)
 	}
 
-	// 计费时点：优先请求级 PricingAt（历史补账与 DeepSeek pro→Flash 切换判定
-	// 同源），零值回退当前时刻。
+	// 计费时点：优先请求级 PricingAt（历史补账与展示估算同源），零值回退当前时刻。
+	// 它只驱动表达式求值，不再影响价卡选择。
 	pricingAt := input.PricingAt
 	if pricingAt.IsZero() {
 		pricingAt = timezone.Now()
 	}
 
-	// 默认价卡（Source=LiteLLM）应用 DeepSeek 官方价强制覆盖（幂等，GetModelPricing
-	// 内部已强制过）；分组/渠道自定义定价保留运营者配置，不强制覆盖官方价。
-	pricing = s.applyModelSpecificPricingPolicyEx(input.Model, pricing, resolved.Source == PricingSourceLiteLLM, pricingAt)
+	// 默认价卡（Source=LiteLLM/Fallback）先按模型修正到当前业务口径，再考虑
+	// 声明式计费表达式；分组/渠道自定义定价保留运营者配置，两者都不叠加。
+	isDefaultPriceCard := resolved.Source == PricingSourceLiteLLM || resolved.Source == PricingSourceFallback
 
-	// DeepSeek 模型默认价卡按官方峰谷口径调整：高峰时段（01:00–04:00 与
-	// 06:00–10:00 UTC，仅工作日；北京时间周末全天低谷）按 2× 低谷价计费。
-	// 仅作用于默认价卡（Source=LiteLLM，无分组/渠道自定义定价）——分组/渠道
-	// 自定义定价保持运营者语义，不叠加。先克隆再乘，避免污染共享 fallbackPrices 指针。
-	if resolved.Source == PricingSourceLiteLLM && isDeepSeekModel(input.Model) {
-		if mult := deepseekPeakMultiplierAt(pricingAt); mult > 1 {
-			cloned := *pricing
-			cloned.InputPricePerToken *= mult
-			cloned.OutputPricePerToken *= mult
-			cloned.CacheReadPricePerToken *= mult
-			pricing = &cloned
+	// 目录可比远端旧价新，也可仍是旧口径；此处按模型修正到当前业务口径。
+	// 放在表达式之前，是为了让表达式路径与服务档/推理等级倍率读到同一份已修正价卡
+	// （表达式只用它取 Fast/Flex 倍率，不用其中的 token 单价）。
+	pricing = s.applyModelSpecificPricingPolicyEx(input.Model, pricing, isDefaultPriceCard, pricingAt)
+
+	// 声明式计费表达式：默认价卡层存在 billing_expr 时，它取代 per-token 单价成为
+	// 该模型的完整计费依据（DeepSeek 峰谷价即由此表达）。分组/渠道显式定价优先，
+	// 不套用表达式——运营者配置的售价必须生效。
+	if isDefaultPriceCard {
+		if expression := resolveBillingExpr(input.Model, pricing, pricingAt); expression != "" {
+			breakdown, err := s.applyBillingExpression(
+				input.Model, expression, input.Tokens,
+				input.RateMultiplier, input.ServiceTier, pricingAt, pricing,
+			)
+			if err != nil {
+				return nil, err
+			}
+			// The two post-processing steps below must stay identical to the
+			// per-token path: an expression-priced model still pays the channel's
+			// time multiplier and any model-specific reasoning multiplier.
+			applyCostBreakdownMultiplier(breakdown, resolvedChannelTimeMultiplier(resolved, input.PricingAt))
+			applyCostBreakdownMultiplier(breakdown, maxReasoningEffortBillingMultiplier(input.Model, input.ReasoningEffort, pricing))
+			return breakdown, nil
 		}
 	}
 
@@ -1687,6 +1698,13 @@ func (s *BillingService) calculatePerRequestCost(resolved *ResolvedPricing, inpu
 		unitPrice = resolved.DefaultPerRequestPrice
 	}
 
+	// 仍为 0 时套用 __defaults__ 的手动微调价（优先级：分组/渠道显式价 > 微调 > 默认价卡）。
+	if unitPrice == 0 {
+		if price, ok := s.globalDefaultPrice("per_request_price"); ok {
+			unitPrice = price
+		}
+	}
+
 	totalCost := unitPrice * units
 	actualCost := totalCost * input.RateMultiplier
 
@@ -1745,43 +1763,48 @@ func (s *BillingService) calculateCostInternalWithPolicy(
 // 强制覆盖；GPT-5.6 缺 cache_write 价时按官方规则补 1.25 倍输入价；Fast/priority
 // 档按业务倍率改写（本地/远程目录的 priority 价可能沿用官方旧口径）。长上下文
 // 阶梯不在此处补齐：一律由目录数据（above_XXXk 折算或显式 long_context_* 字段）
-// 驱动。强制 DeepSeek 官方价且无显式计费时点（pro→Flash 切换按当前时刻判定），
-// 供无既有时点的策略修正场景与测试使用；计费/展示主路径分别经
-// calculateTokenCost 与 getModelPricingAt 显式传时点，分组/渠道自定义定价
+// 驱动。强制 DeepSeek 官方价，供无既有时点的策略修正场景与测试使用；计费/展示主路径
+// 分别经 calculateTokenCost 与 getModelPricingAt 传时点，分组/渠道自定义定价
 // 用 applyModelSpecificPricingPolicyEx 关闭强制，保留运营者配置。
 func (s *BillingService) applyModelSpecificPricingPolicy(model string, pricing *ModelPricing) *ModelPricing {
 	return s.applyModelSpecificPricingPolicyEx(model, pricing, true, time.Time{})
 }
 
 // applyModelSpecificPricingPolicyEx 与 applyModelSpecificPricingPolicy 相同，
-// 但由调用方控制是否强制 DeepSeek 官方价（forceDeepSeekRates），并显式传入
-// 计费时点 pricingAt（零值表示按当前时刻判定）。
+// 但由调用方控制是否强制 DeepSeek 官方价（forceDeepSeekRates）。末尾的计费时点参数
+// 已不再参与判定（DeepSeek 的基准价按模型档位给出，与时刻无关），保留只为调用点稳定。
 // calculateTokenCost 对分组/渠道自定义定价（Source 非 LiteLLM）传 false：
 // 强制覆盖会把运营者配置的售价盖回官方价，违反自定义定价语义。
-func (s *BillingService) applyModelSpecificPricingPolicyEx(model string, pricing *ModelPricing, forceDeepSeekRates bool, pricingAt time.Time) *ModelPricing {
+// 价格数据显式声明 billing_expr 的模型即便 forceDeepSeekRates=true 也豁免改写，
+// 让价格仓库/覆盖文件能接管 DeepSeek 的价（见函数内 DeepSeek 分支注释）。
+func (s *BillingService) applyModelSpecificPricingPolicyEx(model string, pricing *ModelPricing, forceDeepSeekRates bool, _ time.Time) *ModelPricing {
 	if pricing == nil {
 		return nil
 	}
-	// DeepSeek 模型：无论 JSON/远端价格表给什么价，一律强制官方低谷价
-	// （Flash 三档为 2026-09-10 官方降价后口径）。这是覆盖远端旧价的关键——远端
-	// 仓库不可改，生产会先拉到旧价，必须在此兜底修正；克隆后再覆盖，避免污染
-	// 共享 fallbackPrices 指针。
-	// 档位判定：含 "deepseek-v4-pro" 的版本化名称（如 deepseek-v4-pro-0813）归 pro 档，
-	// 其余 deepseek-*（含已停服的 chat/reasoner 与未知型号）统一归 flash 档。
-	// 2026-09-14 04:00 UTC 起上游把 pro 请求路由到 V4.1-Flash，pro 档改按
-	// Flash 三档价计费；历史时点（早于切换时刻）仍按 Pro 价。
-	// 高峰时段倍率不在本函数处理，由 calculateTokenCost 按 deepseekPeakMultiplierAt
-	// 对默认价卡另行叠加（分组/渠道自定义定价不叠加）。
-	if forceDeepSeekRates && isDeepSeekModel(model) {
+	// DeepSeek 基准价：按模型档位给出，与时刻无关。现行两个模型
+	// deepseek-flash（= V4.1-Flash）与 deepseek-v4-pro 各有自己的价卡，峰谷时段由
+	// 声明式计费表达式在求值时判定（见 model_billing_expression.go 的
+	// deepseek*BillingExpr），本函数既不叠加时段倍率，也不做任何上游路由判定。
+	//
+	// 这里给出的是「低谷口径」的基准价：高峰 2× 由表达式写出，基准价本身是平的。
+	// 保留本分支的理由：GetModelPricing 的返回值同时用于渠道定价自动填充、模型广场
+	// 参考价与管理页展示，这些路径需要与表达式口径一致的基准价；而远端目录里的单价
+	// 可能仍是旧价/占位价，不可信，故按模型档位强制归一。
+	//
+	// 但价格数据显式声明过 billing_expr（含 `"billing_expr": ""`）时不再改写：
+	// 那是「这个 deepseek-* 的价由目录/覆盖层定义」的显式声明，典型场景是同一模型名
+	// 走别的 provider（如 volcengine）——再套官方峰谷表达式就是按错的上游收钱。
+	// 只豁免这一层：分组/渠道自定义价走 forceDeepSeekRates=false 的调用路径，行为不变。
+	if forceDeepSeekRates && isDeepSeekModel(model) && !pricing.BillingExprExplicit {
 		cloned := *pricing
-		if isDeepSeekProModel(model) && !deepseekProBilledAsFlash(pricingAt) {
+		if isDeepSeekProModel(model) {
 			cloned.InputPricePerToken = deepseekProOffPeakInputPrice
 			cloned.OutputPricePerToken = deepseekProOffPeakOutputPrice
 			cloned.CacheReadPricePerToken = deepseekProOffPeakCacheRead
 		} else {
-			// deepseek-flash（= V4.1-Flash）、deepseek-v4-flash /
-			// deepseek-v4-flash-vision-exp 与其余 deepseek-* 共用 flash 价；
-			// 切换时点之后的 pro 请求同样按 flash 价计费。
+			// deepseek-flash（= V4.1-Flash）、旧名 deepseek-v4-flash /
+			// deepseek-v4-flash-vision-exp、已停服的 deepseek-chat /
+			// deepseek-reasoner 与其余未知 deepseek-* 共用 flash 价。
 			cloned.InputPricePerToken = deepseekFlashOffPeakInputPrice
 			cloned.OutputPricePerToken = deepseekFlashOffPeakOutputPrice
 			cloned.CacheReadPricePerToken = deepseekFlashOffPeakCacheRead
@@ -1995,6 +2018,9 @@ func (s *BillingService) CalculateWebSearchCost(callCount int, groupPrice *float
 	unitPrice := defaultWebSearchPricePerCall
 	if groupPrice != nil && *groupPrice >= 0 {
 		unitPrice = *groupPrice
+	} else if price, ok := s.globalDefaultPrice("web_search_price_per_call"); ok {
+		// 没有显式分组价时才回落到 __defaults__ 手动微调价。
+		unitPrice = price
 	}
 	totalCost := unitPrice * float64(callCount)
 
@@ -2021,6 +2047,9 @@ func (s *BillingService) CalculateSearchCost(numCalls int, groupPricePer1k *floa
 			return &CostBreakdown{}
 		}
 		pricePer1k = *groupPricePer1k
+	} else if price, ok := s.globalDefaultPrice("search_price_per_1k"); ok {
+		// 分组未显式定价时才回落到 __defaults__ 手动微调价。
+		pricePer1k = price
 	}
 	if pricePer1k == 0 {
 		return &CostBreakdown{}
@@ -2055,16 +2084,22 @@ func (s *BillingService) CalculateAudioCost(mode string, durationOrUnits float64
 		unitPrice = defaultAudioRealtimePricePerMin
 		if groupConfig != nil && groupConfig.RealtimePerMin != nil {
 			unitPrice = *groupConfig.RealtimePerMin
+		} else if price, ok := s.globalDefaultPrice("audio_realtime_price_per_min"); ok {
+			unitPrice = price
 		}
 	case "tts":
 		unitPrice = defaultAudioTTSPricePerMillionChars
 		if groupConfig != nil && groupConfig.TTSPerMChars != nil {
 			unitPrice = *groupConfig.TTSPerMChars
+		} else if price, ok := s.globalDefaultPrice("audio_tts_price_per_million_chars"); ok {
+			unitPrice = price
 		}
 	case "stt":
 		unitPrice = defaultAudioSTTPricePerHour
 		if groupConfig != nil && groupConfig.STTPerHour != nil {
 			unitPrice = *groupConfig.STTPerHour
+		} else if price, ok := s.globalDefaultPrice("audio_stt_price_per_hour"); ok {
+			unitPrice = price
 		}
 	default:
 		return &CostBreakdown{}
@@ -2163,8 +2198,49 @@ func (s *BillingService) getImageUnitPrice(model string, imageSize string, group
 		}
 	}
 
+	// 每模型微调比全局默认价更具体，先让它生效。这里刻意只问「该模型有没有被单独调过
+	// output_cost_per_image」，而不是问「目录里有没有按张价」——目录原生值本来就该被
+	// 全局默认价盖掉，否则全局默认价对目录里已有按张价的模型完全失效。
+	if _, ok := s.modelOverridePrice(model, "output_cost_per_image"); ok {
+		return s.getDefaultImagePrice(model, imageSize)
+	}
+
+	// 分组没有给出该尺寸的价格时，回落到 __defaults__ 的手动微调价（按张价）。
+	switch imageSize {
+	case "1K":
+		if price, ok := s.globalDefaultPrice("image_price_1k"); ok {
+			return price
+		}
+	case "2K":
+		if price, ok := s.globalDefaultPrice("image_price_2k"); ok {
+			return price
+		}
+	case "4K":
+		if price, ok := s.globalDefaultPrice("image_price_4k"); ok {
+			return price
+		}
+	}
+
 	// 回退到 LiteLLM 默认价格
 	return s.getDefaultImagePrice(model, imageSize)
+}
+
+// globalDefaultPrice 读取 __defaults__ 里的一个全局默认价。ok=false 表示未微调。
+// 它是计费路径访问 PricingService 微调缓存的唯一入口，nil 安全。
+func (s *BillingService) globalDefaultPrice(field string) (float64, bool) {
+	if s == nil || s.pricingService == nil {
+		return 0, false
+	}
+	return s.pricingService.DefaultOverridePrice(field)
+}
+
+// modelOverridePrice 报告某个模型是否在覆盖文件里被单独微调过某字段。ok=false 表示没有。
+// 与 globalDefaultPrice 一样 nil 安全，供计费路径查询更具体那一层的微调值。
+func (s *BillingService) modelOverridePrice(model, field string) (float64, bool) {
+	if s == nil || s.pricingService == nil {
+		return 0, false
+	}
+	return s.pricingService.ModelOverrideField(model, field)
 }
 
 func (s *BillingService) getVideoUnitPrice(model string, resolution string, groupConfig *VideoPriceConfig) float64 {
@@ -2186,6 +2262,23 @@ func (s *BillingService) getVideoUnitPrice(model string, resolution string, grou
 			if groupConfig.Price1080P != nil {
 				return *groupConfig.Price1080P
 			}
+		}
+	}
+
+	// 分组没有给出该分辨率的价格时，回落到 __defaults__ 的手动微调价。它刻意压过
+	// getDefaultVideoPrice 里的 grok 模型硬编码默认价：微调 > 默认价卡。
+	switch NormalizeVideoBillingResolutionOrDefault(resolution) {
+	case VideoBillingResolution480P:
+		if price, ok := s.globalDefaultPrice("video_price_480p"); ok {
+			return price
+		}
+	case VideoBillingResolution720P:
+		if price, ok := s.globalDefaultPrice("video_price_720p"); ok {
+			return price
+		}
+	case VideoBillingResolution1080P:
+		if price, ok := s.globalDefaultPrice("video_price_1080p"); ok {
+			return price
 		}
 	}
 

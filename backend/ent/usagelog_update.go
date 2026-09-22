@@ -596,6 +596,34 @@ func (_u *UsageLogUpdate) SetNillableLongContextBillingApplied(v *bool) *UsageLo
 	return _u
 }
 
+// SetMatchedTier sets the "matched_tier" field.
+func (_u *UsageLogUpdate) SetMatchedTier(v string) *UsageLogUpdate {
+	_u.mutation.SetMatchedTier(v)
+	return _u
+}
+
+// SetNillableMatchedTier sets the "matched_tier" field if the given value is not nil.
+func (_u *UsageLogUpdate) SetNillableMatchedTier(v *string) *UsageLogUpdate {
+	if v != nil {
+		_u.SetMatchedTier(*v)
+	}
+	return _u
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (_u *UsageLogUpdate) SetBillingExprApplied(v bool) *UsageLogUpdate {
+	_u.mutation.SetBillingExprApplied(v)
+	return _u
+}
+
+// SetNillableBillingExprApplied sets the "billing_expr_applied" field if the given value is not nil.
+func (_u *UsageLogUpdate) SetNillableBillingExprApplied(v *bool) *UsageLogUpdate {
+	if v != nil {
+		_u.SetBillingExprApplied(*v)
+	}
+	return _u
+}
+
 // SetAccountRateMultiplier sets the "account_rate_multiplier" field.
 func (_u *UsageLogUpdate) SetAccountRateMultiplier(v float64) *UsageLogUpdate {
 	_u.mutation.ResetAccountRateMultiplier()
@@ -1272,6 +1300,12 @@ func (_u *UsageLogUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.LongContextBillingApplied(); ok {
 		_spec.SetField(usagelog.FieldLongContextBillingApplied, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.MatchedTier(); ok {
+		_spec.SetField(usagelog.FieldMatchedTier, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.BillingExprApplied(); ok {
+		_spec.SetField(usagelog.FieldBillingExprApplied, field.TypeBool, value)
 	}
 	if value, ok := _u.mutation.AccountRateMultiplier(); ok {
 		_spec.SetField(usagelog.FieldAccountRateMultiplier, field.TypeFloat64, value)
@@ -2110,6 +2144,34 @@ func (_u *UsageLogUpdateOne) SetNillableLongContextBillingApplied(v *bool) *Usag
 	return _u
 }
 
+// SetMatchedTier sets the "matched_tier" field.
+func (_u *UsageLogUpdateOne) SetMatchedTier(v string) *UsageLogUpdateOne {
+	_u.mutation.SetMatchedTier(v)
+	return _u
+}
+
+// SetNillableMatchedTier sets the "matched_tier" field if the given value is not nil.
+func (_u *UsageLogUpdateOne) SetNillableMatchedTier(v *string) *UsageLogUpdateOne {
+	if v != nil {
+		_u.SetMatchedTier(*v)
+	}
+	return _u
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (_u *UsageLogUpdateOne) SetBillingExprApplied(v bool) *UsageLogUpdateOne {
+	_u.mutation.SetBillingExprApplied(v)
+	return _u
+}
+
+// SetNillableBillingExprApplied sets the "billing_expr_applied" field if the given value is not nil.
+func (_u *UsageLogUpdateOne) SetNillableBillingExprApplied(v *bool) *UsageLogUpdateOne {
+	if v != nil {
+		_u.SetBillingExprApplied(*v)
+	}
+	return _u
+}
+
 // SetAccountRateMultiplier sets the "account_rate_multiplier" field.
 func (_u *UsageLogUpdateOne) SetAccountRateMultiplier(v float64) *UsageLogUpdateOne {
 	_u.mutation.ResetAccountRateMultiplier()
@@ -2816,6 +2878,12 @@ func (_u *UsageLogUpdateOne) sqlSave(ctx context.Context) (_node *UsageLog, err 
 	}
 	if value, ok := _u.mutation.LongContextBillingApplied(); ok {
 		_spec.SetField(usagelog.FieldLongContextBillingApplied, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.MatchedTier(); ok {
+		_spec.SetField(usagelog.FieldMatchedTier, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.BillingExprApplied(); ok {
+		_spec.SetField(usagelog.FieldBillingExprApplied, field.TypeBool, value)
 	}
 	if value, ok := _u.mutation.AccountRateMultiplier(); ok {
 		_spec.SetField(usagelog.FieldAccountRateMultiplier, field.TypeFloat64, value)

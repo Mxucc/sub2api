@@ -71,6 +71,9 @@ const messages: Record<string, string> = {
 	'usage.upstreamResponseModel': 'Upstream response',
 	'usage.modelVariant': 'Possible version variant',
 	'usage.modelMismatch': 'Different model',
+	'admin.usage.matchedTierPeak': 'Peak',
+	'admin.usage.matchedTierOffPeak': 'Off-peak',
+	'admin.usage.matchedTierExprNoTier': 'Priced by expression, no tier matched',
 }
 
 vi.mock('vue-i18n', async () => {
@@ -95,6 +98,7 @@ const DataTableStub = {
         <slot name="cell-cost" :row="row" />
         <slot name="cell-request_id" :row="row" />
         <slot name="cell-upstream_request_id" :row="row" />
+        <slot name="cell-matched_tier" :row="row" />
       </div>
     </div>
   `,
@@ -852,5 +856,72 @@ describe('admin UsageTable deleted-user badge', () => {
 
     expect(wrapper.text()).not.toContain('Deleted')
     expect(wrapper.text()).toContain('active@test.com')
+  })
+})
+
+// 计费档列：表达式 tier() 命中的档名，空值显示 —。fixture 为演示数据。
+describe('admin UsageTable billing tier column', () => {
+  const mountWithTier = (rows: Record<string, unknown>[]) =>
+    mount(UsageTable, {
+      props: {
+        data: rows,
+        loading: false,
+        columns: [{ key: 'matched_tier', label: 'Billing tier' }],
+      },
+      global: {
+        stubs: {
+          DataTable: DataTableStub,
+          EmptyState: true,
+          Icon: true,
+          Teleport: true,
+        },
+      },
+    })
+
+  it('localizes the peak and off_peak tiers', () => {
+    const wrapper = mountWithTier([
+      { ...baseImageRow, request_id: 'r-peak', matched_tier: 'peak', billing_expr_applied: true },
+      { ...baseImageRow, request_id: 'r-off-peak', matched_tier: 'off_peak', billing_expr_applied: true },
+    ])
+
+    const badges = wrapper.findAll('[data-testid="matched-tier-badge"]')
+    expect(badges).toHaveLength(2)
+    expect(badges[0].text()).toBe('Peak')
+    expect(badges[1].text()).toBe('Off-peak')
+  })
+
+  it('renders any other non-empty tier verbatim in a neutral badge', () => {
+    const wrapper = mountWithTier([
+      { ...baseImageRow, request_id: 'r-holiday', matched_tier: 'holiday' },
+    ])
+
+    const badge = wrapper.get('[data-testid="matched-tier-badge"]')
+    expect(badge.text()).toBe('holiday')
+    expect(badge.classes()).toContain('bg-gray-100')
+  })
+
+  it('shows an em dash for rows that matched no tier', () => {
+    const wrapper = mountWithTier([{ ...baseImageRow, request_id: 'r-none', matched_tier: '' }])
+
+    const empty = wrapper.get('[data-testid="matched-tier-empty"]')
+    expect(empty.text()).toBe('—')
+    expect(empty.attributes('title')).toBeUndefined()
+  })
+
+  it('hints that an expression-priced row matched no tier', () => {
+    const wrapper = mountWithTier([
+      { ...baseImageRow, request_id: 'r-expr', matched_tier: '', billing_expr_applied: true },
+    ])
+
+    const empty = wrapper.get('[data-testid="matched-tier-empty"]')
+    expect(empty.text()).toBe('—')
+    expect(empty.attributes('title')).toBe('Priced by expression, no tier matched')
+  })
+
+  it('treats a missing matched_tier field as empty', () => {
+    const wrapper = mountWithTier([{ ...baseImageRow, request_id: 'r-missing' }])
+
+    expect(wrapper.get('[data-testid="matched-tier-empty"]').text()).toBe('—')
+    expect(wrapper.findAll('[data-testid="matched-tier-badge"]')).toHaveLength(0)
   })
 })

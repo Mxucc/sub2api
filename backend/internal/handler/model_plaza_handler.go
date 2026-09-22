@@ -2,6 +2,7 @@ package handler
 
 import (
 	"log/slog"
+	"strings"
 
 	"github.com/Wei-Shaw/sub2api/internal/pkg/response"
 	"github.com/Wei-Shaw/sub2api/internal/server/middleware"
@@ -45,6 +46,46 @@ type modelPlazaOfficialPricing struct {
 	CacheReadPrice    *float64 `json:"cache_read_price"`
 	// Intervals 官方长上下文阶梯，仅多档模型给出。
 	Intervals []userPricingIntervalDTO `json:"intervals,omitempty"`
+	// BillingExpr 声明式计费表达式（含解析出的分档价格），仅该模型带表达式时给出。
+	// 费用随时刻变化的模型（如 DeepSeek 峰谷价）只能靠它展示真实价格：上面的
+	// input/output 只是基线，高峰时段会翻倍。
+	BillingExpr *userBillingExprDTO `json:"billing_expr,omitempty"`
+}
+
+// userBillingExprTierDTO 表达式中的一档价格。
+// Coefficients 的键是计价变量（p=输入 / c=输出 / cr=缓存命中 / cc=缓存写入 /
+// cc1h=1h 缓存写入 / img=图片输入），值是 USD / 百万 token。
+type userBillingExprTierDTO struct {
+	Name         string             `json:"name"`
+	Condition    string             `json:"condition,omitempty"`
+	Coefficients map[string]float64 `json:"coefficients,omitempty"`
+	// Constant 该档的按次固定费用（USD），与 token 费相加；为 0 时省略。
+	Constant float64 `json:"constant,omitempty"`
+	// Unit 计价单位：per_million_tokens / per_request / per_million_tokens_plus_request。
+	Unit string `json:"unit"`
+	// Variables 该档引用的计价变量，按固定顺序排列，便于前端稳定渲染表头。
+	Variables []string `json:"variables,omitempty"`
+	// TimeWindows 该档的时间窗（人读形式，如「周一至周五 09:00-12:00, 14:00-18:00」）；
+	// 条件不是可识别的时间谓词时省略，此时前端回退展示 Condition 原文。
+	TimeWindows []string `json:"time_windows,omitempty"`
+	// Timezone 时间窗所用时区（IANA 名）。
+	Timezone string `json:"timezone,omitempty"`
+}
+
+// userBillingExprDTO 计费表达式的展示形态。
+type userBillingExprDTO struct {
+	// Expression 原始表达式字符串，供「识别不出」的场景原文展示。
+	Expression string `json:"expression"`
+	// Source 表达式来源：catalog（价格表 / override 文件）| builtin（内置）。
+	Source string `json:"source"`
+	// Tiers 解析出的分档；Recognized 为 false 时为空。
+	Tiers []userBillingExprTierDTO `json:"tiers"`
+	// Recognized 为 false 表示表达式不是可识别的条件分档形态，应展示原文而非表格。
+	Recognized bool `json:"recognized"`
+	// TimeDependent 为 true 表示价格随时刻变化（存在时段条件）。
+	TimeDependent bool `json:"time_dependent"`
+	// Variables 所有档引用到的计价变量并集，按固定顺序排列。
+	Variables []string `json:"variables,omitempty"`
 }
 
 // modelPlazaTimePricingPeriod 分时倍率时段（配置时区当天 [start, end)）。
@@ -248,5 +289,40 @@ func toModelPlazaOfficialPricing(p *service.PlazaOfficialPricing) *modelPlazaOff
 		CacheWrite1hPrice: p.CacheWrite1hPrice,
 		CacheReadPrice:    p.CacheReadPrice,
 		Intervals:         toUserPricingIntervals(p.Intervals),
+		BillingExpr:       toUserBillingExpr(p.BillingExpr),
 	}
+}
+
+// toUserBillingExpr 将计费表达式转成展示 DTO；nil 或空表达式透传 nil。
+//
+// 解析失败或形态不识别时 Tiers 为空但 Expression 仍带出去：前端据此回退展示
+// 原始表达式，而不是显示一行错误的价格。
+func toUserBillingExpr(p *service.PlazaBillingExpr) *userBillingExprDTO {
+	if p == nil || strings.TrimSpace(p.Expression) == "" {
+		return nil
+	}
+	dto := &userBillingExprDTO{
+		Expression: p.Expression,
+		Source:     p.Source,
+		Tiers:      []userBillingExprTierDTO{},
+	}
+	if p.Parsed == nil {
+		return dto
+	}
+	dto.Recognized = p.Parsed.Recognized
+	dto.TimeDependent = p.Parsed.TimeDependent
+	dto.Variables = p.Parsed.Variables
+	for _, tier := range p.Parsed.Tiers {
+		dto.Tiers = append(dto.Tiers, userBillingExprTierDTO{
+			Name:         tier.Name,
+			Condition:    tier.Condition,
+			Coefficients: tier.Coefficients,
+			Constant:     tier.Constant,
+			Unit:         tier.Unit,
+			Variables:    tier.Variables,
+			TimeWindows:  tier.TimeWindows,
+			Timezone:     tier.Timezone,
+		})
+	}
+	return dto
 }

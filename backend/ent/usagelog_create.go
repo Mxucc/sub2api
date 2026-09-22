@@ -393,6 +393,34 @@ func (_c *UsageLogCreate) SetNillableLongContextBillingApplied(v *bool) *UsageLo
 	return _c
 }
 
+// SetMatchedTier sets the "matched_tier" field.
+func (_c *UsageLogCreate) SetMatchedTier(v string) *UsageLogCreate {
+	_c.mutation.SetMatchedTier(v)
+	return _c
+}
+
+// SetNillableMatchedTier sets the "matched_tier" field if the given value is not nil.
+func (_c *UsageLogCreate) SetNillableMatchedTier(v *string) *UsageLogCreate {
+	if v != nil {
+		_c.SetMatchedTier(*v)
+	}
+	return _c
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (_c *UsageLogCreate) SetBillingExprApplied(v bool) *UsageLogCreate {
+	_c.mutation.SetBillingExprApplied(v)
+	return _c
+}
+
+// SetNillableBillingExprApplied sets the "billing_expr_applied" field if the given value is not nil.
+func (_c *UsageLogCreate) SetNillableBillingExprApplied(v *bool) *UsageLogCreate {
+	if v != nil {
+		_c.SetBillingExprApplied(*v)
+	}
+	return _c
+}
+
 // SetAccountRateMultiplier sets the "account_rate_multiplier" field.
 func (_c *UsageLogCreate) SetAccountRateMultiplier(v float64) *UsageLogCreate {
 	_c.mutation.SetAccountRateMultiplier(v)
@@ -753,6 +781,14 @@ func (_c *UsageLogCreate) defaults() {
 		v := usagelog.DefaultLongContextBillingApplied
 		_c.mutation.SetLongContextBillingApplied(v)
 	}
+	if _, ok := _c.mutation.MatchedTier(); !ok {
+		v := usagelog.DefaultMatchedTier
+		_c.mutation.SetMatchedTier(v)
+	}
+	if _, ok := _c.mutation.BillingExprApplied(); !ok {
+		v := usagelog.DefaultBillingExprApplied
+		_c.mutation.SetBillingExprApplied(v)
+	}
 	if _, ok := _c.mutation.BillingType(); !ok {
 		v := usagelog.DefaultBillingType
 		_c.mutation.SetBillingType(v)
@@ -877,6 +913,12 @@ func (_c *UsageLogCreate) check() error {
 	}
 	if _, ok := _c.mutation.LongContextBillingApplied(); !ok {
 		return &ValidationError{Name: "long_context_billing_applied", err: errors.New(`ent: missing required field "UsageLog.long_context_billing_applied"`)}
+	}
+	if _, ok := _c.mutation.MatchedTier(); !ok {
+		return &ValidationError{Name: "matched_tier", err: errors.New(`ent: missing required field "UsageLog.matched_tier"`)}
+	}
+	if _, ok := _c.mutation.BillingExprApplied(); !ok {
+		return &ValidationError{Name: "billing_expr_applied", err: errors.New(`ent: missing required field "UsageLog.billing_expr_applied"`)}
 	}
 	if _, ok := _c.mutation.BillingType(); !ok {
 		return &ValidationError{Name: "billing_type", err: errors.New(`ent: missing required field "UsageLog.billing_type"`)}
@@ -1062,6 +1104,14 @@ func (_c *UsageLogCreate) createSpec() (*UsageLog, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.LongContextBillingApplied(); ok {
 		_spec.SetField(usagelog.FieldLongContextBillingApplied, field.TypeBool, value)
 		_node.LongContextBillingApplied = value
+	}
+	if value, ok := _c.mutation.MatchedTier(); ok {
+		_spec.SetField(usagelog.FieldMatchedTier, field.TypeString, value)
+		_node.MatchedTier = value
+	}
+	if value, ok := _c.mutation.BillingExprApplied(); ok {
+		_spec.SetField(usagelog.FieldBillingExprApplied, field.TypeBool, value)
+		_node.BillingExprApplied = value
 	}
 	if value, ok := _c.mutation.AccountRateMultiplier(); ok {
 		_spec.SetField(usagelog.FieldAccountRateMultiplier, field.TypeFloat64, value)
@@ -1761,6 +1811,30 @@ func (u *UsageLogUpsert) SetLongContextBillingApplied(v bool) *UsageLogUpsert {
 // UpdateLongContextBillingApplied sets the "long_context_billing_applied" field to the value that was provided on create.
 func (u *UsageLogUpsert) UpdateLongContextBillingApplied() *UsageLogUpsert {
 	u.SetExcluded(usagelog.FieldLongContextBillingApplied)
+	return u
+}
+
+// SetMatchedTier sets the "matched_tier" field.
+func (u *UsageLogUpsert) SetMatchedTier(v string) *UsageLogUpsert {
+	u.Set(usagelog.FieldMatchedTier, v)
+	return u
+}
+
+// UpdateMatchedTier sets the "matched_tier" field to the value that was provided on create.
+func (u *UsageLogUpsert) UpdateMatchedTier() *UsageLogUpsert {
+	u.SetExcluded(usagelog.FieldMatchedTier)
+	return u
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (u *UsageLogUpsert) SetBillingExprApplied(v bool) *UsageLogUpsert {
+	u.Set(usagelog.FieldBillingExprApplied, v)
+	return u
+}
+
+// UpdateBillingExprApplied sets the "billing_expr_applied" field to the value that was provided on create.
+func (u *UsageLogUpsert) UpdateBillingExprApplied() *UsageLogUpsert {
+	u.SetExcluded(usagelog.FieldBillingExprApplied)
 	return u
 }
 
@@ -2698,6 +2772,34 @@ func (u *UsageLogUpsertOne) SetLongContextBillingApplied(v bool) *UsageLogUpsert
 func (u *UsageLogUpsertOne) UpdateLongContextBillingApplied() *UsageLogUpsertOne {
 	return u.Update(func(s *UsageLogUpsert) {
 		s.UpdateLongContextBillingApplied()
+	})
+}
+
+// SetMatchedTier sets the "matched_tier" field.
+func (u *UsageLogUpsertOne) SetMatchedTier(v string) *UsageLogUpsertOne {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.SetMatchedTier(v)
+	})
+}
+
+// UpdateMatchedTier sets the "matched_tier" field to the value that was provided on create.
+func (u *UsageLogUpsertOne) UpdateMatchedTier() *UsageLogUpsertOne {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.UpdateMatchedTier()
+	})
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (u *UsageLogUpsertOne) SetBillingExprApplied(v bool) *UsageLogUpsertOne {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.SetBillingExprApplied(v)
+	})
+}
+
+// UpdateBillingExprApplied sets the "billing_expr_applied" field to the value that was provided on create.
+func (u *UsageLogUpsertOne) UpdateBillingExprApplied() *UsageLogUpsertOne {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.UpdateBillingExprApplied()
 	})
 }
 
@@ -3854,6 +3956,34 @@ func (u *UsageLogUpsertBulk) SetLongContextBillingApplied(v bool) *UsageLogUpser
 func (u *UsageLogUpsertBulk) UpdateLongContextBillingApplied() *UsageLogUpsertBulk {
 	return u.Update(func(s *UsageLogUpsert) {
 		s.UpdateLongContextBillingApplied()
+	})
+}
+
+// SetMatchedTier sets the "matched_tier" field.
+func (u *UsageLogUpsertBulk) SetMatchedTier(v string) *UsageLogUpsertBulk {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.SetMatchedTier(v)
+	})
+}
+
+// UpdateMatchedTier sets the "matched_tier" field to the value that was provided on create.
+func (u *UsageLogUpsertBulk) UpdateMatchedTier() *UsageLogUpsertBulk {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.UpdateMatchedTier()
+	})
+}
+
+// SetBillingExprApplied sets the "billing_expr_applied" field.
+func (u *UsageLogUpsertBulk) SetBillingExprApplied(v bool) *UsageLogUpsertBulk {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.SetBillingExprApplied(v)
+	})
+}
+
+// UpdateBillingExprApplied sets the "billing_expr_applied" field to the value that was provided on create.
+func (u *UsageLogUpsertBulk) UpdateBillingExprApplied() *UsageLogUpsertBulk {
+	return u.Update(func(s *UsageLogUpsert) {
+		s.UpdateBillingExprApplied()
 	})
 }
 
