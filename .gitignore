@@ -169,3 +169,5 @@ issues/
 .vite/
 # 本地闭源插件开发目录及构建产物不进入 Sub2API 仓库
 /plugins/
+# PI-Desktop 会话计划目录（.pi/plan 等）属于本地工作产物，不入库
+.pi/
