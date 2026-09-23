@@ -101,11 +101,13 @@
                   {{ t('modelPlaza.table.marginalBadge') }}
                 </span>
                 <span
-                  v-if="m.pricing?.max_reasoning_effort_multiplier"
+                  v-for="([effort, multiplier]) in reasoningEffortMultipliers(m)"
+                  :key="effort"
                   class="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"
-                  :title="t('modelPlaza.table.maxReasoningMultiplierHint', { multiplier: m.pricing.max_reasoning_effort_multiplier })"
+                  :title="t('modelPlaza.table.reasoningMultiplierHint', { effort, multiplier })"
+                  :data-reasoning-effort="effort"
                 >
-                  {{ t('modelPlaza.table.maxReasoningMultiplierBadge', { multiplier: m.pricing.max_reasoning_effort_multiplier }) }}
+                  {{ t('modelPlaza.table.reasoningMultiplierBadge', { effort, multiplier }) }}
                 </span>
               </div>
             </td>
@@ -435,6 +437,7 @@ import { platformAccentColor, platformBadgeLightClass, platformLabel } from '@/u
 import {
   BILLING_MODE_TOKEN,
   BILLING_MODE_IMAGE,
+  REASONING_EFFORT_LEVELS,
   type BillingMode
 } from '@/constants/channel'
 import type {
@@ -444,6 +447,17 @@ import type {
   PlazaTimePricingPeriod
 } from '@/api/modelPlaza'
 import type { UserPricingInterval } from '@/api/channels'
+
+/** 配置了倍率的推理等级,按 REASONING_EFFORT_LEVELS 顺序返回「等级 → 倍率」。 */
+function reasoningEffortMultipliers(model: PlazaModel): [string, number][] {
+  const multipliers = model.pricing?.reasoning_effort_multipliers
+  return REASONING_EFFORT_LEVELS.flatMap(effort => {
+    const multiplier = multipliers?.[effort]
+    return typeof multiplier === 'number' && Number.isFinite(multiplier) && multiplier > 0
+      ? [[effort, multiplier] as [string, number]]
+      : []
+  })
+}
 
 const props = defineProps<{
   models: PlazaModel[]

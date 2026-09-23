@@ -6,11 +6,10 @@
       <Icon name="search" size="sm" />
     </div>
     <input
-      :value="modelValue"
+      v-model="searchValue"
       type="text"
       class="input h-control pr-8 pl-8 text-control"
       :placeholder="placeholder"
-      @input="handleInput"
     />
     <button
       v-if="modelValue"
@@ -25,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import Icon from '@/components/icons/Icon.vue'
 
@@ -46,14 +46,15 @@ const debouncedEmitSearch = useDebounceFn((value: string) => {
   emit('search', value)
 }, props.debounceMs)
 
-const clear = () => {
-  emit('update:modelValue', '')
-  debouncedEmitSearch('')
-}
+const searchValue = computed({
+  get: () => props.modelValue,
+  set: (value: string) => {
+    emit('update:modelValue', value)
+    debouncedEmitSearch(value)
+  }
+})
 
-const handleInput = (event: Event) => {
-  const value = (event.target as HTMLInputElement).value
-  emit('update:modelValue', value)
-  debouncedEmitSearch(value)
+const clear = () => {
+  searchValue.value = ''
 }
 </script>
